@@ -1,0 +1,83 @@
+body{
+    background-color: white;
+}
+
+.loginPage {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.loginLeft {
+  width: 50vw;
+  background: #10898B;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginLeft h1 {
+  color: #98C6C4;
+  margin-bottom: 40px;
+  font-family: 'Agbalumo', cursive ;
+  
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap: 20px;
+}
+
+.loginLeft input {
+  padding: 12px;
+  border: none;
+  font-size: 16px;
+  background-color: #EFECDD;
+  border-radius: 4px;
+  outline: none;  
+  color: black;
+}
+
+/* QUANDO ESTÁ EM FOCO (clicado / digitando) */
+.loginLeft input:focus {
+  background-color: #EFECDD; 
+  color: black;            
+}
+
+.loginLeft button {
+  padding: 12px;
+  border: none;
+  background: #2D3B46;
+  cursor: pointer;
+  font-weight: normal;
+  border-radius: 4px;
+  margin-top: 10px;
+  color: white;
+}
+
+.loginRight {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center; 
+}
+
+.loginRight img {
+  width: 80%;
+  height: auto;             
+  display: block;
+}
+
+/* ✅ QUANDO A TELA FICAR MENOR */
+@media (max-width: 900px) {
+  .loginRight {
+    display: none;     /* some imagem */
+  }
+
+  .loginLeft {
+    width: 100vw;      /* login ocupa tudo */
+  }
+}

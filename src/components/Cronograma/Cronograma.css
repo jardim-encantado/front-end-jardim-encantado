@@ -1,0 +1,28 @@
+.tabela-rosa {
+  width: 100%;
+  border-collapse: separate; 
+  border-spacing: 4px; 
+  background-color: transparent;
+  text-align: center;
+  font-size: 11px;
+  margin-top: 16px;
+}
+
+.tabela-rosa th {
+  background-color: #FFAEAF;
+  color: white;
+  padding: 16px 6px;
+  font-weight: normal;
+}
+
+.tabela-rosa td:hover {
+  transform: scale(1.02);
+  transition: 0.15s;
+}
+
+.tabela-rosa td {
+  background-color: #FFE5E0;
+  height: 48px;   
+  font-weight: bold;
+  color: #c06070;   
+}
