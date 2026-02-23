@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  font-family: 'Poppins', sans-serif;
+  justify-content: center;  
+  width: 100%;
+}
+
+.mural {
+  background-color: #b75f4d;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.avisosContainer {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 16px;
+}
+
+h2{
+  color: black;
+  font-weight: normal;
+}
+
+.muralTitle{
+  color: black;
+  font-weight: 500;
+}

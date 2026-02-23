@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import imgJardimLogin from "../../assets/images/imgJardimLogin.png";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [cpf, setCPF] = useState("");
@@ -45,6 +46,8 @@ function Login() {
           <button type="submit">Entrar</button>
         </form>
       </div>
+
+<Link to="/boletim">Ir para Boletim</Link>
 
       <div className={styles.loginRight}>
         <img src={imgJardimLogin} alt="Imagem 1" />
