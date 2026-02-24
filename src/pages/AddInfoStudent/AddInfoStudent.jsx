@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import BoletimComponent from "../../components/BoletimComponent/BoletimComponent";
 import DropdownBoletim from "../../components/DropdownBoletim/DropdownBoletim";
-import styles from "./Boletim.module.css";
+import styles from "./Boletim/Boletim.module.css";
 
 function Boletim() {
   return (

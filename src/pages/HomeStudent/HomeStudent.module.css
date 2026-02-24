@@ -2,22 +2,25 @@
   display: flex;
   font-family: 'Poppins', sans-serif;
   justify-content: center;  
-  width: 100%;
+}
+
+body{
+  background-color: white;
 }
 
 .mural {
   background-color: #FFE5E0;
-  padding: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-
-  width: 100%;
+  width: 900px;
 }
 
 .avisosContainer {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 

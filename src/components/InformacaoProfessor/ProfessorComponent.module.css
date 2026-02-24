@@ -1,0 +1,96 @@
+.cardUsuarios {
+  padding: 16px;
+  width: 260px;  
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.headerCardUsuarios {
+  width: 100%;
+}
+
+.responsavel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.responsavel img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.responsavel h4 {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.responsavel p {
+  margin: 0;
+  font-size: 13px;
+  color: #777;
+}
+
+.contato {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #10898B;
+}
+
+.contato > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contato p {
+  margin: 0;
+  font-size: 13px;
+  color: #444;
+}
+
+.divisao {
+  border: none;
+  border-bottom: 1px solid #eee;
+  margin: 4px 0;
+}
+
+.informacoes {
+  width: 100%;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.info p:first-child {
+  font-weight: 600;
+  color: #444;
+}
+
+.info p:last-child {
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .cardUsuarios {
+    width: 100%;
+  }
+}

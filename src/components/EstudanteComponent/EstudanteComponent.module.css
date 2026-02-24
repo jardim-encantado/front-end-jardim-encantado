@@ -1,0 +1,87 @@
+.cardUsuarios {
+  padding: 16px;
+  width: 260px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #FFC2C1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  transition: 0.2s;
+}
+
+.cardUsuarios:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.headerCardUsuarios {
+  width: 100%;
+}
+
+.responsavel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.responsavel img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f1f1f1;
+}
+
+.responsavel h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.responsavel p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.divisao {
+  border: none;
+  border-bottom: 1px solid #eeeeee;
+  margin: 2px 0;
+}
+
+.informacoes {
+  width: 100%;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.info p:first-child {
+  font-weight: 600;
+  color: #444;
+}
+
+.info p:last-child {
+  color: #666;
+}
+
+
+@media (max-width: 768px) {
+  .cardUsuarios {
+    width: 100%;
+  }
+}

@@ -1,0 +1,16 @@
+.mainContent {
+  flex-grow: 1;
+  padding: 24px;
+  background-color: #f5f5f5;
+}
+
+.mainContent h1 {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.cardsGrid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}

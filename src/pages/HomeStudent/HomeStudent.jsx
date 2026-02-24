@@ -15,6 +15,7 @@ function HomeStudent() {
       titulo: "Dia do Livro",
       data: "02/02",
       descricao: "Os livros podem ser trocados entre alunos.",
+      origem: "Diretoria",
       cor: "rosa",
     },
     {
@@ -22,6 +23,7 @@ function HomeStudent() {
       titulo: "Reunião de Pais",
       data: "05/02",
       descricao: "Os pais devem comparecer presencialmente.",
+      origem: "Coordenação",
       cor: "verde",
     },
   ];
@@ -50,6 +52,7 @@ function HomeStudent() {
                 data={aviso.data}
                 descricao={aviso.descricao}
                 cor={aviso.cor}
+                origem={aviso.origem}
               />
             ))}
           </div>
