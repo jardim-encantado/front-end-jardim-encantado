@@ -1,7 +1,7 @@
 .searchContainer {
   position: relative;
-  width: 100%;
-  max-width: 300px;
+  flex: 0 0 300px;   /* TRAVA COMPLETAMENTE */
+  width: 300px;
 }
 
 .icon {
@@ -15,17 +15,18 @@
 }
 
 .input {
-  width: 120%;
-  padding: 10px 14px 10px 38px; 
+  width: 100%;
+  padding: 10px 14px 10px 38px;
   border-radius: 4px;
-  border: none;
+  border: 2px solid transparent; /* define espessura fixa */
   font-size: 14px;
   color: black;
   outline: none;
   background-color: #DAE7C1;
+  transition: 0.2s ease;
 }
 
 .input:focus {
-  border-color: #10898B;
-  box-shadow: 0 0 0 2px rgba(16, 137, 139, 0.2);
+  border: 2px solid #10898B; /* só muda cor */
+  box-shadow: none;         /* remove crescimento visual */
 }

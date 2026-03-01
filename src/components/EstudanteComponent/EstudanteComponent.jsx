@@ -4,10 +4,15 @@ export default function EstudanteComponent({
   nomeEstudante,
   serieEstudante,
   professoraResponsavel,
-  fotoEstudante
+  fotoEstudante,
+  onClick,
 }) {
   return (
-    <div className={styles.cardUsuarios}>
+    <div
+      className={styles.cardUsuarios}
+      onClick={onClick}
+      style={{ cursor: "pointer" }}
+    >
       <div className={styles.headerCardUsuarios}>
         <div className={styles.responsavel}>
           <img

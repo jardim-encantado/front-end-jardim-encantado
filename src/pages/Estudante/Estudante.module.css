@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .pageLayout {
   display: flex;
   width: 100%;
@@ -9,35 +13,30 @@
   padding: 24px;
 }
 
-.cardsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 25px;
-  align-items: flex-start;
-}
-
-@media (max-width: 768px) {
-  .cardsContainer {
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
 .pageContent h1,
 .pageContent h2 {
   margin: 0;
 }
 
-.pageContent h1{
+.pageContent h1 {
   margin-bottom: 20px;
 }
 
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+
 .filtros {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: space-between; 
+  gap: 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
 }
 
 .serie {
@@ -47,5 +46,15 @@
 }
 
 .search {
-  margin-left: 400px; 
+  margin-left: 200px;
+}
+
+@media (max-width: 768px) {
+  .cardsContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .search{
+    margin: 0;
+  }
 }

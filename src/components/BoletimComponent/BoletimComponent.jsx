@@ -11,28 +11,30 @@ const BoletimAluno = () => {
   ];
 
   return (
-    <table className={styles.boletimAluno}>
-      <thead>
-        <tr>
-          <th>Disciplinas</th>
-          <th>1 Bimestre</th>
-          <th>2 Bimestre</th>
-          <th>3 Bimestre</th>
-          <th>4 Bimestre</th>
-        </tr>
-      </thead>
-      <tbody>
-        {dados.map((item, index) => (
-          <tr key={index}>
-            <td>{item.disciplina}</td>
-            <td>{item.bimestre1}</td>
-            <td>{item.bimestre2}</td>
-            <td>{item.bimestre3}</td>
-            <td>{item.bimestre4}</td>
+    <div className={styles.containerTabela}>
+      <table className={styles.boletimAluno}>
+        <thead>
+          <tr>
+            <th>Disciplinas</th>
+            <th>1º Bim</th>
+            <th>2º Bim</th>
+            <th>3º Bim</th>
+            <th>4º Bim</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {dados.map((item, index) => (
+            <tr key={index}>
+              <td>{item.disciplina}</td>
+              <td>{item.bimestre1}</td>
+              <td>{item.bimestre2}</td>
+              <td>{item.bimestre3}</td>
+              <td>{item.bimestre4}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
