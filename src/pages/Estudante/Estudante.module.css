@@ -13,7 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 20px;
+  margin-top: 25px;
   align-items: flex-start;
 }
 
@@ -22,4 +22,30 @@
     flex-direction: column;
     gap: 12px;
   }
+}
+
+.pageContent h1,
+.pageContent h2 {
+  margin: 0;
+}
+
+.pageContent h1{
+  margin-bottom: 20px;
+}
+
+.filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.serie {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search {
+  margin-left: 400px; 
 }

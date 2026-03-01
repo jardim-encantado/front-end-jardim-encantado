@@ -2,6 +2,8 @@ import EstudanteComponent from "../../components/EstudanteComponent/EstudanteCom
 import styles from "./Estudante.module.css";
 import SidebarProfessor from "../../components/SideBarProfessor/SidebarProfessor";
 import DropdownEstudantes from "../../components/DropdownEstudantes/DropdownEstudantes";
+import SearchBar from "../../components/SearchStudent/SearchBar";
+import { useState } from "react";
 
 export default function Estudante() {
   const estudantes = [
@@ -17,7 +19,15 @@ export default function Estudante() {
       serieEstudante: "Jardim I",
       professoraResponsavel: "Patrícia Lima",
     },
-  ];
+];
+
+  const [filtro, setFiltro] = useState("");
+
+  const estudantesFiltrados = estudantes.filter((estudante) =>
+  estudante.nomeEstudante
+    .toLowerCase()
+    .includes(filtro.toLowerCase())
+  );
 
   return (
     <div className={styles.pageLayout}>
@@ -25,13 +35,19 @@ export default function Estudante() {
 
       <div className={styles.pageContent}>
         <h1>Estudantes</h1>
-        <div>
-          <h2>Série</h2>
+        <div className={styles.filtros}>
+        <div className={styles.serie}>
+          <h2>Série:</h2>
           <DropdownEstudantes />
         </div>
 
+      <div className={styles.search}>
+        <SearchBar onSearch={setFiltro} />
+      </div>
+      </div>
+
         <div className={styles.cardsContainer}>
-          {estudantes.map((estudante) => (
+          {estudantesFiltrados.map((estudante) => (
             <EstudanteComponent
               key={estudante.id}
               nomeEstudante={estudante.nomeEstudante}

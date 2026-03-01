@@ -3,11 +3,11 @@ import Select from "react-select";
 
 const options = [
   { value: "1 ano A", label: "1 ano A" },
-  { value: "2024", label: "2024" },
-  { value: "2023", label: "2023" },
+  { value: "1 ano B", label: "1 ano B" },
+  { value: "1 ano C", label: "1 ano C" },
 ];
 
-export default function DropdownBoletim() {
+export default function DropdownEstudantes() {
   const [selectedYear, setSelectedYear] = useState(null);
 
   const handleChange = (option) => {
@@ -18,17 +18,15 @@ export default function DropdownBoletim() {
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      backgroundColor: "#e0eacb",  
+      backgroundColor: "#DAE7C1",  
       border: "none",
       borderRadius: 4,
-      padding: "1px 1px",
-      fontSize: "0.8em",
       boxShadow: "none",
       cursor: "pointer",
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      color: "#555", 
+      color: "#10898B", 
     }),
     indicatorSeparator: () => ({ display: "none" }), 
     menu: (provided) => ({
@@ -45,12 +43,12 @@ export default function DropdownBoletim() {
   };
 
   return (
-  <div style={{ width: "180px", fontFamily: "Arial, sans-serif" }}>
+  <div style={{ width: "130px", fontFamily: "Arial, sans-serif", fontSize: "18px" }}>
       <Select
         options={options}
         value={selectedYear}
         onChange={handleChange}
-        placeholder="Selecione a série"
+        placeholder="Série"
         styles={customStyles}
       />
     </div>

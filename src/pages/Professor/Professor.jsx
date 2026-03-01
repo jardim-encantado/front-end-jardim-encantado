@@ -6,7 +6,6 @@ import styles from "./Professor.module.css";
 
 export default function Professores() {
 
-  /* SIMULAÇÃO DO BANCO */
   const [professores] = useState([
     {
       id: 1,
