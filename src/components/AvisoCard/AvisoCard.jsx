@@ -1,7 +1,7 @@
 import React from "react";
 import "./AvisoCard.css";
 
-function AvisoCard({ titulo, data, descricao, origem,cor = "rosa" }) {
+function AvisoCard({ titulo, data, descricao, origem,cor = "rosa"}) {
   return (
     <div className={`aviso-card ${cor}`}>
       <h3>{titulo}</h3>

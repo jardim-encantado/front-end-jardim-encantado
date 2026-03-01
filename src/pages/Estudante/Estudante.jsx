@@ -16,7 +16,8 @@ export default function Estudante() {
       telefone: "(11) 99999-9999",
       email: "lucas@email.com",
       fotoEstudante: "",
-      boletim: []
+      boletim: [],
+      estudanteId: 2
     },
     {
       id: 2,
@@ -25,8 +26,8 @@ export default function Estudante() {
       professoraResponsavel: "Patrícia Lima",
       telefone: "(11) 98888-8888",
       email: "ana@email.com",
-      fotoEstudante: "",
-      boletim: []
+      boletim: [],
+      estudanteId: 2,
     }
   ];
 
