@@ -4,6 +4,7 @@ import HomeStudent from "./pages/HomeStudent/HomeStudent";
 import Boletim from "./pages/Boletim/Boletim";
 import Professor from "./pages/Professor/Professor"
 import Estudante from "./pages/Estudante/Estudante";
+import CriarEstudante from "./pages/Admin/AdicionarAluno/AdicionarAluno";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Route path="/boletim" element={<Boletim />} />
         <Route path="/professor" element={<Professor />} />
         <Route path="/professor/estudante" element={<Estudante />} />
+        <Route path="/professor/home" element={<HomeStudent />} />
+        <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
   
       </Routes>
     </BrowserRouter>
