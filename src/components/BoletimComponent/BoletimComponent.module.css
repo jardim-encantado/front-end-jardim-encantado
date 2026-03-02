@@ -6,18 +6,18 @@
 
 .boletimAluno {
   width: 100%;
-  border-collapse: separate; 
-  border-spacing: 2px 2px; 
+  min-width: 700px; 
+  border-collapse: collapse;
   text-align: center;
-  font-size: 15px;
+  font-size: 16px; 
 }
 
 .boletimAluno th,
 .boletimAluno td {
-  padding: 8px 4px;
+  padding: 12px 8px; 
   white-space: nowrap;
   font-weight: 500;
-  border-radius: 0px;
+  border: 1px solid white;
 }
 
 .boletimAluno th {
@@ -27,25 +27,23 @@
 
 .boletimAluno td {
   background-color: #DAE7C1;
-  color: #2c2c2c;
+  color: #ffffff;
   font-weight: bold;
   transition: transform 0.15s;
 }
 
 .boletimAluno td:hover {
-  transform: scale(1.03);
+  background-color: #c4e2b7; 
 }
 
 @media (max-width: 768px) {
   .boletimAluno {
-    font-size: 12px;
+    font-size: 14px;
+    min-width: 0;
   }
 
   .boletimAluno th,
   .boletimAluno td {
-    padding: 6px 2px;
-  }
-  .containerTabela {
-    overflow-x: auto;
+    padding: 8px 4px;
   }
 }

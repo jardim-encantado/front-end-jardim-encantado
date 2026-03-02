@@ -1,10 +1,11 @@
 import { useState } from "react";
 import EstudanteComponent from "../../components/EstudanteComponent/EstudanteComponent";
-import styles from "./Estudante.module.css";
 import SidebarProfessor from "../../components/SideBarProfessor/SidebarProfessor";
 import DropdownEstudantes from "../../components/DropdownEstudantes/DropdownEstudantes";
 import SearchBar from "../../components/SearchStudent/SearchBar";
 import PopUpEstudante from "../../components/PopUpEstudante/PopUpEstudante";
+import CriarAviso from "../../components/CriarAviso/CriarAviso";
+import styles from "./Estudante.module.css";
 
 export default function Estudante() {
   const estudantes = [
@@ -15,7 +16,6 @@ export default function Estudante() {
       professoraResponsavel: "Maria Eduarda",
       telefone: "(11) 99999-9999",
       email: "lucas@email.com",
-      fotoEstudante: "",
       boletim: [],
       estudanteId: 2
     },
@@ -27,18 +27,39 @@ export default function Estudante() {
       telefone: "(11) 98888-8888",
       email: "ana@email.com",
       boletim: [],
-      estudanteId: 2,
+      estudanteId: 2
     }
   ];
 
   const [filtro, setFiltro] = useState("");
-  const [estudanteSelecionado, setEstudanteSelecionado] = useState(null);
+  const [alunoPopUp, setAlunoPopUp] = useState(null);       
+  const [alunoCriarAviso, setAlunoCriarAviso] = useState(null); 
+  const [showCriarAviso, setShowCriarAviso] = useState(false);
 
   const estudantesFiltrados = estudantes.filter((estudante) =>
-    estudante.nomeEstudante
-      .toLowerCase()
-      .includes(filtro.toLowerCase())
+    estudante.nomeEstudante.toLowerCase().includes(filtro.toLowerCase())
   );
+
+  const handleAbrirPopUp = (aluno) => {
+    setAlunoPopUp(aluno);
+    setShowCriarAviso(false);
+  };
+
+  const handleCriarAviso = (aluno) => {
+    setAlunoPopUp(null);   
+    setAlunoCriarAviso(aluno);   
+    setShowCriarAviso(true);  
+  };
+
+  const handleFecharCriarAviso = () => {
+    setShowCriarAviso(false);
+    setAlunoCriarAviso(null);
+  };
+
+  const handleSalvarAviso = (novoAviso) => {
+    console.log("Aviso salvo:", novoAviso);
+    handleFecharCriarAviso();
+  };
 
   return (
     <div className={styles.pageLayout}>
@@ -65,15 +86,26 @@ export default function Estudante() {
               nomeEstudante={estudante.nomeEstudante}
               serieEstudante={estudante.serieEstudante}
               professoraResponsavel={estudante.professoraResponsavel}
-              onClick={() => setEstudanteSelecionado(estudante)}
+              onClick={() => handleAbrirPopUp(estudante)}
             />
           ))}
         </div>
 
-        <PopUpEstudante
-          estudante={estudanteSelecionado}
-          onClose={() => setEstudanteSelecionado(null)}
-        />
+        {alunoPopUp && !showCriarAviso && (
+          <PopUpEstudante
+            estudante={alunoPopUp}
+            onClose={() => setAlunoPopUp(null)}
+            onCriarAviso={handleCriarAviso} 
+          />
+        )}
+
+        {alunoCriarAviso && showCriarAviso && (
+          <CriarAviso
+            estudante={alunoCriarAviso}
+            onCancel={handleFecharCriarAviso}
+            onSave={handleSalvarAviso}
+          />
+        )}
       </div>
     </div>
   );

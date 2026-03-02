@@ -134,3 +134,20 @@
   overflow-x: auto;
   padding: 10px 0;
 }
+
+.addOcorrencia{
+    width: 90px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #10898B;
+}
+.iconOcorrencia{
+  width: 60px;
+  height: 60px;
+  cursor: pointer; 
+  margin-top: 30px;
+  margin-left: 20px;
+
+}

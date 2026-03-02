@@ -10,10 +10,12 @@ function Boletim() {
     <Box sx={{ display: "flex" }}>
       <Sidebar />
       <Box className={styles.mainContent}>
-        <h1>Boletim</h1>
-        <DropdownBoletim />
-        <BoletimComponent />
-      </Box>
+  <h1>Boletim</h1>
+  <div style={{ marginBottom: "16px", width: "100%" }}>
+    <DropdownBoletim />
+  </div>
+  <BoletimComponent />
+</Box>
     </Box>
   );
 }

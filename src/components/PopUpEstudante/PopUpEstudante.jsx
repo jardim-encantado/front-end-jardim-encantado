@@ -1,75 +1,31 @@
 import React from "react";
 import styles from "./PopUpEstudante.module.css";
 import Boletim from "../BoletimComponent/BoletimComponent";
-import DropdownEstudantes from "../DropdownEstudantes/DropdownEstudantes";
 import AvisoCard from "../AvisoCard/AvisoCard";
+import iconOcorrencia from "../../assets/images/addOcorrencia.png";
 
-export default function PopUpEstudante({ estudante, onClose }) {
+export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
   if (!estudante) return null;
 
   const avisos = [
-  {
-    id: 1,
-    titulo: "Dia do Livro",
-    data: "02/02",
-    descricao: "Os livros podem ser trocados entre alunos.",
-    origem: "Diretoria",
-    cor: "rosa",
-    alunoNome: "João Silva",
-    estudanteId: 2,
-  },
-  {
-    id: 2,
-    titulo: "Reunião de Pais",
-    data: "05/02",
-    descricao: "Os pais devem comparecer presencialmente.",
-    origem: "Coordenação",
-    cor: "verde",
-    alunoNome: "Maria Eduarda",
-    estudanteId: 2,
-  },
-  {
-    id: 3,
-    titulo: "Projeto de Ciências",
-    data: "10/03",
-    descricao: "Entrega do trabalho de ciências.",
-    origem: "Prof. Ana",
-    cor: "rosa",
-    alunoNome: "Maria Eduarda",
-    estudanteId: 2,
-  },
-];
-  const avisosDoAluno = avisos.filter(
-    (aviso) => aviso.estudanteId === estudante.estudanteId
-  );
+    { id: 1, titulo: "Dia do Livro", data: "02/02", descricao: "Troca de livros.", origem: "Diretoria", cor: "rosa", estudanteId: 2, tpAviso: 1 },
+    { id: 2, titulo: "Reunião de Pais", data: "05/02", descricao: "Presença obrigatória.", origem: "Coordenação", cor: "verde", estudanteId: 2, tpAviso: 1 }
+  ];
+
+  const avisosDoAluno = avisos.filter(aviso => aviso.estudanteId === estudante.estudanteId && aviso.tpAviso === 1);
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={onClose}>
-          ✕
-        </button>
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <button className={styles.closeBtn} onClick={onClose}>✕</button>
 
         <div className={styles.info}>
-          <div className={styles.leftSide}>
-            <div className={styles.columnPrimary}>
-              <p><strong>Nome:</strong> {estudante.nomeEstudante}</p>
-              <p><strong>Série:</strong> {estudante.serieEstudante}</p>
-              <p><strong>Professora:</strong> {estudante.professoraResponsavel}</p>
-            </div>
-
-            <div className={styles.columnSecondary}>
-              <p><strong>Telefone:</strong> {estudante.telefone}</p>
-              <p><strong>Email:</strong> {estudante.email}</p>
-              <p><strong>Responsável:</strong> {estudante.responsavel}</p>
-            </div>
-          </div>
-
-          <hr className={styles.divider} />
-
-          <div className={styles.actions}>
-            <DropdownEstudantes />
-            <button className={styles.boletimBtn}>Editar</button>
+          <div>
+            <p><strong>Nome:</strong> {estudante.nomeEstudante}</p>
+            <p><strong>Série:</strong> {estudante.serieEstudante}</p>
+            <p><strong>Professora:</strong> {estudante.professoraResponsavel}</p>
+            <p><strong>Telefone:</strong> {estudante.telefone}</p>
+            <p><strong>Email:</strong> {estudante.email}</p>
           </div>
         </div>
 
@@ -78,7 +34,7 @@ export default function PopUpEstudante({ estudante, onClose }) {
 
         <div className={styles.avisosDoAluno}>
           {avisosDoAluno.length > 0 ? (
-            avisosDoAluno.map((aviso) => (
+            avisosDoAluno.map(aviso => (
               <AvisoCard
                 key={aviso.id}
                 titulo={aviso.titulo}
@@ -88,9 +44,17 @@ export default function PopUpEstudante({ estudante, onClose }) {
                 cor={aviso.cor}
               />
             ))
-          ) : (
-            <p>Sem avisos para este aluno.</p>
-          )}
+          ) : <p>Sem avisos para este aluno.</p>}
+
+          <img
+            src={iconOcorrencia}
+            alt="Ícone de ocorrência"
+            className={styles.iconOcorrencia}
+            onClick={e => {
+              e.stopPropagation();
+              onCriarAviso(estudante); 
+            }}
+          />
         </div>
       </div>
     </div>
