@@ -41,25 +41,31 @@ const Sidebar = () => {
           style={{ maxHeight: "60px", maxWidth: "100%", marginTop: "70px" }}
         />
       </Box>
-      <List sx={{ marginTop: "60px" }}>
-      <Link to="professor/home">
-        <ListItem button>
-          <ListItemIcon sx={{ color: "white" }}><HomeIcon /></ListItemIcon>
-          <ListItemText primary="Home" sx={{ color: "white" }} />
-        </ListItem>
-        </Link>
+      <List sx={{ marginTop: "40px" }}>
        <Link to="professor/estudante">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
-          <ListItemText primary="Estudantes" sx={{ color: "white" }} />
+          <ListItemText primary="Teachers" sx={{ color: "white" }} />
         </ListItem>
         </Link>
         <Link to="/notas">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Notas" sx={{ color: "white" }} />
+          <ListItemText primary="Students" sx={{ color: "white" }} />
         </ListItem>
         </Link>  
+        <Link to="/notas">
+         <ListItem button>
+          <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
+          <ListItemText primary="Classes" sx={{ color: "white" }} />
+        </ListItem>
+        </Link>         
+        <Link to="/notas">
+         <ListItem button>
+          <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
+          <ListItemText primary="Notes" sx={{ color: "white" }} />
+        </ListItem>
+        </Link>          
       </List>
 
     <Box

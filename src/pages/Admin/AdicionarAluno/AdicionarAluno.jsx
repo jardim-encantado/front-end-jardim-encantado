@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import CriarEstudante from "../../../components/Admin/AdicionarEstudante/AddEstudante";
-import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
 import styles from "./AdicionarAluno.module.css";
+
+import AddEstudante from "../../../components/Admin/AdicionarEstudante/AddEstudante";
+import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
 
 export default function TelaAdicionarEstudante() {
   const [estudante, setEstudante] = useState({});
@@ -17,15 +18,17 @@ export default function TelaAdicionarEstudante() {
     <div className={styles.container}>
       <h2>Adicionar novo estudante</h2>
 
-      <div className={styles.formSection}>
-        <h2 className={styles.formTitle}>Detalhes do Estudante</h2>
-        <CriarEstudante dados={estudante} setDados={setEstudante} />
-      </div>
+      <AddEstudante
+        titulo="Detalhes do Estudante"
+        dados={estudante}
+        setDados={setEstudante}
+      />
 
-      <div className={styles.formSection}>
-        <h2>Detalhes do Responsável</h2>
-        <CriarResponsavel dados={responsavel} setDados={setResponsavel} />
-      </div>
+      <CriarResponsavel
+        titulo="Detalhes do Responsável"
+        dados={responsavel}
+        setDados={setResponsavel}
+      />
 
       <button className={styles.salvarBtn} onClick={handleSalvar}>
         Salvar

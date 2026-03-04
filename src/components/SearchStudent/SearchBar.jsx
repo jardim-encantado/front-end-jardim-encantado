@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./SearchBar.module.css";
-import { FiSearch } from "react-icons/fi";
 
 export default function SearchBar({ onSearch }) {
   const [search, setSearch] = useState("");
@@ -8,19 +7,27 @@ export default function SearchBar({ onSearch }) {
   function handleChange(e) {
     const value = e.target.value;
     setSearch(value);
-    onSearch(value);
+    if (onSearch) {
+      onSearch(value);
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (onSearch) {
+      onSearch(search);
+    }
   }
 
   return (
-  <div className={styles.searchContainer}>
-    <FiSearch className={styles.icon} />
-    <input
-      type="text"
-      placeholder="Pesquisar estudante..."
-      value={search}
-      onChange={handleChange}
-      className={styles.input}
-    />
-  </div>
-);
+    <form className={styles.searchContainer} onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Buscar estudante"
+        value={search}
+        onChange={handleChange}
+        className={styles.searchInput}
+      />
+    </form>
+  );
 }
