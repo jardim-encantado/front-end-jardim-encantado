@@ -92,7 +92,31 @@
   border: 0;
   height: 2px;
   background-color: #FFC2C1;
-  margin: 8px 0; /* aproxima do leftSide */
+  margin: 8px 0;
+}
+
+.avisosDoAluno {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.addOcorrencia{
+    width: 90px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #10898B;
+}
+.iconOcorrencia{
+  width: 60px;
+  height: 60px;
+  cursor: pointer; 
+  margin-top: 30px;
+  margin-left: 20px;
+
 }
 
 @media (max-width: 768px) {
@@ -128,26 +152,3 @@
   }
 }
 
-.avisosDoAluno {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 10px 0;
-}
-
-.addOcorrencia{
-    width: 90px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #10898B;
-}
-.iconOcorrencia{
-  width: 60px;
-  height: 60px;
-  cursor: pointer; 
-  margin-top: 30px;
-  margin-left: 20px;
-
-}
