@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./AdicionarAluno.module.css";
+import styles from "./AdicionarProfessor.module.css";
 
 import AddProfessor from "../../../components/Admin/AdicionarProfessor/AddProfessor";
 import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
@@ -19,17 +19,10 @@ export default function TelaAdicionarEstudante() {
       <h2>Adicionar novo estudante</h2>
 
       <AddProfessor
-        titulo="Detalhes do Estudante"
+        titulo="Detalhes do Professor"
         dados={estudante}
         setDados={setEstudante}
       />
-
-      <CriarResponsavel
-        titulo="Detalhes do Responsável"
-        dados={responsavel}
-        setDados={setResponsavel}
-      />
-
       <button className={styles.salvarBtn} onClick={handleSalvar}>
         Salvar
       </button>

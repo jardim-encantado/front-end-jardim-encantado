@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./AddEstudante.module.css";
+import styles from "./AddProfessor.module.css";
 import SidebarAdmin from "../SideBarAdmin/";
 
 export default function AddEstudante({ dados, setDados, titulo }) {

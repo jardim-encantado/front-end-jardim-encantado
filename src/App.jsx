@@ -5,7 +5,7 @@ import Boletim from "./pages/Boletim/Boletim";
 import Professor from "./pages/Professor/Professor"
 import Estudante from "./pages/Estudante/Estudante";
 import CriarEstudante from "./pages/Admin/AdicionarAluno/AdicionarAluno";
-
+import AdicionarProfessor from "./pages/Admin/AdicionarProfessor/AdicionarProfessor";
 function App() {
   return (
     <BrowserRouter>
@@ -17,7 +17,7 @@ function App() {
         <Route path="/professor/estudante" element={<Estudante />} />
         <Route path="/professor/home" element={<HomeStudent />} />
         <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
-  
+        <Route path="/admin/criarProfessor" element={<AdicionarProfessor />} />
       </Routes>
     </BrowserRouter>
   );
