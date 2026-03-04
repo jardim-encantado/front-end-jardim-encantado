@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Cronograma from "../../components/Cronograma/Cronograma";
 import AvisoCard from "../../components/AvisoCard/AvisoCard";
-import styles from "./HomeStudent.module.css";
+import styles from "./HomeEstudante.module.css";
 
 
 function HomeStudent() {

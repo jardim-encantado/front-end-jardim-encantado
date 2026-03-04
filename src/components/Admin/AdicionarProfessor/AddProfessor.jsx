@@ -47,6 +47,13 @@ export default function AddEstudante({ dados, setDados, titulo }) {
             <label>CPF:</label>
             <input type="text" name="cpf" value={dados.cpf || ""} onChange={handleChange} />
           </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Senha:</label>
+            <input type="text" name="cpf" value={dados.cpf || ""} onChange={handleChange} />
+          </div>
           <div>
             <label>Foto:</label>
             <input type="file" name="foto" onChange={handleChange} />
