@@ -1,0 +1,48 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  margin-top: 0px;
+  margin-left: 200px;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  color: black;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.formSection {
+  background-color: #ffdede; 
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 900px;
+  height: 300px;
+}
+
+.formTitle {
+  margin: 0; 
+  background-color: #FFC2C1; 
+  padding: 10px 15px;
+  border-radius: 12px 12px 0 0; 
+  margin-bottom: 20px; 
+  color: white; 
+  margin: -20px -20px 20px -20px; 
+  font-size: 15px;
+  font-weight: bold;  
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+.salvarBtn {
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 30px;
+  cursor: pointer;
+}
+

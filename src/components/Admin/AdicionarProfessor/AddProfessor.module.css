@@ -1,0 +1,47 @@
+.container {
+  background-color: #ffdede;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  width: 900px;
+}
+
+.header {
+  background-color: #FFC2C1;
+  padding: 8px 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.row > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+input {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: black;
+  outline: none;
+}

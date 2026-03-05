@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./AddEstudante.module.css";
+import styles from "./AddProfessor.module.css";
 import SidebarAdmin from "../SideBarAdmin/";
 
 export default function AddEstudante({ dados, setDados, titulo }) {
@@ -45,6 +45,13 @@ export default function AddEstudante({ dados, setDados, titulo }) {
         <div className={styles.row}>
           <div>
             <label>CPF:</label>
+            <input type="text" name="cpf" value={dados.cpf || ""} onChange={handleChange} />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Senha:</label>
             <input type="text" name="cpf" value={dados.cpf || ""} onChange={handleChange} />
           </div>
           <div>
