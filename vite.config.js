@@ -1,10 +1,21 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  optimizeDeps: {
-    include: ['react-calendar-timeline', 'moment'] // força o Vite a pré-processar
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const apiUrl = env.API_URL || env.VITE_SQL_API_BASE_URL
+
+  return {
+    plugins: [react()],
+    envPrefix: ['VITE_', 'API_'],
+    server: {
+      proxy: {
+        "/api": {
+          target: apiUrl,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+        }
+      }
+    }
   }
 })
