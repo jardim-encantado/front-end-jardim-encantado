@@ -8,6 +8,8 @@
 
 Plataforma Escolar para o Ensino Fundamental
 
+URL do Site: [https://front-end-jardim-encantado.vercel.app/](https://front-end-jardim-encantado.vercel.app/)
+
 ## Overview 🌠
 O projeto tem intuito de simplificar o fluxo escolar por meio da digitalização de processos em uma plataforma online simples e acessível para os alunos, estudantes e responsáveis;
 
