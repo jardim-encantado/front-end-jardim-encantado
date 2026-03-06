@@ -1,11 +1,11 @@
 import api from "./config";
-import { toPersonRequestModel } from "../model/PersonRequestModel";
+import { toPersonRequestModel } from "../dto/PersonRequestModel";
 import {
     toPersonResponseListModel,
     toPersonResponseModel,
-} from "../model/PersonResponseModel";
+} from "../dto/PersonResponseModel";
 
-const PERSONS_ENDPOINT = "/v1/persons";
+const PERSONS_ENDPOINT = "/persons";
 
 const validateId = (id) => {
     if (id === null || id === undefined || id === "") {
@@ -57,16 +57,3 @@ export const updatePerson = async (id, personData) => {
     }
 };
 
-export const login = async (cpf, password) => {
-    try {
-        const payload = {
-            cpf: cpf.replace(/\D/g, ""),
-            password,
-        };
-        const response = await api.post("/login", payload);
-        return toPersonResponseModel(response.data);
-    } catch (error) {
-        console.error("Error during login:", error);
-        throw error;
-    }
-}
