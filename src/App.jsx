@@ -8,6 +8,7 @@ import CriarEstudante from "./pages/Admin/AdicionarAluno/AdicionarAluno";
 import AdicionarProfessor from "./pages/Admin/AdicionarProfessor/AdicionarProfessor";
 import VisualizarEstudante from "./pages/Admin/VisualizarEstudante/BuscaEstudante";
 import CronogramaEscolar from "./pages/Admin/CronogramaEscolar/CronogramaEscolar";
+import VisualizarProfessor from "./pages/Admin/VisualizarProfessor/BuscaProfessor";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/admin/criarProfessor" element={<AdicionarProfessor />} />
         <Route path="/admin/visualizarEstudante" element={<VisualizarEstudante />} />
         <Route path="/admin/cronogramaEscolar/cronogramaEscolar" element={<CronogramaEscolar />} />
+        <Route path="/admin/visualizarProfessor" element={<VisualizarProfessor />} />
       </Routes>
     </BrowserRouter>
   );
