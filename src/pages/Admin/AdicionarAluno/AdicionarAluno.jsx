@@ -5,16 +5,29 @@ import styles from "./AdicionarAluno.module.css";
 import AddEstudante from "../../../components/Admin/AdicionarEstudante/AddEstudante";
 import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
 
+import { createStudentService } from "../../../api/service/StudentService";
+
 export default function TelaAdicionarEstudante() {
   const navigate = useNavigate();
 
   const [estudante, setEstudante] = useState({});
   const [responsavel, setResponsavel] = useState({});
 
+  const studentService = createStudentService();
+
   const handleSalvar = () => {
     console.log("Estudante:", estudante);
     console.log("Responsável:", responsavel);
-    alert("Cadastro realizado com sucesso!");
+
+    studentService.createStudent({ 
+      studentData: estudante,
+      guardianData: responsavel
+     }).then(() => {
+      alert("Cadastro realizado com sucesso!");
+    }).catch((error) => {
+      console.error("Erro ao cadastrar estudante:", error);
+      alert("Ocorreu um erro ao cadastrar o estudante. Por favor, tente novamente.");
+    });
   };
 
   function voltarParaLista() {

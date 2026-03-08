@@ -1,19 +1,20 @@
 import { createApiRepository } from "../base/Repository";
 import { createPersonService } from "./PersonService";
 import { toStudentRequest } from "../schemas/dto/StudentRequest";
-import { makeStudentSchema } from "../schemas/Student";
+import { createGuardianService } from "./GuardianService";
 
 const STUDENTS_ENDPOINT = "v1/students";
 const studentApi = createApiRepository(STUDENTS_ENDPOINT, toStudentRequest, toStudentSchema);
 
 export function createStudentService() {
     const personService = createPersonService();
+    const guardianService = createGuardianService();
 
     return {
-        async createStudent (studentData) {
+        async createStudent (studentData, guardianData) {
             try {
-                const schema = toStudentSchema(studentData);
-                await personService.createPerson(personData);
+                await guardianService.createGuardian(guardianData);
+                await personService.createPerson(studentData);
                 return studentApi.create(studentData);
             } catch (error) {
                 console.error("Error creating student:", error);
