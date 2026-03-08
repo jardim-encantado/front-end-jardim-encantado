@@ -8,13 +8,13 @@ const validateId = (id) => {
     }
 };
 
-export function createApiRepository(apiEndpoint, toRequestModel = identity, toResponseModel = identity) {
+export function createApiRepository(apiEndpoint, toRequest = identity, toSchema = identity) {
     return {
         async getById(id) {
             try {
                 validateId(id);
                 const response = await api.get(`${apiEndpoint}/${id}`);
-                return toResponseModel(response.data);
+                return toSchema(response.data);
             } catch (error) {
                 console.error(`Error fetching data from ${apiEndpoint} with id ${id}:`, error);
                 throw error;
@@ -25,7 +25,7 @@ export function createApiRepository(apiEndpoint, toRequestModel = identity, toRe
             try {
                 const response = await api.get(apiEndpoint);
                 const data = Array.isArray(response.data) ? response.data : [];
-                return data.map(toResponseModel);
+                return data.map(toSchema);
             } catch (error) {
                 console.error(`Error fetching data from ${apiEndpoint}:`, error);
                 throw error;
@@ -34,9 +34,9 @@ export function createApiRepository(apiEndpoint, toRequestModel = identity, toRe
 
         async create(data) {
             try {
-                const payload = toRequestModel(data);
+                const payload = toRequest(data);
                 const response = await api.post(apiEndpoint, payload);
-                return toResponseModel(response.data);
+                return toSchema(response.data);
             } catch (error) {
                 console.error(`Error creating data in ${apiEndpoint}:`, error);
                 throw error;
@@ -46,9 +46,9 @@ export function createApiRepository(apiEndpoint, toRequestModel = identity, toRe
         async update(id, data) {
             try {
                 validateId(id);
-                const payload = toRequestModel(data);
+                const payload = toRequest(data);
                 const response = await api.put(`${apiEndpoint}/${id}`, payload);
-                return toResponseModel(response.data);
+                return toSchema(response.data);
             } catch (error) {
                 console.error(`Error updating data in ${apiEndpoint} with id ${id}:`, error);
                 throw error;

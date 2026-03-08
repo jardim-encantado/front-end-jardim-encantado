@@ -1,6 +1,6 @@
-import { makeAddressSchema } from "./Address";
+import { toAddressSchema } from "./Address";
 
-export const makePersonSchema = (person = {}) => {
+export const toPersonSchema = (person = {}) => {
     if (!person || typeof person !== "object") {
         return null;
     }
@@ -10,15 +10,8 @@ export const makePersonSchema = (person = {}) => {
         firstName: person.firstName ?? person.nome ?? "",
         lastName: person.lastName ?? person.sobrenome ?? "",
         photoUrl: person.photoUrl ?? person.foto ?? "",
+        roleId: person.roleId ?? person.perfilId ?? person.cargoId ?? null,
         roleName: person.roleName ?? person.perfil ?? "",
-        address: makeAddressSchema(person.address),
+        address: toAddressSchema(person.address),
     };
-};
-
-export const makePersonSchemaList = (persons = []) => {
-    if (!Array.isArray(persons)) {
-        return [];
-    }
-
-    return persons.map(makePersonSchema).filter(Boolean);
 };

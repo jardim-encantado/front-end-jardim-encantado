@@ -1,4 +1,4 @@
-export const makeAddressSchema = (address = {}) => {
+export const toAddressSchema = (address = {}) => {
     if (!address || typeof address !== "object") {
         return null;
     }
@@ -12,12 +12,4 @@ export const makeAddressSchema = (address = {}) => {
         city: address.city ?? address.cidade ?? "",
         state: address.state ?? address.estado ?? "",
     };
-};
-
-export const makeAddressSchemaList = (addresses = []) => {
-    if (!Array.isArray(addresses)) {
-        return [];
-    }
-
-    return addresses.map(makeAddressSchema).filter(Boolean);
 };
