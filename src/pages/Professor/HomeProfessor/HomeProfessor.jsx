@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import SidebarProfessor from "../../../components/SideBarProfessor/SideBarProfessor";
+import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
 import Cronograma from "../../../components/Cronograma/Cronograma";
 import AvisoCard from "../../../components/AvisoCard/AvisoCard";
 import styles from "./HomeProfessor.module.css";

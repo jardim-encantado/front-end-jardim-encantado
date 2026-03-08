@@ -12,7 +12,7 @@ import imgLogo from "../../assets/images/imgLogoJardim.png";
 import imgArvore from "../../assets/images/imgArvore.png";
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const SidebarProfessor = () => {
   return (
     <Drawer
       variant="permanent"
@@ -80,4 +80,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SidebarProfessor;
