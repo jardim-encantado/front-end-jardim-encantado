@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Sidebar from "../../../components/SideBarProfessor/SideBarProfessor";
+import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
 import AvisoCard from "../../../components/AvisoCard/AvisoCard";
 import CriarAviso from "../../../components/CriarAviso/CriarAviso"; 
 import styles from "./AddAviso.module.css";
@@ -22,7 +22,7 @@ const PaginaAvisos = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <Sidebar />
+      <SidebarProfessor />
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <h2>Mural de Avisos</h2>
