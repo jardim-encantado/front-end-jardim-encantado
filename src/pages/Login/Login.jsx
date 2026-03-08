@@ -13,20 +13,38 @@ function Login() {
 
     const personService = createPersonService();
 
-    function handleLogin(e) {
+    const resolveRouteByRole = (person) => {
+        const normalizedRoleName = String(person?.roleName ?? "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+
+        if (normalizedRoleName.includes("admin")) {
+            return "/admin/visualizarEstudante";
+        }
+
+        if (
+            normalizedRoleName.includes("teacher") ||
+            normalizedRoleName.includes("professor") ||
+            normalizedRoleName.includes("docente")
+        ) {
+            return "/professor/home";
+        }
+
+        return "/responsavel/home";
+    };
+
+    async function handleLogin(e) {
         e.preventDefault();
 
-        console.log("Tentando logar pelo amor de deus")
-
-        personService.login(cpf, password)
-            .then((response) => {
-                console.log("Login realizado com sucesso:", response);
-                saveLoggedPerson(response);
-                navigate("/home");
-            })
-            .catch((error) => {
-                console.error("Erro ao realizar login:", error);
-            });
+        try {
+            const response = await personService.login(cpf, password);
+            saveLoggedPerson(response);
+            navigate(resolveRouteByRole(response));
+        } catch (error) {
+            console.error("Erro ao realizar login:", error);
+            alert("Nao foi possivel realizar o login. Verifique CPF e senha.");
+        }
     }
 
     function handleCPFChange(e) {

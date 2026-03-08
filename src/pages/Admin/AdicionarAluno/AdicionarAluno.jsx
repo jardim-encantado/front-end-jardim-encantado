@@ -12,22 +12,23 @@ export default function TelaAdicionarEstudante() {
 
   const [estudante, setEstudante] = useState({});
   const [responsavel, setResponsavel] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
 
   const studentService = createStudentService();
 
-  const handleSalvar = () => {
-    console.log("Estudante:", estudante);
-    console.log("Responsável:", responsavel);
+  const handleSalvar = async () => {
+    setIsSaving(true);
 
-    studentService.createStudent({ 
-      studentData: estudante,
-      guardianData: responsavel
-     }).then(() => {
+    try {
+      await studentService.createStudent(estudante, responsavel);
       alert("Cadastro realizado com sucesso!");
-    }).catch((error) => {
+      navigate("/admin/visualizarEstudante");
+    } catch (error) {
       console.error("Erro ao cadastrar estudante:", error);
       alert("Ocorreu um erro ao cadastrar o estudante. Por favor, tente novamente.");
-    });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   function voltarParaLista() {
@@ -52,7 +53,7 @@ export default function TelaAdicionarEstudante() {
 
       <div className={styles.botoesContainer}>
         <button className={styles.salvarBtn} onClick={handleSalvar}>
-          Salvar
+          {isSaving ? "Salvando..." : "Salvar"}
         </button>
 
         <button className={styles.voltarBtn} onClick={voltarParaLista}>

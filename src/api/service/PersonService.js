@@ -2,8 +2,9 @@ import api from "../base/config";
 import { createApiRepository } from "../base/Repository";
 import { toPersonRequest } from "../schemas/dto/PersonRequest";
 import { toPersonSchema } from "../schemas/Person";
+import { sanitizeCpf } from "../util/objectUtil";
 
-const PERSONS_ENDPOINT = "/v1/person";
+const PERSONS_ENDPOINT = "/api/v1/person";
 const personApi = createApiRepository(PERSONS_ENDPOINT, toPersonRequest, toPersonSchema);
 
 export function createPersonService() {
@@ -16,12 +17,10 @@ export function createPersonService() {
 
         async updatePerson(id, personData) { return personApi.update(id, personData); },
 
-        async deletePerson(id) { return personApi.delete(id); },
-
         async login(cpf, password) {
             try {
                 const payload = {
-                    cpf: cpf.replace(/\D/g, ""),
+                    cpf: sanitizeCpf(cpf),
                     password,
                 };
                 const response = await api.post(`${PERSONS_ENDPOINT}/login`, payload);

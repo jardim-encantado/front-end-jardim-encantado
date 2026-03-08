@@ -22,6 +22,7 @@ export const toPersonRequest = (person = {}) => {
     email: person.email,
     password: person.password ?? person.senha,
     photoUrl: person.photoUrl ?? person.foto,
+    phoneNumber: person.phoneNumber ?? person.telefone,
     roleId: person.roleId ?? person.perfilId ?? person.cargoId,
     address,
   });

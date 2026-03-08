@@ -4,6 +4,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import Cronograma from "../../../components/Cronograma/Cronograma";
 import AvisoCard from "../../../components/AvisoCard/AvisoCard";
 import styles from "./HomeResponsavel.module.css";
+import { usePerson } from "../../../hooks/personHook";
 
 
 function HomeStudent() {

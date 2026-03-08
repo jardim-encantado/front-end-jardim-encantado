@@ -2,9 +2,17 @@ import { useState } from "react";
 import Cabecalho from "../EstudanteInfo/Cabecalho";
 import InfoRow from "../EstudanteInfo/./InfoLinha";
 
-export default function EstudanteInfo({ onDelete }) {
+export default function ProfessorInfo({ estudante, onDelete }) {
 
   const [editando, setEditando] = useState(false);
+
+  const teacherName = estudante?.fullName || estudante?.name || "-";
+  const teacherEmail = estudante?.email || "-";
+  const teacherCpf = estudante?.cpf || "-";
+  const teacherPhone = estudante?.phoneNumber || "-";
+  const teacherSubject = Array.isArray(estudante?.subjectNames) && estudante.subjectNames.length
+    ? estudante.subjectNames.join(", ")
+    : "-";
 
   return (
     <div
@@ -37,10 +45,10 @@ export default function EstudanteInfo({ onDelete }) {
 
       <div style={{ padding: "20px", display: "flex", gap: "40px" }}>
         <div>
-          <InfoRow label="Nome:" disabled={!editando} />
-          <InfoRow label="Email:" disabled={!editando} />
-          <InfoRow label="CPF:" disabled={!editando} />
-          <InfoRow label="Telefone:" disabled={!editando} />
+          <InfoRow label="Nome:" value={teacherName} disabled={!editando} />
+          <InfoRow label="Email:" value={teacherEmail} disabled={!editando} />
+          <InfoRow label="CPF:" value={teacherCpf} disabled={!editando} />
+          <InfoRow label="Telefone:" value={teacherPhone} disabled={!editando} />
         </div>
 
         <div>
@@ -49,7 +57,7 @@ export default function EstudanteInfo({ onDelete }) {
         </div>
 
         <div>
-           <InfoRow label="Matéria:" disabled={!editando} />
+            <InfoRow label="Matéria:" value={teacherSubject} disabled={!editando} />
         </div>
 
       </div>

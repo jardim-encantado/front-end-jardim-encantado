@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 
-// Fazer uma lista para ver se já existe a matéria na lista porque se tiver não aparece essa opção no option
-const options = [
+const defaultOptions = [
   { value: "Artes", label: "Artes" },
   { value: "História", label: "História" },
   { value: "Geografia", label: "Geografia" },
   { value: "Matemática", label: "Matemática" },
 ];
 
-export default function DropdownMaterias() {
-  const [selectedYear, setSelectedYear] = useState(null);
-
-  const handleChange = (option) => {
-    setSelectedYear(option);
-    console.log("Ano selecionado:", option.value);
-  };
+export default function DropdownMaterias({
+  options = defaultOptions,
+  value = null,
+  onChange,
+  placeholder = "Selecione a matéria",
+}) {
+const availableOptions = Array.isArray(options) && options.length ? options : defaultOptions;
 
 const customStyles = {
   control: (provided) => ({
@@ -70,10 +69,10 @@ const customStyles = {
   return (
   <div style={{ width: "300px", fontFamily: "Arial, sans-serif", fontSize: "10px"}}>
       <Select
-        options={options}
-        value={selectedYear}
-        onChange={handleChange}
-        placeholder="Selecione a matéria"
+        options={availableOptions}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
         styles={customStyles}
       />
     </div>
