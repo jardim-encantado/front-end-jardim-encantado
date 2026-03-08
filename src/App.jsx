@@ -1,45 +1,49 @@
+import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login/Login";
+import Carregamento from "./components/Carregamento/Carregamento";
 
-import CriarEstudante from "./pages/Admin/AdicionarAluno/AdicionarAluno";
-import AdicionarProfessor from "./pages/Admin/AdicionarProfessor/AdicionarProfessor";
-import VisualizarEstudante from "./pages/Admin/VisualizarEstudante/BuscaEstudante";
-import CronogramaEscolar from "./pages/Admin/CronogramaEscolar/CronogramaEscolar";
-import VisualizarProfessor from "./pages/Admin/VisualizarProfessor/BuscaProfessor";
+const Login = lazy(() => import("./pages/Login/Login"));
+const CriarEstudante = lazy(() => import("./pages/Admin/AdicionarAluno/AdicionarAluno"));
+const AdicionarProfessor = lazy(() => import("./pages/Admin/AdicionarProfessor/AdicionarProfessor"));
+const VisualizarEstudante = lazy(() => import("./pages/Admin/VisualizarEstudante/BuscaEstudante"));
+const CronogramaEscolar = lazy(() => import("./pages/Admin/CronogramaEscolar/CronogramaEscolar"));
+const VisualizarProfessor = lazy(() => import("./pages/Admin/VisualizarProfessor/BuscaProfessor"));
 
-// Responsável (Pelo Estudante)
-import HomeResponsavel from "./pages/Responsavel/HomeResponsavel/HomeResponsavel";
-import ProfessorEstudante from "./pages/Responsavel/VisualizarProfessor/Professor";
-import BoletimEstudante from "./pages/Responsavel/Boletim/Boletim";
+// Responsavel (Pelo Estudante)
+const HomeResponsavel = lazy(() => import("./pages/Responsavel/HomeResponsavel/HomeResponsavel"));
+const ProfessorEstudante = lazy(() => import("./pages/Responsavel/VisualizarProfessor/Professor"));
+const BoletimEstudante = lazy(() => import("./pages/Responsavel/Boletim/Boletim"));
 
 // Professor
-import HomeProfessor from "./pages/Professor/HomeProfessor/HomeProfessor";
-import ProfessorVisualizaEstudante from "./pages/Professor/VisualizarEstudantes/Estudante";
-import AdicionarAviso from "./pages/Professor/AdicionarAviso/AddAviso"
+const HomeProfessor = lazy(() => import("./pages/Professor/HomeProfessor/HomeProfessor"));
+const ProfessorVisualizaEstudante = lazy(() => import("./pages/Professor/VisualizarEstudantes/Estudante"));
+const AdicionarAviso = lazy(() => import("./pages/Professor/AdicionarAviso/AddAviso"));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
+      <Suspense fallback={<Carregamento />}>
+        <Routes>
+          <Route path="/" element={<Login />} />
 
-        
-        {/* Responsavel */}
-        <Route path="/responsavel/home" element={<HomeResponsavel />} />
-        <Route path="/responsavel/visualizarProfessor" element={<ProfessorEstudante />} />
-        <Route path="/responsavel/boletim" element={<BoletimEstudante />} />
+          {/* Responsavel */}
+          <Route path="/responsavel/home" element={<HomeResponsavel />} />
+          <Route path="/responsavel/visualizarProfessor" element={<ProfessorEstudante />} />
+          <Route path="/responsavel/boletim" element={<BoletimEstudante />} />
 
-        {/* Professor */}
-        <Route path="/professor/home" element={<HomeProfessor />} />
-        <Route path="/professor/visualizarEstudante" element={<ProfessorVisualizaEstudante />} />
-        <Route path="/professor/AdicionarAviso" element={<AdicionarAviso />} />
+          {/* Professor */}
+          <Route path="/professor/home" element={<HomeProfessor />} />
+          <Route path="/professor/visualizarEstudante" element={<ProfessorVisualizaEstudante />} />
+          <Route path="/professor/AdicionarAviso" element={<AdicionarAviso />} />
 
-        <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
-        <Route path="/admin/criarProfessor" element={<AdicionarProfessor />} />
-        <Route path="/admin/visualizarEstudante" element={<VisualizarEstudante />} />
-        <Route path="/admin/cronogramaEscolar/cronogramaEscolar" element={<CronogramaEscolar />} />
-        <Route path="/admin/visualizarProfessor" element={<VisualizarProfessor />} />
-      </Routes>
+          {/* Admin */}
+          <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
+          <Route path="/admin/criarProfessor" element={<AdicionarProfessor />} />
+          <Route path="/admin/visualizarEstudante" element={<VisualizarEstudante />} />
+          <Route path="/admin/cronogramaEscolar/cronogramaEscolar" element={<CronogramaEscolar />} />
+          <Route path="/admin/visualizarProfessor" element={<VisualizarProfessor />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
