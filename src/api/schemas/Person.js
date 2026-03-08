@@ -10,6 +10,7 @@ export const toPersonSchema = (person = {}) => {
         firstName: person.firstName ?? person.nome ?? "",
         lastName: person.lastName ?? person.sobrenome ?? "",
         photoUrl: person.photoUrl ?? person.foto ?? "",
+        roleId: person.roleId ?? person.perfilId ?? person.cargoId ?? null,
         roleName: person.roleName ?? person.perfil ?? "",
         address: toAddressSchema(person.address),
     };
