@@ -15,6 +15,8 @@ function Login() {
     function handleLogin(e) {
         e.preventDefault();
 
+        console.log("Tentando logar pelo amor de deus")
+
         personService.login(cpf, password)
             .then((response) => {
                 console.log("Login realizado com sucesso:", response);
