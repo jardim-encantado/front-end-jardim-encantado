@@ -6,7 +6,7 @@ export const login = async (cpf, password) => {
             cpf: cpf.replace(/\D/g, ""),
             password,
         };
-        const response = await api.post("/login", payload);
+        const response = await api.post("/v1/login", payload);
         return toPersonResponseModel(response.data);
     } catch (error) {
         console.error("Error during login:", error);
