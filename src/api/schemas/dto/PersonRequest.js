@@ -1,4 +1,4 @@
-import { toAddressRequestModel as toAddressRequest } from "./AddressRequest";
+import { toAddressRequest } from "./AddressRequest";
 import { sanitizeCpf, removeUndefinedFields } from "../../util/objectUtil";
 
 export const toPersonRequest = (person = {}) => {
