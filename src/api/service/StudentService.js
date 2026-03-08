@@ -1,7 +1,7 @@
 import { createApiRepository } from "../base/Repository";
 import { createPersonService } from "./PersonService";
 import { toStudentRequest } from "../schemas/dto/StudentRequest";
-import { toStudentSchema } from "../schemas/Student";
+import { makeStudentSchema } from "../schemas/Student";
 
 const STUDENTS_ENDPOINT = "v1/students";
 const studentApi = createApiRepository(STUDENTS_ENDPOINT, toStudentRequest, toStudentSchema);
@@ -12,12 +12,7 @@ export function createStudentService() {
     return {
         async createStudent (studentData) {
             try {
-                const personData = {
-                    ...studentData,
-                    role: "student",
-                    roleId: studentData?.roleId ?? studentData?.perfilId ?? studentData?.cargoId ?? 1,
-                };
-
+                const schema = toStudentSchema(studentData);
                 await personService.createPerson(personData);
                 return studentApi.create(studentData);
             } catch (error) {

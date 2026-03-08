@@ -1,6 +1,6 @@
-import { makeAddressSchema } from "./Address";
+import { toAddressSchema } from "./Address";
 
-export const makePersonSchema = (person = {}) => {
+export const toPersonSchema = (person = {}) => {
     if (!person || typeof person !== "object") {
         return null;
     }
@@ -11,6 +11,6 @@ export const makePersonSchema = (person = {}) => {
         lastName: person.lastName ?? person.sobrenome ?? "",
         photoUrl: person.photoUrl ?? person.foto ?? "",
         roleName: person.roleName ?? person.perfil ?? "",
-        address: makeAddressSchema(person.address),
+        address: toAddressSchema(person.address),
     };
 };

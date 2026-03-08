@@ -1,4 +1,4 @@
-export const makeStudentSchema = (student = {}) => {
+export const toStudentSchema = (student = {}) => {
     if (!student || typeof student !== "object") {
         return null;
     }
