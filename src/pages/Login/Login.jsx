@@ -3,6 +3,7 @@ import styles from "./Login.module.css";
 import imgJardimLogin from "../../assets/images/imgJardimLogin.png";
 import { useNavigate } from "react-router-dom";
 import { createPersonService } from "../../api/service/PersonService";
+import { saveLoggedPerson } from "../../hooks/personHook";
 
 
 function Login() {
@@ -20,6 +21,7 @@ function Login() {
         personService.login(cpf, password)
             .then((response) => {
                 console.log("Login realizado com sucesso:", response);
+                saveLoggedPerson(response);
                 navigate("/home");
             })
             .catch((error) => {
@@ -61,7 +63,7 @@ function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button type="submit" onClick={handleLogin}>
+                    <button type="submit">
                         Entrar
                     </button>
                 </form>

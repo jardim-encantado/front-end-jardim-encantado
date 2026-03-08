@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./AddEstudante.module.css";
 
 export default function AddResponsavel({ dados, setDados, titulo }) {
@@ -68,15 +67,6 @@ export default function AddResponsavel({ dados, setDados, titulo }) {
               type="text"
               name="cpf"
               value={dados.cpf || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Parentesco:</label>
-            <input
-              type="text"
-              name="parentesco"
-              value={dados.parentesco || ""}
               onChange={handleChange}
             />
           </div>
