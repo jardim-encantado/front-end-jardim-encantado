@@ -1,18 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./AdicionarProfessor.module.css";
 
 import AddProfessor from "../../../components/Admin/AdicionarProfessor/AddProfessor";
-import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
 
-export default function TelaAdicionarEstudante() {
+export default function TelaAdicionarProfessor() {
+
+  const navigate = useNavigate();
+
   const [estudante, setEstudante] = useState({});
-  const [responsavel, setResponsavel] = useState({});
 
   const handleSalvar = () => {
-    console.log("Estudante:", estudante);
-    console.log("Responsável:", responsavel);
+    console.log("Professor:", estudante);
     alert("Cadastro realizado com sucesso!");
   };
+
+  function voltarParaLista() {
+    navigate("/admin/visualizarProfessor");
+  }
 
   return (
     <div className={styles.container}>
@@ -23,9 +28,16 @@ export default function TelaAdicionarEstudante() {
         dados={estudante}
         setDados={setEstudante}
       />
-      <button className={styles.salvarBtn} onClick={handleSalvar}>
-        Salvar
-      </button>
+
+      <div className={styles.botoesContainer}>
+        <button className={styles.salvarBtn} onClick={handleSalvar}>
+          Salvar
+        </button>
+
+        <button className={styles.voltarBtn} onClick={voltarParaLista}>
+          Voltar
+        </button>
+      </div>
     </div>
   );
 }

@@ -11,6 +11,8 @@ import DashBoardIcon from "@mui/icons-material/Dashboard";
 import imgLogo from "../../assets/images/imgLogoJardim.png";
 import imgArvore from "../../assets/images/imgArvore.png";
 import { Link } from "react-router-dom";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const Sidebar = () => {
   return (
@@ -42,28 +44,28 @@ const Sidebar = () => {
         />
       </Box>
       <List sx={{ marginTop: "40px" }}>
-       <Link to="professor/estudante">
+       <Link to="/admin/visualizarProfessor">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
-          <ListItemText primary="Teachers" sx={{ color: "white" }} />
+          <ListItemText primary="Professores" sx={{ color: "white" }} />
         </ListItem>
         </Link>
-        <Link to="/notas">
+        <Link to="/admin/visualizarEstudante">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Students" sx={{ color: "white" }} />
+          <ListItemText primary="Estudantes" sx={{ color: "white" }} />
         </ListItem>
         </Link>  
         <Link to="/notas">
          <ListItem button>
-          <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Classes" sx={{ color: "white" }} />
+          <ListItemIcon sx={{ color: "white" }}><MenuBookIcon/></ListItemIcon>
+          <ListItemText primary="Aulas" sx={{ color: "white" }} />
         </ListItem>
         </Link>         
         <Link to="/notas">
          <ListItem button>
-          <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Notes" sx={{ color: "white" }} />
+          <ListItemIcon sx={{ color: "white" }}><DescriptionIcon/></ListItemIcon>
+          <ListItemText primary="Avisos" sx={{ color: "white" }} />
         </ListItem>
         </Link>          
       </List>

@@ -1,0 +1,28 @@
+.container {
+  padding: 30px;
+  background: #ffffff;
+  min-height: 100vh;
+  margin-left: 200px;
+}
+
+.titulo {
+  margin-bottom: 20px;
+}
+
+.topBar {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.adicionarBtn {
+  padding: 10px 20px;
+  background: #f2b8b8;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.adicionarBtn:hover {
+  background: #e8a4a4;
+}

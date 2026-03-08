@@ -39,7 +39,7 @@ function HomeStudent() {
       p: 3,
     }}
   >
-        <h2>Bem-vindo, {guardianName}</h2>
+        <h2>Olá! {guardianName}</h2>
 
         <div className={styles.mural}>
           <h3 className={styles.muralTitle}>Mural de Avisos</h3>
