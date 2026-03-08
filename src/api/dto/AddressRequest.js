@@ -1,12 +1,4 @@
-const removeUndefinedFields = (value) => {
-  if (!value || typeof value !== "object") {
-    return undefined;
-  }
-
-  const entries = Object.entries(value).filter(([, fieldValue]) => fieldValue !== undefined);
-
-  return entries.length ? Object.fromEntries(entries) : undefined;
-};
+import { removeUndefinedFields } from "../util/objectUtil";
 
 export const toAddressRequestModel = (address = {}) => {
   return removeUndefinedFields({
@@ -15,7 +7,7 @@ export const toAddressRequestModel = (address = {}) => {
     neighborhood: address.neighborhood ?? address.bairro,
     city: address.city ?? address.cidade,
     state: address.state ?? address.estado,
-    zipCode: address.zipCode ?? address.cep,
+    cep: address.cep,
     complement: address.complement ?? address.complemento,
   });
 };

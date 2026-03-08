@@ -1,12 +1,12 @@
 import api from "../base/config";
 import { createApiRepository } from "../base/Repository";
-import { toPersonRequestModel } from "../dto/PersonRequestModel";
+import { toPersonRequest } from "../dto/PersonRequest";
 import {
     toPersonResponseModel,
 } from "../dto/PersonResponseModel";
 
 const PERSONS_ENDPOINT = "/v1/persons";
-const personApi = createApiRepository(PERSONS_ENDPOINT, toPersonRequestModel, toPersonResponseModel);
+const personApi = createApiRepository(PERSONS_ENDPOINT, toPersonRequest, toPersonResponseModel);
 
 export function createPersonService() {
     return {
