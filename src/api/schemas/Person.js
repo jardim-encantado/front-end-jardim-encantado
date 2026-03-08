@@ -14,11 +14,3 @@ export const makePersonSchema = (person = {}) => {
         address: makeAddressSchema(person.address),
     };
 };
-
-export const makePersonSchemaList = (persons = []) => {
-    if (!Array.isArray(persons)) {
-        return [];
-    }
-
-    return persons.map(makePersonSchema).filter(Boolean);
-};

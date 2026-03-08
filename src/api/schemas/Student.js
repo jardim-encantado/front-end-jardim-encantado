@@ -13,11 +13,3 @@ export const makeStudentSchema = (student = {}) => {
         email: student.email ?? nestedPerson.email ?? "",
     };
 };
-
-export const makeStudentSchemaList = (students = []) => {
-    if (!Array.isArray(students)) {
-        return [];
-    }
-
-    return students.map(makeStudentSchema).filter(Boolean);
-};

@@ -1,12 +1,10 @@
 import api from "../base/config";
 import { createApiRepository } from "../base/Repository";
-import { toPersonRequest } from "../dto/PersonRequest";
-import {
-    toPersonResponseModel,
-} from "../dto/PersonResponseModel";
+import { toPersonRequest } from "../schemas/dto/PersonRequest";
+import { toPersonSchema } from "../schemas/Person";
 
 const PERSONS_ENDPOINT = "/v1/person";
-const personApi = createApiRepository(PERSONS_ENDPOINT, toPersonRequest, toPersonResponseModel);
+const personApi = createApiRepository(PERSONS_ENDPOINT, toPersonRequest, toPersonSchema);
 
 export function createPersonService() {
     return {
@@ -27,7 +25,7 @@ export function createPersonService() {
                     password,
                 };
                 const response = await api.post(`${PERSONS_ENDPOINT}/login`, payload);
-                return toPersonResponseModel(response.data);
+                return toPersonSchema(response.data);
             } catch (error) {
                 console.error("Error during login:", error);
                 throw error;

@@ -1,6 +1,6 @@
-import { removeUndefinedFields } from "../util/objectUtil";
+import { removeUndefinedFields } from "../../util/objectUtil";
 
-export const toAddressRequestModel = (address = {}) => {
+export const toAddressRequest = (address = {}) => {
   return removeUndefinedFields({
     street: address.street ?? address.rua,
     streetNumber: address.streetNumber ?? address.number ?? address.numero,
@@ -10,5 +10,3 @@ export const toAddressRequestModel = (address = {}) => {
     state: address.state ?? address.estado,
   });
 };
-
-export const toAddressRequest = toAddressRequestModel;
