@@ -24,6 +24,7 @@
 .row {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .row > div {
@@ -44,4 +45,24 @@ input {
   background-color: white;
   color: black;
   outline: none;
+}
+
+.subject{
+  padding: 20px;
+  display: flex;
+  flex-direction: column; 
+  gap: 15px;
+  margin-bottom: 60px;
+}
+
+.dropdownRow{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iconMais{
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
