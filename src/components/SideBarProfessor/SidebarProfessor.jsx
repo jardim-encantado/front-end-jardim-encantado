@@ -42,22 +42,22 @@ const Sidebar = () => {
         />
       </Box>
       <List sx={{ marginTop: "60px" }}>
-      <Link to="professor/home">
+      <Link to="/professor/home">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><HomeIcon /></ListItemIcon>
           <ListItemText primary="Home" sx={{ color: "white" }} />
         </ListItem>
         </Link>
-       <Link to="professor/estudante">
+       <Link to="/professor/visualizarEstudante">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
           <ListItemText primary="Estudantes" sx={{ color: "white" }} />
         </ListItem>
         </Link>
-        <Link to="/notas">
+        <Link to="/professor/AdicionarAviso">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Notas" sx={{ color: "white" }} />
+          <ListItemText primary="Avisos" sx={{ color: "white" }} />
         </ListItem>
         </Link>  
       </List>

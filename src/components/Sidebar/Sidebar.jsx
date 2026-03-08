@@ -42,19 +42,19 @@ const Sidebar = () => {
         />
       </Box>
       <List sx={{ marginTop: "60px" }}>
-      <Link to="/home">
+      <Link to="/responsavel/home">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><HomeIcon /></ListItemIcon>
           <ListItemText primary="Home" sx={{ color: "white" }} />
         </ListItem>
         </Link>
-       <Link to="/professor">
+       <Link to="/responsavel/visualizarProfessor">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
           <ListItemText primary="Professores" sx={{ color: "white" }} />
         </ListItem>
         </Link>
-        <Link to="/boletim">
+        <Link to="/responsavel/boletim">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
           <ListItemText primary="Boletim" sx={{ color: "white" }} />

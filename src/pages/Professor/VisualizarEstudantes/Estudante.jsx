@@ -1,10 +1,10 @@
 import { useState } from "react";
-import EstudanteComponent from "../../components/EstudanteComponent/EstudanteComponent";
-import SidebarProfessor from "../../components/SideBarProfessor/SidebarProfessor";
-import DropdownEstudantes from "../../components/DropdownEstudantes/DropdownEstudantes";
-import SearchBar from "../../components/SearchStudent/SearchBar";
-import PopUpEstudante from "../../components/PopUpEstudante/PopUpEstudante";
-import CriarAviso from "../../components/CriarAviso/CriarAviso";
+import EstudanteComponent from "../../../components/EstudanteComponent/EstudanteComponent";
+import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
+import DropdownEstudantes from "../../../components/DropdownEstudantes/DropdownEstudantes";
+import SearchBar from "../../../components/SearchStudent/SearchBar";
+import PopUpEstudante from "../../../components/PopUpEstudante/PopUpEstudante";
+import CriarAviso from "../../../components/CriarAviso/CriarAviso";
 import styles from "./Estudante.module.css";
 
 export default function Estudante() {

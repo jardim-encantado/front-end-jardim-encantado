@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import CardUsuarios from "../../components/InformacaoProfessor/ProfessorComponente";
+import Sidebar from "../../../components/Sidebar/Sidebar";
+import CardUsuarios from "../../../components/InformacaoProfessor/ProfessorComponente";
 import styles from "./Professor.module.css";
 
 export default function Professores() {
