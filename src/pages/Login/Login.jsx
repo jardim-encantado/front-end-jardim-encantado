@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./Login.module.css";
 import imgJardimLogin from "../../assets/images/imgJardimLogin.png";
 import { useNavigate } from "react-router-dom";
+import Carregamento from "../../components/Carregamento/Carregamento";
 import { createPersonService } from "../../api/service/PersonService";
 import { saveLoggedPerson } from "../../hooks/personHook";
 
@@ -9,6 +10,7 @@ import { saveLoggedPerson } from "../../hooks/personHook";
 function Login() {
     const [cpf, setCPF] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const personService = createPersonService();
@@ -36,6 +38,7 @@ function Login() {
 
     async function handleLogin(e) {
         e.preventDefault();
+        setIsLoading(true);
 
         try {
             const response = await personService.login(cpf, password);
@@ -44,6 +47,8 @@ function Login() {
         } catch (error) {
             console.error("Erro ao realizar login:", error);
             alert("Nao foi possivel realizar o login. Verifique CPF e senha.");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -64,6 +69,8 @@ function Login() {
 
     return (
         <div className={styles.loginPage}>
+            {isLoading && <Carregamento />}
+
             <div className={styles.loginLeft}>
                 <h1>Login</h1>
 
@@ -81,8 +88,8 @@ function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button type="submit">
-                        Entrar
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? "Entrando..." : "Entrar"}
                     </button>
                 </form>
             </div>

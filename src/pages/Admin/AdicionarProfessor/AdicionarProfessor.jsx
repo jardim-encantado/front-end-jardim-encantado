@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./AdicionarProfessor.module.css";
 
 import AddProfessor from "../../../components/Admin/AdicionarProfessor/AddProfessor";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createTeacherService } from "../../../api/service/TeacherService";
 import { createStudySubjectService } from "../../../api/service/StudySubjectService";
 
@@ -13,6 +14,7 @@ export default function TelaAdicionarProfessor() {
   const [professor, setProfessor] = useState({});
   const [selectedSubjectIds, setSelectedSubjectIds] = useState([]);
   const [subjectsOptions, setSubjectsOptions] = useState([]);
+  const [isLoadingSubjects, setIsLoadingSubjects] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
   const teacherService = useMemo(() => createTeacherService(), []);
@@ -20,6 +22,8 @@ export default function TelaAdicionarProfessor() {
 
   useEffect(() => {
     const loadSubjects = async () => {
+      setIsLoadingSubjects(true);
+
       try {
         const subjects = await subjectService.getAllSubjects();
         setSubjectsOptions(
@@ -30,6 +34,8 @@ export default function TelaAdicionarProfessor() {
         );
       } catch (error) {
         console.error("Erro ao carregar materias:", error);
+      } finally {
+        setIsLoadingSubjects(false);
       }
     };
 
@@ -57,6 +63,8 @@ export default function TelaAdicionarProfessor() {
 
   return (
     <div className={styles.container}>
+      {(isLoadingSubjects || isSaving) && <Carregamento />}
+
       <h2>Adicionar novo Professor</h2>
 
       <AddProfessor

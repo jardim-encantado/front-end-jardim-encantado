@@ -5,7 +5,7 @@ import { createPersonService } from "./PersonService";
 import { createRoleService } from "./RoleService";
 import { createTeacherSubjectService } from "./TeacherSubjectService";
 
-const TEACHERS_ENDPOINT = "/teachers";
+const TEACHERS_ENDPOINT = "/api/v1/teachers";
 const teacherApi = createApiRepository(TEACHERS_ENDPOINT, toTeacherRequest, toTeacherSchema);
 
 export function createTeacherService() {

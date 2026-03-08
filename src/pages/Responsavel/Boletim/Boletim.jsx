@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import BoletimComponent from "../../../components/BoletimComponent/BoletimComponent";
 import DropdownBoletim from "../../../components/DropdownBoletim/DropdownBoletim";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./Boletim.module.css";
 import { createStudentService } from "../../../api/service/StudentService";
 import { createGradingService } from "../../../api/service/GradingService";
@@ -98,7 +99,7 @@ function Boletim() {
       <Box className={styles.mainContent}>
         <h1>Boletim</h1>
 
-        {isLoading && <p>Carregando boletim...</p>}
+        {isLoading && <Carregamento />}
         {!isLoading && loadError && <p>{loadError}</p>}
 
         {!isLoading && !loadError && (

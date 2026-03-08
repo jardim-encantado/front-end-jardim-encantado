@@ -4,6 +4,7 @@ import styles from "./AdicionarAluno.module.css";
 
 import AddEstudante from "../../../components/Admin/AdicionarEstudante/AddEstudante";
 import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 
 import { createStudentService } from "../../../api/service/StudentService";
 
@@ -37,6 +38,8 @@ export default function TelaAdicionarEstudante() {
 
   return (
     <div className={styles.container}>
+      {isSaving && <Carregamento />}
+
       <h2>Adicionar novo estudante</h2>
 
       <AddEstudante

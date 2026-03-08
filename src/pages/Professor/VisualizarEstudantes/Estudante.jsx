@@ -5,6 +5,7 @@ import DropdownEstudantes from "../../../components/DropdownEstudantes/DropdownE
 import SearchBar from "../../../components/SearchStudent/SearchBar";
 import PopUpEstudante from "../../../components/PopUpEstudante/PopUpEstudante";
 import CriarAviso from "../../../components/CriarAviso/CriarAviso";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./Estudante.module.css";
 import { createStudentService } from "../../../api/service/StudentService";
 import { createGradingService } from "../../../api/service/GradingService";
@@ -164,7 +165,7 @@ export default function Estudante() {
           </div>
         </div>
 
-        {isLoading && <p>Carregando estudantes...</p>}
+        {isLoading && <Carregamento />}
         {!isLoading && loadError && <p>{loadError}</p>}
 
         {!isLoading && !loadError && (

@@ -4,6 +4,7 @@ import styles from "./BuscaProfessor.module.css";
 import ProfessorInfo from "../../../components/ProfessorInfo/ProfessorInfo";
 import BuscaEstudanteInput from "../../../components/SearchStudent/SearchBar";
 import SideBarAdmin from "../../../components/Admin/SideBarAdmin";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createTeacherService } from "../../../api/service/TeacherService";
 
 export default function BuscaProfessor() {
@@ -70,7 +71,7 @@ export default function BuscaProfessor() {
 
       </div>
 
-      {isLoading && <p>Carregando professores...</p>}
+      {isLoading && <Carregamento />}
       {!isLoading && loadError && <p>{loadError}</p>}
 
       {!isLoading && !loadError && professoresFiltrados.map((professor) => (

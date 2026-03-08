@@ -54,7 +54,6 @@ export function createRoleService() {
         console.warn("Could not list roles while resolving role id:", error);
       }
 
-      // Contract exposes /roles/{id}, so we probe deterministic ids when list payload omits id.
       for (let roleId = 1; roleId <= 20; roleId += 1) {
         try {
           const response = await api.get(`${ROLES_ENDPOINT}/${roleId}`);
@@ -63,9 +62,7 @@ export function createRoleService() {
           if (roleNameMatches(role?.name, aliases)) {
             return role?.id ?? roleId;
           }
-        } catch {
-          // Ignore 404 and continue probing.
-        }
+        } catch {}
       }
 
       return getRoleEnvFallback(roleKey);

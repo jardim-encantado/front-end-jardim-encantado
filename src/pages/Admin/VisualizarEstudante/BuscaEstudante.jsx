@@ -5,6 +5,7 @@ import styles from "./BuscaEstudante.module.css";
 import CardEstudante from "../../../components/EstudanteInfo/EstudanteInfo";
 import BuscaEstudanteInput from "../../../components/SearchStudent/SearchBar";
 import SideBarAdmin from "../../../components/Admin/SideBarAdmin";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createStudentService } from "../../../api/service/StudentService";
 
 export default function BuscaEstudante() {
@@ -71,7 +72,7 @@ export default function BuscaEstudante() {
 
       </div>
 
-      {isLoading && <p>Carregando estudantes...</p>}
+      {isLoading && <Carregamento />}
       {!isLoading && loadError && <p>{loadError}</p>}
 
       {!isLoading && !loadError && estudantesFiltrados.map((estudante) => (
