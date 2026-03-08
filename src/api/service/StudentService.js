@@ -1,10 +1,10 @@
 import { createApiRepository } from "../base/Repository";
 import { createPersonService } from "./PersonService";
+import { toStudentRequest } from "../dto/StudentRequest";
+import { toStudentResponseModel } from "../dto/StudentResponseModel";
 
-
-const STUDENTS_ENDPOINT = "/v1/students";
-const identity = (value) => value;
-const studentApi = createApiRepository(STUDENTS_ENDPOINT, identity, identity);
+const STUDENTS_ENDPOINT = "/api/v1/roles/students";
+const studentApi = createApiRepository(STUDENTS_ENDPOINT, toStudentRequest, toStudentResponseModel);
 
 export function createStudentService() {
     const personService = createPersonService();
@@ -18,13 +18,8 @@ export function createStudentService() {
                     roleId: studentData?.roleId ?? studentData?.perfilId ?? studentData?.cargoId ?? 1,
                 };
 
-                const createdPerson = await personService.createPerson(personData);
-
-                if (!createdPerson?.id) {
-                    throw new Error("Unable to create student because person id is missing in the response from createPerson: " + JSON.stringify(createdPerson));
-                }
-
-                return studentApi.create({ personId: createdPerson.id });
+                await personService.createPerson(personData);
+                return studentApi.create(studentData);
             } catch (error) {
                 console.error("Error creating student:", error);
                 throw error;

@@ -6,6 +6,7 @@ import {
 } from "../dto/PersonResponseModel";
 
 const PERSONS_ENDPOINT = "/v1/persons";
+const PERSON_LOGIN_ENDPOINT = "/v1/persons/login";
 const personApi = createApiRepository(PERSONS_ENDPOINT, toPersonRequest, toPersonResponseModel);
 
 export function createPersonService() {
@@ -20,13 +21,13 @@ export function createPersonService() {
 
         async deletePerson(id) { return personApi.delete(id); },
 
-        async login(cpf, password) { 
+        async login(cpf, password) {
             try {
                 const payload = {
                     cpf: cpf.replace(/\D/g, ""),
                     password,
                 };
-                const response = await api.post(`${PERSONS_ENDPOINT}/login`, payload);
+                const response = await api.post(PERSON_LOGIN_ENDPOINT, payload);
                 return toPersonResponseModel(response.data);
             } catch (error) {
                 console.error("Error during login:", error);
