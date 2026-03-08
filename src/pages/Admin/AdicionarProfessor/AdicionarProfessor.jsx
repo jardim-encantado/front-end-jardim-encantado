@@ -16,10 +16,10 @@ export default function TelaAdicionarEstudante() {
 
   return (
     <div className={styles.container}>
-      <h2>Adicionar novo estudante</h2>
+      <h2>Adicionar novo Professor</h2>
 
       <AddProfessor
-        titulo="Detalhes do Professor"
+        titulo="Dados Pessoais"
         dados={estudante}
         setDados={setEstudante}
       />
