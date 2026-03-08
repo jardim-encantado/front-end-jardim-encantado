@@ -1,0 +1,38 @@
+.pagina {
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  margin-left: 200px;
+}
+
+.titulo {
+  color: #c06070;
+  margin-bottom: 16px;
+}
+
+.btnAdicionarGeral {
+  margin-bottom: 24px;
+  padding: 8px 16px;
+  background-color: #FFAEAF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btnAdicionarGeral:hover {
+  background-color: #ff8c90;
+}
+
+.listaCronogramas {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cronogramaWrapper {
+  border: 2px solid #FFE5E0;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #fff0f0;
+}
