@@ -2,17 +2,20 @@ import { useState } from "react";
 import styles from "./Login.module.css";
 import imgJardimLogin from "../../assets/images/imgJardimLogin.png";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/service/LoginService";
+import { createPersonService } from "../../api/service/PersonService";
+
 
 function Login() {
     const [cpf, setCPF] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    const personService = createPersonService();
+
     function handleLogin(e) {
         e.preventDefault();
 
-        login(cpf, password)
+        personService.login(cpf, password)
             .then((response) => {
                 console.log("Login realizado com sucesso:", response);
                 navigate("/home");
