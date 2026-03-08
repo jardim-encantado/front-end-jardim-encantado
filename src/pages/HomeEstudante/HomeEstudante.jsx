@@ -4,10 +4,14 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Cronograma from "../../components/Cronograma/Cronograma";
 import AvisoCard from "../../components/AvisoCard/AvisoCard";
 import styles from "./HomeEstudante.module.css";
+import { usePerson } from "../../hooks/personHook";
 
 
 function HomeStudent() {
   const [guardianName] = useState("Maria Eduarda");
+  const { person } = usePerson();
+  const personName = [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim();
+  const displayName = personName || guardianName;
 
   const avisos = [
     {
@@ -37,9 +41,8 @@ function HomeStudent() {
     sx={{
       flexGrow: 1,
       p: 3,
-    }}
-  >
-        <h2>Olá! {guardianName}</h2>
+    }}>
+        <h2>Olá! {displayName}</h2>
 
         <div className={styles.mural}>
           <h3 className={styles.muralTitle}>Mural de Avisos</h3>
