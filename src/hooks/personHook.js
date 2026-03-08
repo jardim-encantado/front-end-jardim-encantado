@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { makePersonSchema } from "../api/schemas/Person";
+import { toPersonSchema } from "../api/schemas/Person";
 
 const PERSON_STORAGE_KEY = "loggedPerson";
 const PERSON_UPDATED_EVENT = "person-updated";
@@ -16,7 +16,7 @@ function readPersonFromStorage() {
 		}
 
 		const parsedPerson = JSON.parse(storedPerson);
-		return makePersonSchema(parsedPerson);
+		return toPersonSchema(parsedPerson);
 	} catch (error) {
 		console.error("Error reading logged person from localStorage:", error);
 		localStorage.removeItem(PERSON_STORAGE_KEY);
@@ -33,7 +33,7 @@ export function saveLoggedPerson(person) {
 		return;
 	}
 
-	const normalizedPerson = makePersonSchema(person);
+	const normalizedPerson = toPersonSchema(person);
 
 	if (!normalizedPerson) {
 		localStorage.removeItem(PERSON_STORAGE_KEY);
