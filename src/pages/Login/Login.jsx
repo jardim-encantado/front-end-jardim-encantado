@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./Login.module.css";
 import imgJardimLogin from "../../assets/images/imgJardimLogin.png";
 import { useNavigate } from "react-router-dom";
+import Carregamento from "../../components/Carregamento/Carregamento";
 import { createPersonService } from "../../api/service/PersonService";
 import { saveLoggedPerson } from "../../hooks/personHook";
 
@@ -9,24 +10,46 @@ import { saveLoggedPerson } from "../../hooks/personHook";
 function Login() {
     const [cpf, setCPF] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const personService = createPersonService();
 
-    function handleLogin(e) {
+    const resolveRouteByRole = (person) => {
+        const normalizedRoleName = String(person?.roleName ?? "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+
+        if (normalizedRoleName.includes("admin")) {
+            return "/admin/visualizarEstudante";
+        }
+
+        if (
+            normalizedRoleName.includes("teacher") ||
+            normalizedRoleName.includes("professor") ||
+            normalizedRoleName.includes("docente")
+        ) {
+            return "/professor/home";
+        }
+
+        return "/responsavel/home";
+    };
+
+    async function handleLogin(e) {
         e.preventDefault();
+        setIsLoading(true);
 
-        console.log("Tentando logar pelo amor de deus")
-
-        personService.login(cpf, password)
-            .then((response) => {
-                console.log("Login realizado com sucesso:", response);
-                saveLoggedPerson(response);
-                navigate("/home");
-            })
-            .catch((error) => {
-                console.error("Erro ao realizar login:", error);
-            });
+        try {
+            const response = await personService.login(cpf, password);
+            saveLoggedPerson(response);
+            navigate(resolveRouteByRole(response));
+        } catch (error) {
+            console.error("Erro ao realizar login:", error);
+            alert("Nao foi possivel realizar o login. Verifique CPF e senha.");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     function handleCPFChange(e) {
@@ -46,6 +69,8 @@ function Login() {
 
     return (
         <div className={styles.loginPage}>
+            {isLoading && <Carregamento />}
+
             <div className={styles.loginLeft}>
                 <h1>Login</h1>
 
@@ -63,8 +88,8 @@ function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button type="submit">
-                        Entrar
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? "Entrando..." : "Entrar"}
                     </button>
                 </form>
             </div>

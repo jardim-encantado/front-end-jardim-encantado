@@ -1,31 +1,54 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./BuscaProfessor.module.css";
 import ProfessorInfo from "../../../components/ProfessorInfo/ProfessorInfo";
 import BuscaEstudanteInput from "../../../components/SearchStudent/SearchBar";
 import SideBarAdmin from "../../../components/Admin/SideBarAdmin";
+import Carregamento from "../../../components/Carregamento/Carregamento";
+import { createTeacherService } from "../../../api/service/TeacherService";
 
 export default function BuscaProfessor() {
 
   const navigate = useNavigate();
 
-  const [estudantes, setEstudantes] = useState([
-    { id: 1, nome: "Maria" },
-    { id: 2, nome: "João" },
-    { id: 2, nome: "cavalo" }
-  ]);
+  const teacherService = useMemo(() => createTeacherService(), []);
+
+  const [professores, setProfessores] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
   const [textoBusca, setTextoBusca] = useState("");
 
-  function removerEstudante(id) {
-    setEstudantes(estudantes.filter((estudante) => estudante.id !== id));
+  useEffect(() => {
+    const loadTeachers = async () => {
+      setIsLoading(true);
+      setLoadError("");
+
+      try {
+        const teachers = await teacherService.getAllTeachers();
+        setProfessores(teachers);
+      } catch (error) {
+        console.error("Erro ao carregar professores:", error);
+        setLoadError("Nao foi possivel carregar os professores.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTeachers();
+  }, [teacherService]);
+
+  function removerProfessor(id) {
+    setProfessores((currentTeachers) =>
+      currentTeachers.filter((professor) => professor.teacherId !== id)
+    );
   }
 
-  const estudantesFiltrados = estudantes.filter((estudante) =>
-    estudante.nome.toLowerCase().includes(textoBusca.toLowerCase())
+  const professoresFiltrados = professores.filter((professor) =>
+    (professor.fullName || "").toLowerCase().includes(textoBusca.toLowerCase())
   );
 
-  function irParaAdicionarEstudante() {
+  function irParaAdicionarProfessor() {
     navigate("/admin/criarProfessor");
   }
 
@@ -40,7 +63,7 @@ export default function BuscaProfessor() {
         <BuscaEstudanteInput onSearch={setTextoBusca} />
 
         <button
-          onClick={irParaAdicionarEstudante}
+          onClick={irParaAdicionarProfessor}
           className={styles.adicionarBtn}
         >
           Adicionar
@@ -48,11 +71,14 @@ export default function BuscaProfessor() {
 
       </div>
 
-      {estudantesFiltrados.map((estudante) => (
+      {isLoading && <Carregamento />}
+      {!isLoading && loadError && <p>{loadError}</p>}
+
+      {!isLoading && !loadError && professoresFiltrados.map((professor) => (
         <ProfessorInfo
-          key={estudante.id}
-          estudante={estudante}
-          onDelete={() => removerEstudante(estudante.id)}
+          key={professor.teacherId}
+          estudante={professor}
+          onDelete={() => removerProfessor(professor.teacherId)}
         />
       ))}
 

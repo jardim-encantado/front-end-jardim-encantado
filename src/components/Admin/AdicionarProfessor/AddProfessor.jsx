@@ -1,13 +1,39 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./AddProfessor.module.css";
 import SidebarAdmin from "../SideBarAdmin/";
 import DropdownMaterias from "./Dropdown/DropdownMaterias";
 import iconMais from "../../../assets/images/addOcorrencia.png";
 import iconMenos from "../../../assets/images/iconRemover.png";
 
-export default function AddEstudante({ dados, setDados, titulo }) {
+export default function AddEstudante({
+  dados,
+  setDados,
+  titulo,
+  subjectsOptions = [],
+  onSubjectsChange,
+}) {
 
-  const [materias, setMaterias] = useState([{ materia: "" }]);
+  const [materias, setMaterias] = useState([{ subjectId: null }]);
+
+  const normalizedOptions = useMemo(() => {
+    if (Array.isArray(subjectsOptions) && subjectsOptions.length) {
+      return subjectsOptions;
+    }
+
+    return [];
+  }, [subjectsOptions]);
+
+  const emitSubjectsChange = (nextMaterias) => {
+    if (!onSubjectsChange) {
+      return;
+    }
+
+    const selectedSubjectIds = [...new Set(nextMaterias.map((item) => item.subjectId))]
+      .map((subjectId) => Number(subjectId))
+      .filter((subjectId) => Number.isFinite(subjectId));
+
+    onSubjectsChange(selectedSubjectIds);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -19,15 +45,26 @@ export default function AddEstudante({ dados, setDados, titulo }) {
     }
   };
 
+  const handleMateriaChange = (index, option) => {
+    const nextMaterias = [...materias];
+    nextMaterias[index] = {
+      subjectId: option?.value ?? null,
+    };
+
+    setMaterias(nextMaterias);
+    emitSubjectsChange(nextMaterias);
+  };
+
   const adicionarMateria = () => {
-    setMaterias([...materias, { materia: "" }]);
+    setMaterias([...materias, { subjectId: null }]);
   };
 
   const removerMateria = (index) => {
-    if (index === 0) return;
-    const novasMaterias = materias.filter((option, i) => i !== index );
+    if (index === 0 && materias.length === 1) return;
+    const novasMaterias = materias.filter((option, i) => i !== index);
 
     setMaterias(novasMaterias);
+    emitSubjectsChange(novasMaterias);
   };
 
   return (
@@ -111,6 +148,70 @@ export default function AddEstudante({ dados, setDados, titulo }) {
 
           <div className={styles.row}>
             <div>
+              <label>Rua:</label>
+              <input
+                type="text"
+                name="rua"
+                value={dados.rua || ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <label>Numero:</label>
+              <input
+                type="text"
+                name="numero"
+                value={dados.numero || ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <label>CEP:</label>
+              <input
+                type="text"
+                name="cep"
+                value={dados.cep || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div>
+              <label>Cidade:</label>
+              <input
+                type="text"
+                name="cidade"
+                value={dados.cidade || ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <label>Estado:</label>
+              <input
+                type="text"
+                name="estado"
+                value={dados.estado || ""}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <label>Complemento:</label>
+              <input
+                type="text"
+                name="complemento"
+                value={dados.complemento || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div>
               <label>Foto:</label>
               <input
                 type="file"
@@ -134,7 +235,11 @@ export default function AddEstudante({ dados, setDados, titulo }) {
 
       {materias.map((item, index) => (
       <div key={index} className={styles.dropdownRow}>
-      <DropdownMaterias />
+      <DropdownMaterias
+        options={normalizedOptions}
+        value={normalizedOptions.find((option) => option.value === item.subjectId) || null}
+        onChange={(option) => handleMateriaChange(index, option)}
+      />
 
       {index === materias.length - 1 && (
         <img

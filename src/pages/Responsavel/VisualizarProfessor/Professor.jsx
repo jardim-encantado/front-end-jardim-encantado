@@ -1,37 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import CardUsuarios from "../../../components/InformacaoProfessor/ProfessorComponente";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./Professor.module.css";
+import { createTeacherService } from "../../../api/service/TeacherService";
 
 export default function Professores() {
+  const teacherService = useMemo(() => createTeacherService(), []);
+  const [professores, setProfessores] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-  const [professores] = useState([
-    {
-      id: 1,
-      nomeProfessor: "Maria Oliveira",
-      cargoProfessor: "Professora",
-      emailProfessor: "maria@escola.com",
-      telefoneProfessor: "(11) 99999-1111",
-      materia: "Matemática",
-    },
-    {
-      id: 2,
-      nomeProfessor: "João Pedro",
-      cargoProfessor: "Professor",
-      emailProfessor: "joao@escola.com",
-      telefoneProfessor: "(11) 98888-2222",
-      materia: "História",
-    },
-    {
-      id: 3,
-      nomeProfessor: "Ana Clara",
-      cargoProfessor: "Coordenadora",
-      emailProfessor: "ana@escola.com",
-      telefoneProfessor: "(11) 97777-3333",
-      materia: "Pedagogia",
-    },
-  ]);
+  useEffect(() => {
+    const loadTeachers = async () => {
+      setIsLoading(true);
+      setLoadError("");
+
+      try {
+        const teachers = await teacherService.getAllTeachers();
+        setProfessores(teachers);
+      } catch (error) {
+        console.error("Erro ao carregar professores:", error);
+        setLoadError("Nao foi possivel carregar os professores.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTeachers();
+  }, [teacherService]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -41,14 +39,21 @@ export default function Professores() {
         <h1>Professores</h1>
 
         <div className={styles.cardsGrid}>
-          {professores.map((professor) => (
+          {isLoading && <Carregamento />}
+          {!isLoading && loadError && <p>{loadError}</p>}
+
+          {!isLoading && !loadError && professores.map((professor) => (
             <CardUsuarios
-              key={professor.id}
-              nomeProfessor={professor.nomeProfessor}
-              cargoProfessor={professor.cargoProfessor}
-              emailProfessor={professor.emailProfessor}
-              telefoneProfessor={professor.telefoneProfessor}
-              materia={professor.materia}
+              key={professor.teacherId}
+              nomeProfessor={professor.fullName}
+              cargoProfessor="Professor"
+              emailProfessor={professor.email || "Nao informado"}
+              telefoneProfessor={professor.phoneNumber || "Nao informado"}
+              materia={
+                Array.isArray(professor.subjectNames) && professor.subjectNames.length
+                  ? professor.subjectNames.join(", ")
+                  : "Nao informado"
+              }
             />
           ))}
         </div>

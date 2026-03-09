@@ -48,6 +48,43 @@ export default function AddEstudante({ dados, setDados, titulo }) {
             <input type="text" name="cpf" value={dados.cpf || ""} onChange={handleChange} />
           </div>
           <div>
+            <label>Senha:</label>
+            <input type="password" name="senha" value={dados.senha || ""} onChange={handleChange} />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Rua:</label>
+            <input type="text" name="rua" value={dados.rua || ""} onChange={handleChange} />
+          </div>
+          <div>
+            <label>Numero:</label>
+            <input type="text" name="numero" value={dados.numero || ""} onChange={handleChange} />
+          </div>
+          <div>
+            <label>CEP:</label>
+            <input type="text" name="cep" value={dados.cep || ""} onChange={handleChange} />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Cidade:</label>
+            <input type="text" name="cidade" value={dados.cidade || ""} onChange={handleChange} />
+          </div>
+          <div>
+            <label>Estado:</label>
+            <input type="text" name="estado" value={dados.estado || ""} onChange={handleChange} />
+          </div>
+          <div>
+            <label>Complemento:</label>
+            <input type="text" name="complemento" value={dados.complemento || ""} onChange={handleChange} />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
             <label>Foto:</label>
             <input type="file" name="foto" onChange={handleChange} />
           </div>

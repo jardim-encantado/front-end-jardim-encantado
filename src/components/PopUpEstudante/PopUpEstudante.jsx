@@ -7,6 +7,8 @@ import iconOcorrencia from "../../assets/images/addOcorrencia.png";
 export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
   if (!estudante) return null;
 
+  const boletim = Array.isArray(estudante.boletim) ? estudante.boletim : [];
+
   const avisos = [
     { id: 1, titulo: "Dia do Livro", data: "02/02", descricao: "Troca de livros.", origem: "Diretoria", cor: "rosa", estudanteId: 2, tpAviso: 1 },
     { id: 2, titulo: "Reunião de Pais", data: "05/02", descricao: "Presença obrigatória.", origem: "Coordenação", cor: "verde", estudanteId: 2, tpAviso: 1 }
@@ -29,7 +31,7 @@ export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
           </div>
         </div>
 
-        <Boletim />
+        <Boletim dados={boletim} />
         <hr className={styles.divider} />
 
         <div className={styles.avisosDoAluno}>
