@@ -11,6 +11,7 @@ function Login() {
     const [cpf, setCPF] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const personService = createPersonService();
@@ -46,7 +47,7 @@ function Login() {
             navigate(resolveRouteByRole(response));
         } catch (error) {
             console.error("Erro ao realizar login:", error);
-            alert("Nao foi possivel realizar o login. Verifique CPF e senha.");
+            setErrorMessage("CPF ou senha incorretos.");
         } finally {
             setIsLoading(false);
         }
@@ -88,6 +89,9 @@ function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                   {errorMessage && (
+                    <p className={styles.errorMessage}>{errorMessage}</p>
+                    )}
                     <button type="submit" disabled={isLoading}>
                         {isLoading ? "Entrando..." : "Entrar"}
                     </button>
