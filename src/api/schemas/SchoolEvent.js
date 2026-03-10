@@ -29,7 +29,7 @@ export const toSchoolEventSchema = (data) => {
     createdBy: toPersonSchema(data.createdBy),
     createDate: data.createDate,
     updateDate: data.updateDate,
-    eventType: data.eventTypeId,
+    eventType: toSchoolEventTypeSchema(data.eventType),
     color: getRandomColor(),
     origin: origin
   };
