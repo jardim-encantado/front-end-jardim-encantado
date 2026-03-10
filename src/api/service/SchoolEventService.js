@@ -1,4 +1,3 @@
-import api from "../base/config";
 import { createApiRepository } from "../base/Repository";
 import { toSchoolEventSchema } from "../schemas/SchoolEvent";
 import { toSchoolEventRequest } from "../schemas/dto/SchoolEventRequest";

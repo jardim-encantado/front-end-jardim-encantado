@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./CriarAviso.module.css";
-import { createSchoolEventService } from "../../../api/services/schoolEventService";
+import { createSchoolEventService } from "../../api/service/SchoolEventService";
 
 export default function CriarAviso({ estudante, onCancel, onSave }) {
   const schoolEventService = createSchoolEventService();
