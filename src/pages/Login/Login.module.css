@@ -41,7 +41,6 @@ body{
   color: black;
 }
 
-/* QUANDO ESTÁ EM FOCO (clicado / digitando) */
 .loginLeft input:focus {
   background-color: #EFECDD; 
   color: black;            
@@ -71,13 +70,20 @@ body{
   display: block;
 }
 
-/* ✅ QUANDO A TELA FICAR MENOR */
+
+.errorMessage {
+  color: #E93165;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .loginRight {
-    display: none;     /* some imagem */
+    display: none;    
   }
 
   .loginLeft {
-    width: 100vw;      /* login ocupa tudo */
+    width: 100vw;      
   }
 }

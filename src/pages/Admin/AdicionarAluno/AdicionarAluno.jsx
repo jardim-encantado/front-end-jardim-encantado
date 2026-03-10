@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AdicionarAluno.module.css";
-
 import AddEstudante from "../../../components/Admin/AdicionarEstudante/AddEstudante";
 import CriarResponsavel from "../../../components/Admin/AdicionarEstudante/AddResponsavel";
 import Carregamento from "../../../components/Carregamento/Carregamento";
