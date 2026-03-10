@@ -44,7 +44,8 @@ export default function Professores() {
 
           {!isLoading && !loadError && professores.map((professor) => (
             <CardInfoProfessor
-              professorSchema={professor}
+              key={professor.teacherId}
+              teacherSchema={professor}
             />
           ))}
         </div>

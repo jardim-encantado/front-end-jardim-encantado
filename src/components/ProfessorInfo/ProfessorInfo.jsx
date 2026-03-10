@@ -10,9 +10,7 @@ export default function ProfessorInfo({ teacher, onDelete }) {
   const teacherEmail = teacher?.email || "-";
   const teacherCpf = teacher?.cpf || "-";
   const teacherPhone = teacher?.phoneNumber || "-";
-  const teacherSubject = Array.isArray(teacher?.subjectNames) && teacher.subjectNames.length
-    ? teacher.subjectNames.join(", ")
-    : "-";
+  const teacherSubject = teacher.getSubjectNamesList() ?? "-";
 
   return (
     <div

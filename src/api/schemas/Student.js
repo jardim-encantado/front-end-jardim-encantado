@@ -32,5 +32,12 @@ export const toStudentSchema = (student = {}) => {
             fullName,
             email: student.email ?? "",
         },
+
+        getSubjectNamesList() {
+            return Array.isArray(teacher?.subjectNames) &&
+                teacher.subjectNames.length
+                ? teacher.subjectNames.join(", ")
+                : null;
+        },
     };
 };

@@ -2,12 +2,9 @@ import styles from "./CardInfoProfessor.module.css";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
-export default function CardInfoProfessor({ teacherSchema }) {
+export default function CardInfoProfessor({ key, teacherSchema }) {
 
-  const materias = Array.isArray(teacherSchema.subjectNames) && teacherSchema.subjectNames.length
-                  ? teacherSchema.subjectNames.join(", ")
-                  : "Não definidas";
-
+  const materias = teacherSchema.getSubjectNamesList() ?? "Não definidas";
   return (
     <div className={styles.cardUsuarios}>
       <div className={styles.headerCardUsuarios}>
@@ -17,7 +14,7 @@ export default function CardInfoProfessor({ teacherSchema }) {
               teacherSchema.photoUrl
                 ? teacherSchema.photoUrl
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                    nomeProfessor
+                    teacherSchema.fullName
                   )}&background=C2C2C2&color=000000&rounded=true`
             }
             alt={teacherSchema.fullName}
