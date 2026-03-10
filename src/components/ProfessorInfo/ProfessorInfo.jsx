@@ -2,16 +2,16 @@ import { useState } from "react";
 import Cabecalho from "../EstudanteInfo/Cabecalho";
 import InfoRow from "../EstudanteInfo/./InfoLinha";
 
-export default function ProfessorInfo({ estudante, onDelete }) {
+export default function ProfessorInfo({ teacher, onDelete }) {
 
   const [editando, setEditando] = useState(false);
 
-  const teacherName = estudante?.fullName || estudante?.name || "-";
-  const teacherEmail = estudante?.email || "-";
-  const teacherCpf = estudante?.cpf || "-";
-  const teacherPhone = estudante?.phoneNumber || "-";
-  const teacherSubject = Array.isArray(estudante?.subjectNames) && estudante.subjectNames.length
-    ? estudante.subjectNames.join(", ")
+  const teacherName = teacher?.fullName || teacher?.name || "-";
+  const teacherEmail = teacher?.email || "-";
+  const teacherCpf = teacher?.cpf || "-";
+  const teacherPhone = teacher?.phoneNumber || "-";
+  const teacherSubject = Array.isArray(teacher?.subjectNames) && teacher.subjectNames.length
+    ? teacher.subjectNames.join(", ")
     : "-";
 
   return (

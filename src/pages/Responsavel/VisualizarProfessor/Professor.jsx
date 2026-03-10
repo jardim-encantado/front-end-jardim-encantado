@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import CardUsuarios from "../../../components/InformacaoProfessor/ProfessorComponente";
+import CardInfoProfessor from "../../../components/InformacaoProfessor/CardInfoProfessor";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./Professor.module.css";
 import { createTeacherService } from "../../../api/service/TeacherService";
@@ -43,17 +43,8 @@ export default function Professores() {
           {!isLoading && loadError && <p>{loadError}</p>}
 
           {!isLoading && !loadError && professores.map((professor) => (
-            <CardUsuarios
-              key={professor.teacherId}
-              nomeProfessor={professor.fullName}
-              cargoProfessor="Professor"
-              emailProfessor={professor.email || "Nao informado"}
-              telefoneProfessor={professor.phoneNumber || "Nao informado"}
-              materia={
-                Array.isArray(professor.subjectNames) && professor.subjectNames.length
-                  ? professor.subjectNames.join(", ")
-                  : "Nao informado"
-              }
+            <CardInfoProfessor
+              professorSchema={professor}
             />
           ))}
         </div>
