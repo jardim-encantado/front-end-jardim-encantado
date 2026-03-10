@@ -1,16 +1,10 @@
 import api from "../base/config";
 import { createApiRepository } from "../base/Repository";
 import { roleNameMatches, toRoleSchema } from "../schemas/Role";
+import { ROLE_NAME_ALIASES } from "../schemas/Role";
 
 const ROLES_ENDPOINT = "/api/v1/roles";
 const roleApi = createApiRepository(ROLES_ENDPOINT, undefined, toRoleSchema);
-
-const ROLE_NAME_ALIASES = {
-  admin: ["admin"],
-  teacher: ["teacher", "professor", "docente"],
-  guardian: ["guardian", "responsavel", "parent"],
-  student: ["student", "estudante", "aluno"],
-};
 
 const toPositiveNumber = (value) => {
   const normalized = Number(value);

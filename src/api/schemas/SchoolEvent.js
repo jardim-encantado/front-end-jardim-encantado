@@ -1,4 +1,6 @@
 import { toPersonSchema } from "./Person";
+import { roleNameMatches } from "./Role"; 
+import { ROLE_NAME_ALIASES } from "../schemas/Role";
 
 const colors = ["rosa", "verde", "laranja"];
 
@@ -8,9 +10,9 @@ function getRandomColor() {
 
 
 function eventOriginByRole(roleName) {
-  if (roleName === "TEACHER") { return "Professores" }
-  else if (roleName == "ADMIN") { return "Diretoria" }
-  else return "Coordenação"
+  if (roleNameMatches(roleName, ROLE_NAME_ALIASES.teacher)) { return "Professores" }
+  else if (roleNameMatches(roleName, ROLE_NAME_ALIASES.admin)) { return "Diretoria" }
+  else return null
 }
 
 

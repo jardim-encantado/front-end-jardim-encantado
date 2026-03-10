@@ -7,7 +7,12 @@ export default function AvisoCard({ avisoSchema }) {
       <h3>{avisoSchema.name}</h3>
       <p><strong>Data:</strong> {avisoSchema.eventDate}</p>
       <p><strong>Descrição:</strong> {avisoSchema.description}</p>
-      <p><strong>Origem:</strong> {avisoSchema.origin}</p>
+
+      {
+        avisoSchema.origin ? (
+          <p><strong>Origem:</strong> {avisoSchema.origin}</p>
+        ) : null
+      }
     </div>
   );
 }
