@@ -6,6 +6,8 @@ export default function ProfessorInfo({ teacher, onDelete }) {
 
   const [editando, setEditando] = useState(false);
 
+  console.log(teacher);
+
   const teacherName = teacher?.fullName || teacher?.name || "-";
   const teacherEmail = teacher?.email || "-";
   const teacherCpf = teacher?.cpf || "-";

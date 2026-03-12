@@ -28,5 +28,10 @@ export const toTeacherSchema = (teacher = {}) => {
     photoUrl: teacher.photoUrl ?? "",
     subjects,
     subjectNames: subjects.map((subject) => subject.subjectName).filter(Boolean),
+
+
+    getSubjectNamesList() {
+      return this.subjectNames.join(", ");
+    }
   };
 };

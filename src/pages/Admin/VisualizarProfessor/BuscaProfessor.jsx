@@ -76,8 +76,7 @@ export default function BuscaProfessor() {
 
       {!isLoading && !loadError && professoresFiltrados.map((professor) => (
         <ProfessorInfo
-          key={professor.teacherId}
-          estudante={professor}
+          teacher={professor}
           onDelete={() => removerProfessor(professor.teacherId)}
         />
       ))}
