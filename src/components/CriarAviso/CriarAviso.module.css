@@ -98,3 +98,16 @@ option:hover {
   background-color: #10898B; 
   color: white;
 }
+
+.buttons button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  margin-top: 4px;
+  margin-bottom: 0;
+  color: #A3284D;
+  font-size: 14px;
+  font-weight: 600;
+}

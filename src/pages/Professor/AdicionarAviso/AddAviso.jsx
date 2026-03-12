@@ -49,17 +49,23 @@ const PaginaAvisos = () => {
     };
 
     useEffect(() => {
-        getSchoolEventTypes();
-        getAllSchoolEvents();
-        setLoading(false);
+        const loadData = async () => {
+            setLoading(true);
+            await Promise.all([getSchoolEventTypes(), getAllSchoolEvents()]);
+            setLoading(false);
+        };
+
+        loadData();
     }, []);
 
 
-    const handleAddAviso = (newSchoolEventSchema) => {
-        setSchoolEvents([
-            ...schoolEvents,
-            {...newSchoolEventSchema, id: schoolEvents.length + 1},
-        ]);
+    const handleAddAviso = async (newSchoolEventSchema) => {
+        if (newSchoolEventSchema) {
+            setSchoolEvents((previousEvents) => [...previousEvents, newSchoolEventSchema]);
+        } else {
+            await getAllSchoolEvents();
+        }
+
         setMostraPopUp(false);
     };
 

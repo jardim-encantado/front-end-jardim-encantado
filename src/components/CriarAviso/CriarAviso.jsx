@@ -2,30 +2,70 @@ import { useState, useEffect } from "react";
 import styles from "./CriarAviso.module.css";
 import { createSchoolEventService } from "../../api/service/SchoolEventService";
 
+function getTodayDateInputValue() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
 export default function CriarAviso({ personSchema, onCancel, onSave, schoolEventTypes, }) {
     const schoolEventService = createSchoolEventService();
 
     const [titulo, setTitulo] = useState("");
-    const [data, setData] = useState("");
+    const [data, setData] = useState(getTodayDateInputValue);
     const [descricao, setDescricao] = useState("");
     const [eventType, setEventType] = useState("");
+    const [formError, setFormError] = useState("");
+    const [isSaving, setIsSaving] = useState(false);
+
+    useEffect(() => {
+        if (eventType || schoolEventTypes.length === 0) {
+            return;
+        }
+
+        const firstEventTypeId = schoolEventTypes[0]?.id;
+
+        if (firstEventTypeId !== undefined && firstEventTypeId !== null) {
+            setEventType(String(firstEventTypeId));
+        }
+    }, [eventType, schoolEventTypes]);
 
     const handleSave = async () => {
-        if (!titulo || !data || !descricao || !eventType) return;
+        setFormError("");
+
+        if (!titulo.trim() || !data || !descricao.trim() || eventType === "") {
+            setFormError("Preencha título, data, descrição e tipo do aviso.");
+            return;
+        }
+
+        if (!personSchema?.cpf) {
+            setFormError("Não foi possível identificar o CPF do usuário logado.");
+            return;
+        }
 
         try {
-            console.log(personSchema)
+            setIsSaving(true);
             const avisoSchema = await schoolEventService.createEvent({
-                titulo: titulo,
-                descricao: descricao,
-                data: data,
+                name: titulo.trim(),
+                description: descricao.trim(),
+                eventDate: `${data}T00:00:00`,
                 cpf: personSchema.cpf,
-                eventTypeId: eventType,
+                eventTypeId: Number(eventType),
             });
 
-            onSave(avisoSchema);
+            await onSave(avisoSchema);
         } catch (error) {
             console.error("Erro ao criar aviso:", error);
+            const errorMessage =
+                error?.response?.data?.message ||
+                error?.response?.data?.error ||
+                "Não foi possível criar o aviso. Tente novamente.";
+            setFormError(errorMessage);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -43,6 +83,7 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
                     type="text"
                     value={titulo}
                     onChange={(e) => setTitulo(e.target.value)}
+                    required
                 />
 
                 <label>Data</label>
@@ -50,6 +91,7 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
                     type="date"
                     value={data}
                     onChange={(e) => setData(e.target.value)}
+                    required
                 />
 
                 <label>Descrição</label>
@@ -57,24 +99,38 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
                     type="text"
                     value={descricao}
                     onChange={(e) => setDescricao(e.target.value)}
+                    required
                 />
 
                 <label>Tipo do Aviso</label>
 
-                <select name="event_type_select" id="event_type_select" value={eventType} onChange={(e) => setEventType(e.target.value)}>
-                    {schoolEventTypes.map((et) => (
-                        <option key={et.id} value={et.id}>
-                            {et.name.charAt(0).toUpperCase() + et.name.slice(1)}
-                        </option>
-                    ))}
+                <select
+                    name="event_type_select"
+                    id="event_type_select"
+                    value={eventType}
+                    onChange={(e) => setEventType(e.target.value)}
+                    disabled={schoolEventTypes.length === 0}
+                    required
+                >
+                    {schoolEventTypes.length === 0 ? (
+                        <option value="">Sem tipos disponíveis</option>
+                    ) : (
+                        schoolEventTypes.map((et) => (
+                            <option key={et.id} value={String(et.id)}>
+                                {et.name.charAt(0).toUpperCase() + et.name.slice(1)}
+                            </option>
+                        ))
+                    )}
                 </select>
 
+                {formError ? <p className={styles.errorMessage}>{formError}</p> : null}
+
                 <div className={styles.buttons}>
-                    <button className={styles.cancel} onClick={onCancel}>
+                    <button className={styles.cancel} onClick={onCancel} type="button" disabled={isSaving}>
                         Cancelar
                     </button>
-                    <button className={styles.save} onClick={handleSave}>
-                        Salvar
+                    <button className={styles.save} onClick={handleSave} type="button" disabled={isSaving}>
+                        {isSaving ? "Salvando..." : "Salvar"}
                     </button>
                 </div>
             </div>
