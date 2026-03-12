@@ -59,7 +59,7 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
                     onChange={(e) => setDescricao(e.target.value)}
                 />
 
-                <label>Tipo de Evento</label>
+                <label>Tipo do Aviso</label>
 
                 <select name="event_type_select" id="event_type_select" value={eventType} onChange={(e) => setEventType(e.target.value)}>
                     {schoolEventTypes.map((et) => (
