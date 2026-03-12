@@ -40,7 +40,7 @@ export default function ProfessorInfo({ teacher, onDelete }) {
 
         <div>
           <p>Foto:</p>
-          <img src={teacherPhoto} alt="Foto do Professor" width="70" height="90" />
+          <img src={teacherPhoto} alt="" width="70" height="90" />
         </div>
 
         <div>
