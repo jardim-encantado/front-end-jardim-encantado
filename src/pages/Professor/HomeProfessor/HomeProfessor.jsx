@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
 import Cronograma from "../../../components/Cronograma/Cronograma";
 import MuralAvisos from "../../../components/MuralAvisos/MuralAvisos";
-import { Carregamento } from "../../../components/Carregamento/Carregamento";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createSchoolEventService } from "../../../api/service/SchoolEventService";
 import { usePerson } from "../../../hooks/personHook";
 import styles from "./HomeProfessor.module.css";
