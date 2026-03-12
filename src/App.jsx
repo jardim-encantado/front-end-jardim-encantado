@@ -52,6 +52,9 @@ const VisualizarProfessor = lazy(
   () => import("./pages/Admin/VisualizarProfessor/BuscaProfessor"),
 );
 
+// Etc
+const ErrorPage = lazy(() => import("./pages/Error/ErrorPage"));
+
 function App() {
   const { person } = usePerson(); // hook global de usuário
 
@@ -104,6 +107,9 @@ function App() {
             element={<VisualizarProfessor />}
           />
           <Route path="/admin/adicionarAviso" element={<PaginaAvisos />} />
+
+          {/* Rota para página de erro */}
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

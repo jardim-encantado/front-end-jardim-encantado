@@ -13,6 +13,7 @@ import imgArvore from "../../assets/images/imgArvore.png";
 import { Link } from "react-router-dom";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import DescriptionIcon from "@mui/icons-material/Description";
+import styles from "../Sidebar/SidebarMenu.module.css";
 
 const Sidebar = () => {
   return (
@@ -47,25 +48,41 @@ const Sidebar = () => {
        <Link to="/admin/visualizarProfessor">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
-          <ListItemText primary="Professores" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Professores"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>
         <Link to="/admin/visualizarEstudante">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Estudantes" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Estudantes"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>  
         <Link to="/admin/cronogramaEscolar">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><MenuBookIcon/></ListItemIcon>
-          <ListItemText primary="Aulas" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Aulas"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>         
         <Link to="/admin/adicionarAviso">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DescriptionIcon/></ListItemIcon>
-          <ListItemText primary="Avisos" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Avisos"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>          
       </List>

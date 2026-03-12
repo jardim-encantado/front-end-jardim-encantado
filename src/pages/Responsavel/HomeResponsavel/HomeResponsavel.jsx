@@ -7,6 +7,7 @@ import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./HomeResponsavel.module.css";
 import { usePerson } from "../../../hooks/personHook";
 import { createSchoolEventService } from "../../../api/service/SchoolEventService";
+import HelloComponent from "../../../components/Hello/HelloComponent";
 
 function HomeStudent() {
   const { person } = usePerson();
@@ -44,8 +45,13 @@ function HomeStudent() {
     <Box sx={{ display: "flex" }}>
       <Sidebar />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <h2>Olá! {displayName}</h2>
+  <Box
+    component="main"
+    sx={{
+      flexGrow: 1,
+      p: 3,
+    }}>
+        <HelloComponent name={displayName} />
 
         <div className={styles.mural}>
           <h3 className={styles.muralTitle}>Mural de Avisos</h3>

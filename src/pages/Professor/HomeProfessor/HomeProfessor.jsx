@@ -6,7 +6,7 @@ import MuralAvisos from "../../../components/MuralAvisos/MuralAvisos";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createSchoolEventService } from "../../../api/service/SchoolEventService";
 import { usePerson } from "../../../hooks/personHook";
-import styles from "./HomeProfessor.module.css";
+import HelloComponent from "../../../components/Hello/HelloComponent";
 
 
 function HomeProfessor() {
@@ -40,7 +40,7 @@ function HomeProfessor() {
             p: 3,
           }}
         >
-        <h2>Olá! {displayName}</h2>
+        <HelloComponent name={displayName} />
 
         <MuralAvisos schoolEvents={avisos} />
 

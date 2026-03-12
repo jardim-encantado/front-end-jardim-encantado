@@ -11,6 +11,7 @@ import DashBoardIcon from "@mui/icons-material/Dashboard";
 import imgLogo from "../../assets/images/imgLogoJardim.png";
 import imgArvore from "../../assets/images/imgArvore.png";
 import { Link } from "react-router-dom";
+import styles from "./SidebarMenu.module.css";
 
 const Sidebar = () => {
   return (
@@ -45,19 +46,31 @@ const Sidebar = () => {
       <Link to="/responsavel/home">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><HomeIcon /></ListItemIcon>
-          <ListItemText primary="Home" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Home"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>
        <Link to="/responsavel/visualizarProfessor">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
-          <ListItemText primary="Professores" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Professores"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>
         <Link to="/responsavel/boletim">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Boletim" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Boletim"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>  
       </List>
