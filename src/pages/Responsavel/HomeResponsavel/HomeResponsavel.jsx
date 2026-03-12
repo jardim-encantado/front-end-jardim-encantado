@@ -5,6 +5,7 @@ import Cronograma from "../../../components/Cronograma/Cronograma";
 import AvisoCard from "../../../components/AvisoCard/AvisoCard";
 import styles from "./HomeResponsavel.module.css";
 import { usePerson } from "../../../hooks/personHook";
+import HelloComponent from "../../../components/Hello/HelloComponent";
 
 
 function HomeStudent() {
@@ -42,7 +43,7 @@ function HomeStudent() {
       flexGrow: 1,
       p: 3,
     }}>
-        <h2>Olá! {displayName}</h2>
+        <HelloComponent name={displayName} />
 
         <div className={styles.mural}>
           <h3 className={styles.muralTitle}>Mural de Avisos</h3>
