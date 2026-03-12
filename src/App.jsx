@@ -2,6 +2,8 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Carregamento from "./components/Carregamento/Carregamento";
 
+const HeaderRight = lazy(() => import("./components/HeaderRight"));
+
 const Login = lazy(() => import("./pages/Login/Login"));
 const CriarEstudante = lazy(() => import("./pages/Admin/AdicionarAluno/AdicionarAluno"));
 const AdicionarProfessor = lazy(() => import("./pages/Admin/AdicionarProfessor/AdicionarProfessor"));
@@ -13,6 +15,7 @@ const VisualizarProfessor = lazy(() => import("./pages/Admin/VisualizarProfessor
 const HomeResponsavel = lazy(() => import("./pages/Responsavel/HomeResponsavel/HomeResponsavel"));
 const ProfessorEstudante = lazy(() => import("./pages/Responsavel/VisualizarProfessor/Professor"));
 const BoletimEstudante = lazy(() => import("./pages/Responsavel/Boletim/Boletim"));
+const PerfilResponsavel = lazy(() => import("./pages/Responsavel/PerfilResponsavel/PerfilResponsavelPag"));
 
 // Professor
 const HomeProfessor = lazy(() => import("./pages/Professor/HomeProfessor/HomeProfessor"));
@@ -23,6 +26,7 @@ function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Carregamento />}>
+      <HeaderRight/>
         <Routes>
           <Route path="/" element={<Login />} />
 
@@ -30,11 +34,13 @@ function App() {
           <Route path="/responsavel/home" element={<HomeResponsavel />} />
           <Route path="/responsavel/visualizarProfessor" element={<ProfessorEstudante />} />
           <Route path="/responsavel/boletim" element={<BoletimEstudante />} />
+           <Route path="/responsavel/perfil" element={<PerfilResponsavel />} />
 
           {/* Professor */}
           <Route path="/professor/home" element={<HomeProfessor />} />
           <Route path="/professor/visualizarEstudante" element={<ProfessorVisualizaEstudante />} />
           <Route path="/professor/AdicionarAviso" element={<AdicionarAviso />} />
+          <Route path="/professor/Perfil" element={<PerfilResponsavel />} />
 
           {/* Admin */}
           <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
