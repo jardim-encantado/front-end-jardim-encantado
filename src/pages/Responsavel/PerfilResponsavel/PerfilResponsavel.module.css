@@ -1,0 +1,33 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: black;
+  margin-top: 60px;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.profileHeader h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.profileHeader p {
+  font-size: 13px;
+  color: #555;
+}
+

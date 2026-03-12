@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import CardUsuarios from "../../../components/InformacaoProfessor/ProfessorComponente";
+import ProfessorComponente from "../../../components/InformacaoProfessor/ProfessorComponente";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./Professor.module.css";
 import { createTeacherService } from "../../../api/service/TeacherService";
@@ -36,26 +36,28 @@ export default function Professores() {
       <Sidebar />
 
       <Box className={styles.mainContent}>
-        <h1>Professores</h1>
+        <h2>Professores</h2>
 
         <div className={styles.cardsGrid}>
           {isLoading && <Carregamento />}
           {!isLoading && loadError && <p>{loadError}</p>}
 
-          {!isLoading && !loadError && professores.map((professor) => (
-            <CardUsuarios
-              key={professor.teacherId}
-              nomeProfessor={professor.fullName}
-              cargoProfessor="Professor"
-              emailProfessor={professor.email || "Nao informado"}
-              telefoneProfessor={professor.phoneNumber || "Nao informado"}
-              materia={
-                Array.isArray(professor.subjectNames) && professor.subjectNames.length
-                  ? professor.subjectNames.join(", ")
-                  : "Nao informado"
-              }
-            />
-          ))}
+          {!isLoading && !loadError &&
+            professores.map((professor) => (
+              <ProfessorComponente
+                key={professor.teacherId}
+                nomeProfessor={professor.fullName}
+                cargoProfessor="Professor"
+                emailProfessor={professor.email || "Nao informado"}
+                telefoneProfessor={professor.phoneNumber || "Nao informado"}
+                materia={
+                  Array.isArray(professor.subjectNames) &&
+                  professor.subjectNames.length
+                    ? professor.subjectNames.join(", ")
+                    : "Nao informado"
+                }
+              />
+            ))}
         </div>
       </Box>
     </Box>

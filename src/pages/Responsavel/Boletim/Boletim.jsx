@@ -94,7 +94,7 @@ function Boletim() {
   }, [grades, selectedStudentId]);
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", marginTop:"20px" }}>
       <Sidebar />
       <Box className={styles.mainContent}>
         <h1>Boletim</h1>

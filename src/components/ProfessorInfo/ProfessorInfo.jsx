@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Cabecalho from "../EstudanteInfo/Cabecalho";
 import InfoRow from "../EstudanteInfo/./InfoLinha";
 
 export default function ProfessorInfo({ estudante, onDelete }) {
