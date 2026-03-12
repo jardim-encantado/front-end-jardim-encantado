@@ -22,6 +22,9 @@ const HomeProfessor = lazy(() => import("./pages/Professor/HomeProfessor/HomePro
 const ProfessorVisualizaEstudante = lazy(() => import("./pages/Professor/VisualizarEstudantes/Estudante"));
 const PaginaAvisos = lazy(() => import("./pages/Professor/AdicionarAviso/AddAviso"));
 
+// Etc
+const ErrorPage = lazy(() => import("./pages/Error/ErrorPage"));
+
 function App() {
   return (
     <BrowserRouter>
@@ -49,6 +52,9 @@ function App() {
           <Route path="/admin/cronogramaEscolar" element={<CronogramaEscolar />} />
           <Route path="/admin/visualizarProfessor" element={<VisualizarProfessor />} />
           <Route path="/admin/adicionarAviso" element={<PaginaAvisos />} />
+
+          {/* Rota para página de erro */}
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
