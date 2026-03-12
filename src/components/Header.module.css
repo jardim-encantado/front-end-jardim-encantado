@@ -1,0 +1,30 @@
+.headerContainer {
+  position: fixed;
+  top: 0px;
+  left: 200px; 
+  width: calc(100% - 200px);
+  height: 40px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 30px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.headerContent {
+  display: flex;
+  gap: 20px;
+}
+
+.headerIcon {
+  cursor: pointer;
+  color: #10898B;
+  transition: all 0.2s ease;
+}
+
+.headerIcon:hover {
+  color: #0b6f70;
+  transform: scale(1.1);
+}

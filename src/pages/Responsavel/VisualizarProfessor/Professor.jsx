@@ -36,7 +36,7 @@ export default function Professores() {
       <Sidebar />
 
       <Box className={styles.mainContent}>
-        <h1>Professores</h1>
+        <h2>Professores</h2>
 
         <div className={styles.cardsGrid}>
           {isLoading && <Carregamento />}

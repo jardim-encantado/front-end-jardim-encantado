@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Cabecalho from "../EstudanteInfo/Cabecalho";
 import InfoRow from "../EstudanteInfo/./InfoLinha";
 import styles from "./ProfessorInfo.module.css";
 
