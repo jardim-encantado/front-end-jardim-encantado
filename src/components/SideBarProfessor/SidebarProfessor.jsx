@@ -11,6 +11,7 @@ import DashBoardIcon from "@mui/icons-material/Dashboard";
 import imgLogo from "../../assets/images/imgLogoJardim.png";
 import imgArvore from "../../assets/images/imgArvore.png";
 import { Link } from "react-router-dom";
+import styles from "../Sidebar/SidebarMenu.module.css";
 
 const SidebarProfessor = () => {
   return (
@@ -45,19 +46,31 @@ const SidebarProfessor = () => {
       <Link to="/professor/home">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><HomeIcon /></ListItemIcon>
-          <ListItemText primary="Home" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Home"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>
        <Link to="/professor/visualizarEstudante">
         <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><PersonIcon /></ListItemIcon>
-          <ListItemText primary="Estudantes" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Estudantes"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>
         <Link to="/professor/adicionarAviso">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
-          <ListItemText primary="Avisos" sx={{ color: "white" }} />
+          <ListItemText
+            primary="Avisos"
+            className={styles.menuText}
+            sx={{ color: "white" }}
+          />
         </ListItem>
         </Link>  
       </List>
