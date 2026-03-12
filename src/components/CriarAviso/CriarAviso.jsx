@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./CriarAviso.module.css";
 import { createSchoolEventService } from "../../api/service/SchoolEventService";
 
-
-export default function CriarAviso({ personSchema, onCancel, onSave, schoolEventTypes }) {
+export default function CriarAviso({ personSchema, onCancel, onSave, schoolEventTypes, }) {
     const schoolEventService = createSchoolEventService();
 
     const [titulo, setTitulo] = useState("");
@@ -15,10 +14,11 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
         if (!titulo || !data || !descricao || !eventType) return;
 
         try {
+            console.log(personSchema)
             const avisoSchema = await schoolEventService.createEvent({
-                titulo,
-                descricao,
-                data: `${data}T00:00:00`,
+                titulo: titulo,
+                descricao: descricao,
+                data: data,
                 cpf: personSchema.cpf,
                 eventTypeId: eventType,
             });

@@ -6,7 +6,7 @@ import styles from "./AddAviso.module.css";
 import addIcon from "../../../assets/images/addOcorrencia.png";
 import { createSchoolEventTypeService } from "../../../api/service/SchoolEventTypeService";
 import { createSchoolEventService } from "../../../api/service/SchoolEventService";
-import { getLoggedPerson } from "../../../hooks/personHook";
+import { usePerson } from "../../../hooks/personHook";
 import AvisoMural from "../../../components/MuralAvisos/MuralAvisos";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import { roleNameMatches, ROLE_NAME_ALIASES } from "../../../api/schemas/Role";
@@ -21,7 +21,7 @@ const PaginaAvisos = () => {
     const [isLoading, setLoading] = useState(true);
     const [mostraPopUp, setMostraPopUp] = useState(false);
 
-    const loggedPerson = getLoggedPerson();
+    const { person } = usePerson();
 
     const getAllSchoolEvents = async () => {
         try {
@@ -69,8 +69,8 @@ const PaginaAvisos = () => {
         ) : (
         <Box sx={{ display: "flex" }} className={styles.container}>
             
-            {roleNameMatches(loggedPerson.roleName, ROLE_NAME_ALIASES.teacher) && <SidebarProfessor />}
-            {roleNameMatches(loggedPerson.roleName, ROLE_NAME_ALIASES.admin) && <SidebarAdmin />}
+            {roleNameMatches(person.roleName, ROLE_NAME_ALIASES.teacher) && <SidebarProfessor />}
+            {roleNameMatches(person.roleName, ROLE_NAME_ALIASES.admin) && <SidebarAdmin />}
 
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <h2>Gerenciar Mural de Avisos</h2>
@@ -89,7 +89,7 @@ const PaginaAvisos = () => {
 
                 {mostraPopUp && (
                     <CriarAviso
-                        personSchema={loggedPerson}
+                        personSchema={person}
                         onCancel={() => setMostraPopUp(false)}
                         onSave={handleAddAviso}
                         schoolEventTypes={schoolEventTypes}

@@ -5,11 +5,16 @@ export const toSchoolEventRequest = ({
   cpf,
   eventTypeId,
 }) => {
-  return {
+
+  let obj = {
     name: titulo,
     description: descricao,
-    eventDate: data,
-    cpf,
-    eventTypeId,
+    eventDate: new Date(data).toISOString(), // Formato ISO 8601: "YYYY-MM-DDTHH:mm:ss"
+    cpf: cpf,
+    eventTypeId: eventTypeId,
   };
+
+  console.log(obj)
+
+  return obj
 };

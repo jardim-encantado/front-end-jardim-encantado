@@ -2,7 +2,6 @@ import React from "react";
 import "./AvisoCard.css";
 
 export default function AvisoCard({ avisoSchema }) {
-  console.log(avisoSchema);
   return (
     <div className={`aviso-card ${avisoSchema.color}`}>
       <h3>{avisoSchema.name}</h3>
