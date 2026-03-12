@@ -29,6 +29,7 @@ body{
   flex-direction: column;
   width: 300px;
   gap: 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .loginLeft input {
