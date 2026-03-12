@@ -54,7 +54,7 @@ const SidebarProfessor = () => {
           <ListItemText primary="Estudantes" sx={{ color: "white" }} />
         </ListItem>
         </Link>
-        <Link to="/professor/AdicionarAviso">
+        <Link to="/professor/adicionarAviso">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DashBoardIcon/></ListItemIcon>
           <ListItemText primary="Avisos" sx={{ color: "white" }} />

@@ -1,6 +1,7 @@
 import { toPersonSchema } from "./Person";
 import { roleNameMatches } from "./Role"; 
 import { ROLE_NAME_ALIASES } from "../schemas/Role";
+import { toSchoolEventTypeSchema } from "./SchoolEventType";
 
 const colors = ["rosa", "verde", "laranja"];
 
@@ -16,7 +17,7 @@ function eventOriginByRole(roleName) {
 }
 
 
-export const toSchoolEventSchema = (data) => {
+export function toSchoolEventSchema(data) {
   if (!data) return null;
 
   const origin = eventOriginByRole(data.createdBy.roleName)

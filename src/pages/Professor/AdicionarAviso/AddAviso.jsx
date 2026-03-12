@@ -1,61 +1,106 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
-import AvisoCard from "../../../components/AvisoCard/AvisoCard";
-import CriarAviso from "../../../components/CriarAviso/CriarAviso"; 
+import CriarAviso from "../../../components/CriarAviso/CriarAviso";
 import styles from "./AddAviso.module.css";
-import addIcon from "../../../assets/images/addOcorrencia.png"; 
+import addIcon from "../../../assets/images/addOcorrencia.png";
+import { createSchoolEventTypeService } from "../../../api/service/SchoolEventTypeService";
+import { createSchoolEventService } from "../../../api/service/SchoolEventService";
+import { getLoggedPerson } from "../../../hooks/personHook";
+import AvisoMural from "../../../components/MuralAvisos/MuralAvisos";
+import Carregamento from "../../../components/Carregamento/Carregamento";
+import { roleNameMatches, ROLE_NAME_ALIASES } from "../../../api/schemas/Role";
+import SidebarAdmin from "../../../components/Admin/SideBarAdmin";
 
 const PaginaAvisos = () => {
-  const [avisos, setAvisos] = useState([
-    { id: 1, titulo: "Reunião de Pais", data: "08/03/2026", descricao: "Reunião sobre o calendário escolar.", origem: "Administração", cor: "rosa" },
-    { id: 2, titulo: "Prova de Matemática", data: "10/03/2026", descricao: "Prova do 2º bimestre.", origem: "Professor", cor: "verde" }
-  ]);
+    const schoolEventService = createSchoolEventService();
+    const schoolEventTypeService = createSchoolEventTypeService();
 
-  const [mostraPopUp, setMostraPopUp] = useState(false);
+    const [schoolEventTypes, setSchoolEventTypes] = useState([]);
+    const [schoolEvents, setSchoolEvents] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+    const [mostraPopUp, setMostraPopUp] = useState(false);
 
-  const handleAddAviso = (novoAviso) => {
-    const corPadrao = novoAviso.cor || "rosa";
-    setAvisos([...avisos, { ...novoAviso, cor: corPadrao, id: avisos.length + 1 }]);
-    setMostraPopUp(false);
-  };
+    const loggedPerson = getLoggedPerson();
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <SidebarProfessor />
+    const getAllSchoolEvents = async () => {
+        try {
+            const events = await schoolEventService.getAllEvents();
+            setSchoolEvents(events);
+        } catch (error) {
+            console.error("Erro ao buscar eventos:", error);
+            setSchoolEvents([]);
+        }
+    };
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <h2>Mural de Avisos</h2>
+    const getSchoolEventTypes = async () => {
+        try {
+            const types = await schoolEventTypeService.getAllTypes();
+            setSchoolEventTypes(types);
+        } catch (error) {
+            console.error("Erro ao buscar tipos de evento:", error);
+            setSchoolEventTypes([
+                {
+                    id: "1",
+                    name: "OUTROS",
+                },
+            ]);
+        }
+    };
 
-        <button className={styles.btnAdicionar} onClick={() => setMostraPopUp(true)}>
-          <img src={addIcon} alt="Adicionar" className={styles.iconeAdicionar} /> Adicionar Aviso
-        </button>
+    useEffect(() => {
+        getSchoolEventTypes();
+        getAllSchoolEvents();
+        setLoading(false);
+    }, []);
 
-        {mostraPopUp && (
-          <CriarAviso
-            estudante={{ estudanteId: 0 }}
-            onCancel={() => setMostraPopUp(false)}
-            onSave={handleAddAviso}
-          />
-        )}
 
-        <div className={styles.mural}>
-          <div className={styles.avisosContainer}>
-            {avisos.map((aviso) => (
-              <AvisoCard
-                key={aviso.id}
-                titulo={aviso.titulo}
-                data={aviso.data}
-                descricao={aviso.descricao}
-                cor={aviso.cor}
-                origem={aviso.origem}
-              />
-            ))}
-          </div>
-        </div>
-      </Box>
-    </Box>
-  );
+    const handleAddAviso = (newSchoolEventSchema) => {
+        setSchoolEvents([
+            ...schoolEvents,
+            {...newSchoolEventSchema, id: schoolEvents.length + 1},
+        ]);
+        setMostraPopUp(false);
+    };
+
+    return (
+        isLoading ? (
+            <Carregamento />
+        ) : (
+        <Box sx={{ display: "flex" }}>
+            
+            {roleNameMatches(loggedPerson.roleName, ROLE_NAME_ALIASES.teacher) && <SidebarProfessor />}
+            {roleNameMatches(loggedPerson.roleName, ROLE_NAME_ALIASES.admin) && <SidebarAdmin />}
+
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <h2>Mural de Avisos</h2>
+
+                <button
+                    className={styles.btnAdicionar}
+                    onClick={() => setMostraPopUp(true)}
+                >
+                    <img
+                        src={addIcon}
+                        alt="Adicionar"
+                        className={styles.iconeAdicionar}
+                    />{" "}
+                    Adicionar Aviso
+                </button>
+
+                {mostraPopUp && (
+                    <CriarAviso
+                        personSchema={loggedPerson}
+                        onCancel={() => setMostraPopUp(false)}
+                        onSave={handleAddAviso}
+                        schoolEventTypes={schoolEventTypes}
+                    />
+                )}
+
+                <AvisoMural schoolEvents={schoolEvents}/>
+            </Box>
+        </Box>
+        )
+    );
 };
 
 export default PaginaAvisos;

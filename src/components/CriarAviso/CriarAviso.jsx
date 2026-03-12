@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import styles from "./CriarAviso.module.css";
 import { createSchoolEventService } from "../../api/service/SchoolEventService";
-import { createSchoolEventTypeService } from "../../api/service/SchoolEventTypeService";
 
-export default function CriarAviso({ personSchema, onCancel, onSave }) {
+
+export default function CriarAviso({ personSchema, onCancel, onSave, schoolEventTypes }) {
     const schoolEventService = createSchoolEventService();
-    const schoolEventTypeService = createSchoolEventTypeService();
 
     const [titulo, setTitulo] = useState("");
     const [data, setData] = useState("");
@@ -16,7 +15,7 @@ export default function CriarAviso({ personSchema, onCancel, onSave }) {
         if (!titulo || !data || !descricao || !eventType) return;
 
         try {
-            await schoolEventService.createEvent({
+            const avisoSchema = await schoolEventService.createEvent({
                 titulo,
                 descricao,
                 data: `${data}T00:00:00`,
@@ -24,31 +23,12 @@ export default function CriarAviso({ personSchema, onCancel, onSave }) {
                 eventTypeId: eventType,
             });
 
-            onSave();
+            onSave(avisoSchema);
         } catch (error) {
             console.error("Erro ao criar aviso:", error);
         }
     };
 
-    const [schoolEventTypes, setSchoolEventTypes] = useState([]);
-
-    
-    const getSchoolEventTypes = async () => {
-        try {
-            const types = await schoolEventTypeService.getAllEventTypes();
-            setSchoolEventTypes(types);
-        } catch (error) {
-            console.error("Erro ao buscar tipos de evento:", error);
-            setSchoolEventTypes([{
-                id: "1",
-                name: "OUTROS"
-            }]);
-        }
-    }
-
-    useEffect(() => {
-        getSchoolEventTypes();
-    }, []);
 
     return (
         <div className={styles.modalOverlay} onClick={onCancel}>
@@ -88,11 +68,7 @@ export default function CriarAviso({ personSchema, onCancel, onSave }) {
                         </option>
                     ))}
                 </select>
-                <input
-                    type="text"
-                    value={eventType}
-                    onChange={(e) => setEventType(e.target.value)}
-                />
+
 
                 <div className={styles.buttons}>
                     <button className={styles.cancel} onClick={onCancel}>
