@@ -45,6 +45,12 @@
   color: black;
 }
 
+
+.modalContent input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  color: black;
+}
+
 .modalContent select {
   padding: 10px;
   border-radius: 4px;
