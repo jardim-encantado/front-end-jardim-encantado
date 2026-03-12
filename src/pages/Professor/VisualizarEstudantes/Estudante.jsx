@@ -161,7 +161,7 @@ export default function Estudante() {
           </div>
 
           <div className={styles.search}>
-            <SearchBar onSearch={setFiltro} />
+            <SearchBar onSearch={setFiltro}  />
           </div>
         </div>
 

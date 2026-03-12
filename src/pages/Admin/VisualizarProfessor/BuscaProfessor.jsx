@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./BuscaProfessor.module.css";
 import ProfessorInfo from "../../../components/ProfessorInfo/ProfessorInfo";
-import BuscaEstudanteInput from "../../../components/SearchStudent/SearchBar";
+import SearchBar from "../../../components/SearchStudent/SearchBar";
 import SideBarAdmin from "../../../components/Admin/SideBarAdmin";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createTeacherService } from "../../../api/service/TeacherService";
@@ -60,7 +60,9 @@ export default function BuscaProfessor() {
 
       <div className={styles.topBar}>
         
-        <BuscaEstudanteInput onSearch={setTextoBusca} />
+        <SearchBar onSearch={setTextoBusca}
+          placeholder={"Buscar professor..."}
+        />
 
         <button
           onClick={irParaAdicionarProfessor}
@@ -76,8 +78,7 @@ export default function BuscaProfessor() {
 
       {!isLoading && !loadError && professoresFiltrados.map((professor) => (
         <ProfessorInfo
-          key={professor.teacherId}
-          estudante={professor}
+          teacher={professor}
           onDelete={() => removerProfessor(professor.teacherId)}
         />
       ))}

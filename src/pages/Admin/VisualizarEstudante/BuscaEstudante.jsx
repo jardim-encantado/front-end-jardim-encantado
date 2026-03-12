@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./BuscaEstudante.module.css";
 
 import CardEstudante from "../../../components/EstudanteInfo/EstudanteInfo";
-import BuscaEstudanteInput from "../../../components/SearchStudent/SearchBar";
+import SearchBar from "../../../components/SearchStudent/SearchBar";
 import SideBarAdmin from "../../../components/Admin/SideBarAdmin";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import { createStudentService } from "../../../api/service/StudentService";
@@ -61,7 +61,7 @@ export default function BuscaEstudante() {
 
       <div className={styles.topBar}>
         
-        <BuscaEstudanteInput onSearch={setTextoBusca} />
+        <SearchBar onSearch={setTextoBusca} placeholder={"Buscar estudante..."} />
 
         <button
           onClick={irParaAdicionarEstudante}

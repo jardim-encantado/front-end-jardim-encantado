@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./SearchBar.module.css";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, placeholder = "Pesquisar..." }) {
   const [search, setSearch] = useState("");
 
   function handleChange(e) {
@@ -23,7 +23,7 @@ export default function SearchBar({ onSearch }) {
     <form className={styles.searchContainer} onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Buscar estudante"
+        placeholder={placeholder}
         value={search}
         onChange={handleChange}
         className={styles.searchInput}

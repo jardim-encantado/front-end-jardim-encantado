@@ -15,6 +15,20 @@ export default defineConfig(({ mode }) => {
           proxyReq.getHeader("host") + proxyReq.path
         );
       });
+
+      proxy.on("error", (err, req) => {
+        console.error("Proxy error:", err);
+        req.destroy(err);
+      });
+
+      proxy.on("proxyRes", (proxyRes, req) => {
+        console.log(
+          "Received response from:",
+          proxyRes.req.getHeader("host") + proxyRes.req.path,
+          "Status:",
+          proxyRes.statusCode
+        );
+      });
     },
   });
 

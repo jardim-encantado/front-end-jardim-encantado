@@ -3,7 +3,7 @@
   align-items: center;
   gap: 8px;
   background-color: #FFE5E0;
-  color: white;
+  color: black;
   border: none;
   border-radius: 6px;
   padding: 8px 16px;
@@ -17,18 +17,13 @@
   height: 20px;
 }
 
-.mural {
-  background-color: #FFE5E0;
-  padding: 20px;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  width: 900px;
-  min-height: 300px;
+h2 {
+  color: black;
 }
 
-.avisosContainer {
+.container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  font-family: 'Poppins', sans-serif;
+  justify-content: center;  
+  background-color: "#FCF4F4";
 }

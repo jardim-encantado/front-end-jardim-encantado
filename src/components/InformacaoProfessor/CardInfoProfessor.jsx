@@ -1,33 +1,28 @@
-import styles from "./ProfessorComponent.module.css";
+import styles from "./CardInfoProfessor.module.css";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
-export default function CardUsuarios({
-  fotoProfessor,
-  nomeProfessor,
-  cargoProfessor,
-  emailProfessor,
-  materia,
-  telefoneProfessor,
-}) {
+export default function CardInfoProfessor({ key, teacherSchema }) {
+
+  const materias = teacherSchema.getSubjectNamesList() ?? "Não definidas";
   return (
     <div className={styles.cardUsuarios}>
       <div className={styles.headerCardUsuarios}>
         <div className={styles.responsavel}>
           <img
             src={
-              fotoProfessor
-                ? fotoProfessor
+              teacherSchema.photoUrl
+                ? teacherSchema.photoUrl
                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                    nomeProfessor
+                    teacherSchema.fullName
                   )}&background=C2C2C2&color=000000&rounded=true`
             }
-            alt={nomeProfessor}
+            alt={teacherSchema.fullName}
           />
 
           <div>
-            <h4>{nomeProfessor}</h4>
-            <p>{cargoProfessor}</p>
+            <h4>{teacherSchema.fullName}</h4>
+            <p>{teacherSchema.cargo}</p>
           </div>
         </div>
       </div>
@@ -35,12 +30,12 @@ export default function CardUsuarios({
       <div className={styles.contato}>
         <div>
           <EmailIcon />
-          <p>{emailProfessor}</p>
+          <p>{teacherSchema.email}</p>
         </div>
 
         <div>
           <LocalPhoneIcon />
-          <p>{telefoneProfessor}</p>
+          <p>{teacherSchema.phoneNumber}</p>
         </div>
       </div>
 
@@ -49,7 +44,7 @@ export default function CardUsuarios({
       <div className={styles.informacoes}>
         <div className={styles.info}>
           <p>Matéria:</p>
-          <p>{materia}</p>
+          <p>{materias}</p>
         </div>
       </div>
     </div>

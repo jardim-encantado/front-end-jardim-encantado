@@ -43,6 +43,7 @@ function Login() {
 
         try {
             const response = await personService.login(cpf, password);
+            response.cpf = cpf; // Garantir que o CPF esteja presente no objeto de resposta
             saveLoggedPerson(response);
             navigate(resolveRouteByRole(response));
         } catch (error) {

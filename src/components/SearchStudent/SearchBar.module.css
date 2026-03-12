@@ -12,6 +12,8 @@
   box-sizing: border-box;
   transition: 0.2s ease;
   color: black;
+  background-color: #FFC2C1;
+  font-family: 'Poppins', sans-serif;
 }
 
 .searchInput:focus {

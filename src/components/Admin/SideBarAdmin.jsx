@@ -56,13 +56,13 @@ const Sidebar = () => {
           <ListItemText primary="Estudantes" sx={{ color: "white" }} />
         </ListItem>
         </Link>  
-        <Link to="/notas">
+        <Link to="/admin/cronogramaEscolar">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><MenuBookIcon/></ListItemIcon>
           <ListItemText primary="Aulas" sx={{ color: "white" }} />
         </ListItem>
         </Link>         
-        <Link to="/notas">
+        <Link to="/admin/adicionarAviso">
          <ListItem button>
           <ListItemIcon sx={{ color: "white" }}><DescriptionIcon/></ListItemIcon>
           <ListItemText primary="Avisos" sx={{ color: "white" }} />

@@ -19,6 +19,14 @@ export const toRoleSchema = (role = {}) => {
   };
 };
 
+
+export const ROLE_NAME_ALIASES = {
+  admin: ["admin"],
+  teacher: ["teacher", "professor", "docente"],
+  guardian: ["guardian", "responsavel", "parent"],
+  student: ["student", "estudante", "aluno"],
+};
+
 export const roleNameMatches = (candidateRoleName, aliases = []) => {
   const normalizedCandidate = normalizeRoleString(candidateRoleName);
 

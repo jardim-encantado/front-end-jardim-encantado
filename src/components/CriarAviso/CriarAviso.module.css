@@ -42,8 +42,36 @@
   margin-bottom: 10px;
   font-size: 14px;
   border: none;
-
+  color: black;
 }
+
+
+.modalContent input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  color: black;
+}
+
+.modalContent select {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: white;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border: none;
+  color: black;
+}
+
+option {
+  color: black;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+option:hover {
+  background-color: #f0f0f0;
+}
+
 
 .buttons {
   display: flex;
@@ -69,4 +97,17 @@
 .buttons .save {
   background-color: #10898B; 
   color: white;
+}
+
+.buttons button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  margin-top: 4px;
+  margin-bottom: 0;
+  color: #A3284D;
+  font-size: 14px;
+  font-weight: 600;
 }

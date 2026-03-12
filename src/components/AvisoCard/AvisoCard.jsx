@@ -1,15 +1,18 @@
 import React from "react";
 import "./AvisoCard.css";
 
-function AvisoCard({ titulo, data, descricao, origem,cor = "rosa"}) {
+export default function AvisoCard({ avisoSchema }) {
   return (
-    <div className={`aviso-card ${cor}`}>
-      <h3>{titulo}</h3>
-      <p><strong>Data:</strong> {data}</p>
-      <p><strong>Descrição:</strong> {descricao}</p>
-      <p><strong>Origem:</strong> {origem}</p>
+    <div className={`aviso-card ${avisoSchema.color}`}>
+      <h3>{avisoSchema.name}</h3>
+      <p><strong>Data:</strong> {new Date(avisoSchema.eventDate).toLocaleDateString('pt-BR')}</p>
+      <p><strong>Descrição:</strong> {avisoSchema.description}</p>
+
+      {
+        avisoSchema.origin ? (
+          <p><strong>Origem:</strong> {avisoSchema.origin}</p>
+        ) : null
+      }
     </div>
   );
 }
-
-export default AvisoCard;

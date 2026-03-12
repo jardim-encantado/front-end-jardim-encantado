@@ -1,47 +1,34 @@
+import { useState } from "react";
+import Cabecalho from "../EstudanteInfo/Cabecalho";
 import InfoRow from "../EstudanteInfo/./InfoLinha";
+import styles from "./ProfessorInfo.module.css";
 
-export default function ProfessorInfo({ estudante, onDelete }) {
+export default function ProfessorInfo({ teacher, onDelete }) {
 
   const [editando, setEditando] = useState(false);
 
-  const teacherName = estudante?.fullName || estudante?.name || "-";
-  const teacherEmail = estudante?.email || "-";
-  const teacherCpf = estudante?.cpf || "-";
-  const teacherPhone = estudante?.phoneNumber || "-";
-  const teacherSubject = Array.isArray(estudante?.subjectNames) && estudante.subjectNames.length
-    ? estudante.subjectNames.join(", ")
-    : "-";
+  const teacherName = teacher?.fullName || teacher?.name || "-";
+  const teacherEmail = teacher?.email || "-";
+  const teacherCpf = teacher?.cpf || "-";
+  const teacherPhone = teacher?.phoneNumber || "-";
+  const teacherSubject = teacher.getSubjectNamesList() ?? "-";
+  const teacherPhoto = teacher?.photoUrl || "";
 
   return (
     <div
-      style={{
-        borderRadius: "15px",
-        overflow: "hidden",
-        background: "#f5d3d3",
-        border: "3px solid #e29c9c",
-        width: "950px",
-        color: "black",
-        marginBottom: "20px",
-        position: "relative"
-      }}
+      className={styles.card}
     >
 
       <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          display: "flex",
-          gap: "10px"
-        }}
+        className={styles.actions}
       >
         <button onClick={() => setEditando(!editando)}>✏️</button>
-        <button onClick={onDelete}>🗑</button>
+        <button onClick={onDelete}>🗑️</button>
       </div>
 
       <Cabecalho title="Detalhes do Professor" />
 
-      <div style={{ padding: "20px", display: "flex", gap: "40px" }}>
+      <div className={styles.content}>
         <div>
           <InfoRow label="Nome:" value={teacherName} disabled={!editando} />
           <InfoRow label="Email:" value={teacherEmail} disabled={!editando} />
@@ -51,7 +38,7 @@ export default function ProfessorInfo({ estudante, onDelete }) {
 
         <div>
           <p>Foto:</p>
-          <img src="" alt="" width="70" height="90"/>
+          <img src={teacherPhoto} alt="" width="70" height="90" />
         </div>
 
         <div>
