@@ -18,8 +18,8 @@ export const toPersonSchema = (person = {}) => {
         cpf: person.cpf ?? "",
         phoneNumber: person.phoneNumber ?? person.telefone ?? "",
         photoUrl: person.photoUrl ?? person.foto ?? "",
-        roleId: person.roleId ?? person.perfilId ?? person.cargoId ?? null,
-        roleName: person.roleName ?? person.perfil ?? "",
+        roleId: person.roleId ?? person.perfilId ?? person.cargoId ?? person.role?.id ?? null,
+        roleName: person.roleName ?? person.perfil ?? person.role?.name ?? "",
         address: toAddressSchema(person.address),
     };
 };

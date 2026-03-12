@@ -20,17 +20,18 @@ function eventOriginByRole(roleName) {
 export function toSchoolEventSchema(data) {
   if (!data) return null;
 
-  const origin = eventOriginByRole(data.createdBy.roleName)
+  const createdBy = toPersonSchema(data.createdBy);
+  const origin = eventOriginByRole(createdBy?.roleName);
 
   return {
     id: data.eventId,
     name: data.name,
     description: data.description,
     eventDate: data.eventDate,
-    createdBy: toPersonSchema(data.createdBy),
+    createdBy,
     createDate: data.createDate,
     updateDate: data.updateDate,
-    eventType: toSchoolEventTypeSchema(data.eventType),
+    eventType: toSchoolEventTypeSchema(data.eventTypeId ?? data.eventType),
     color: getRandomColor(),
     origin: origin
   };
