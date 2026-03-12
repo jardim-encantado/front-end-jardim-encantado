@@ -54,6 +54,15 @@
   border: none;
 }
 
+option {
+  color: black;
+  font-family: 'Poppins', sans-serif;
+}
+
+option:hover {
+  background-color: #f0f0f0;
+}
+
 
 .buttons {
   display: flex;

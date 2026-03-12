@@ -64,11 +64,10 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
                 <select name="event_type_select" id="event_type_select" value={eventType} onChange={(e) => setEventType(e.target.value)}>
                     {schoolEventTypes.map((et) => (
                         <option key={et.id} value={et.id}>
-                            {et.name.toLowerCase()}
+                            {et.name.charAt(0).toUpperCase() + et.name.slice(1)}
                         </option>
                     ))}
                 </select>
-
 
                 <div className={styles.buttons}>
                     <button className={styles.cancel} onClick={onCancel}>

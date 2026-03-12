@@ -67,13 +67,13 @@ const PaginaAvisos = () => {
         isLoading ? (
             <Carregamento />
         ) : (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex" }} className={styles.container}>
             
             {roleNameMatches(loggedPerson.roleName, ROLE_NAME_ALIASES.teacher) && <SidebarProfessor />}
             {roleNameMatches(loggedPerson.roleName, ROLE_NAME_ALIASES.admin) && <SidebarAdmin />}
 
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <h2>Mural de Avisos</h2>
+                <h2>Gerenciar Mural de Avisos</h2>
 
                 <button
                     className={styles.btnAdicionar}
@@ -83,7 +83,7 @@ const PaginaAvisos = () => {
                         src={addIcon}
                         alt="Adicionar"
                         className={styles.iconeAdicionar}
-                    />{" "}
+                    />
                     Adicionar Aviso
                 </button>
 
