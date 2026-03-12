@@ -9,10 +9,12 @@ import AdicionarProfessor from "./pages/Admin/AdicionarProfessor/AdicionarProfes
 import VisualizarEstudante from "./pages/Admin/VisualizarEstudante/BuscaEstudante";
 import CronogramaEscolar from "./pages/Admin/CronogramaEscolar/CronogramaEscolar";
 import VisualizarProfessor from "./pages/Admin/VisualizarProfessor/BuscaProfessor";
+import Header from "./components/HeaderRight"
 
 function App() {
   return (
     <BrowserRouter>
+     <Header/>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<HomeStudent />} />
