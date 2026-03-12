@@ -17,7 +17,7 @@ const BoletimEstudante = lazy(() => import("./pages/Responsavel/Boletim/Boletim"
 // Professor
 const HomeProfessor = lazy(() => import("./pages/Professor/HomeProfessor/HomeProfessor"));
 const ProfessorVisualizaEstudante = lazy(() => import("./pages/Professor/VisualizarEstudantes/Estudante"));
-const AdicionarAviso = lazy(() => import("./pages/Professor/AdicionarAviso/AddAviso"));
+const PaginaAvisos = lazy(() => import("./pages/Professor/AdicionarAviso/AddAviso"));
 
 function App() {
   return (
@@ -34,14 +34,15 @@ function App() {
           {/* Professor */}
           <Route path="/professor/home" element={<HomeProfessor />} />
           <Route path="/professor/visualizarEstudante" element={<ProfessorVisualizaEstudante />} />
-          <Route path="/professor/AdicionarAviso" element={<AdicionarAviso />} />
+          <Route path="/professor/adicionarAviso" element={<PaginaAvisos />} />
 
           {/* Admin */}
           <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
           <Route path="/admin/criarProfessor" element={<AdicionarProfessor />} />
           <Route path="/admin/visualizarEstudante" element={<VisualizarEstudante />} />
-          <Route path="/admin/cronogramaEscolar/cronogramaEscolar" element={<CronogramaEscolar />} />
+          <Route path="/admin/cronogramaEscolar" element={<CronogramaEscolar />} />
           <Route path="/admin/visualizarProfessor" element={<VisualizarProfessor />} />
+          <Route path="/admin/adicionarAviso" element={<PaginaAvisos />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
