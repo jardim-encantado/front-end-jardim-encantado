@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cabecalho from "../EstudanteInfo/Cabecalho";
 import InfoRow from "../EstudanteInfo/./InfoLinha";
+import styles from "./ProfessorInfo.module.css";
 
 export default function ProfessorInfo({ teacher, onDelete }) {
 
@@ -13,29 +14,15 @@ export default function ProfessorInfo({ teacher, onDelete }) {
   const teacherCpf = teacher?.cpf || "-";
   const teacherPhone = teacher?.phoneNumber || "-";
   const teacherSubject = teacher.getSubjectNamesList() ?? "-";
+  const teacherPhoto = teacher?.photoUrl || "";
 
   return (
     <div
-      style={{
-        borderRadius: "15px",
-        overflow: "hidden",
-        background: "#f5d3d3",
-        border: "3px solid #e29c9c",
-        width: "950px",
-        color: "black",
-        marginBottom: "20px",
-        position: "relative"
-      }}
+      className={styles.teacherCard}
     >
 
       <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          display: "flex",
-          gap: "10px"
-        }}
+        className={styles.teacherCardButtons}
       >
         <button onClick={() => setEditando(!editando)}>✏️</button>
         <button onClick={onDelete}>🗑</button>
@@ -53,7 +40,7 @@ export default function ProfessorInfo({ teacher, onDelete }) {
 
         <div>
           <p>Foto:</p>
-          <img src="" alt="" width="70" height="90"/>
+          <img src={teacherPhoto} alt="Foto do Professor" width="70" height="90" />
         </div>
 
         <div>
