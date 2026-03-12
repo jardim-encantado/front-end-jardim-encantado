@@ -1,41 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import Cronograma from "../../../components/Cronograma/Cronograma";
 import AvisoCard from "../../../components/AvisoCard/AvisoCard";
+import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./HomeResponsavel.module.css";
 import { usePerson } from "../../../hooks/personHook";
+import { createSchoolEventService } from "../../../api/service/SchoolEventService";
 import HelloComponent from "../../../components/Hello/HelloComponent";
 
-
 function HomeStudent() {
-  const [guardianName] = useState("Maria Eduarda");
   const { person } = usePerson();
-  const personName = [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim();
-  const displayName = personName || guardianName;
+  const [avisos, setAvisos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const avisos = [
-    {
-      id: 1,
-      titulo: "Dia do Livro",
-      data: "02/02",
-      descricao: "Os livros podem ser trocados entre alunos.",
-      origem: "Diretoria",
-      cor: "rosa",
-    },
-    {
-      id: 2,
-      titulo: "Reunião de Pais",
-      data: "05/02",
-      descricao: "Os pais devem comparecer presencialmente.",
-      origem: "Coordenação",
-      cor: "verde",
-    },
-  ];
+  useEffect(() => {
+    if (!person?.id) return;
+
+    const fetchAvisos = async () => {
+      try {
+        const schoolEventService = createSchoolEventService();
+        const eventos = await schoolEventService.getAllEvents();
+
+        // Ajuste conforme o nome do campo que vincula evento ao aluno
+        const eventosAluno = eventos.filter((e) => e.studentId === person.id);
+        setAvisos(eventosAluno);
+      } catch (error) {
+        console.error("Erro ao carregar avisos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAvisos();
+  }, [person]);
+
+  if (!person || loading) {
+    return <Carregamento />;
+  }
+
+  const displayName = [person.firstName, person.lastName].filter(Boolean).join(" ");
 
   return (
     <Box sx={{ display: "flex" }}>
-  <Sidebar />
+      <Sidebar />
 
   <Box
     component="main"
@@ -52,11 +60,13 @@ function HomeStudent() {
             {avisos.map((aviso) => (
               <AvisoCard
                 key={aviso.id}
-                titulo={aviso.titulo}
-                data={aviso.data}
-                descricao={aviso.descricao}
-                cor={aviso.cor}
-                origem={aviso.origem}
+                avisoSchema={{
+                  color: aviso.color || "azul",
+                  name: aviso.name || aviso.title,
+                  eventDate: aviso.eventDate || aviso.date,
+                  description: aviso.description || aviso.descricao,
+                  origin: aviso.origin || aviso.origem,
+                }}
               />
             ))}
           </div>
