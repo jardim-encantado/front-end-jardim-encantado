@@ -24,13 +24,14 @@
 .inputGroup label {
   font-size: 13px;
   margin-bottom: 5px;
-  color: #333;
+  color: #070000;
 }
 
 .inputGroup input {
-  height: 34px;
+  height: 25px;
   border-radius: 4px;
   border: none;
   padding: 0 10px;
   background: #e6ead9;
+  color: #070000;
 }

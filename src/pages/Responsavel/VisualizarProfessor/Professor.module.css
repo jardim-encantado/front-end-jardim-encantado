@@ -5,9 +5,10 @@
   min-height: 90vh;
 }
 
-.mainContent h1 {
+.mainContent h2 {
   margin-bottom: 20px;
   font-weight: 500;
+  color: black;
 }
 
 .cardsGrid {

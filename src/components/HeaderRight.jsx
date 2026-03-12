@@ -2,12 +2,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "./Header.module.css";
+import { usePerson } from "../hooks/personHook";
 
-export default function Header() {
+export default function HeaderRight() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (location.pathname === "/") return null;
+  const { person, removeLoggedPerson } = usePerson();
+
+  function handleLogout() {
+    removeLoggedPerson();
+    navigate("/");    
+  }
+
+  if (location.pathname === "/" || !person) return null;
+
+  const displayName = [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim();
 
   return (
     <div className={styles.headerContainer}>
@@ -19,8 +29,10 @@ export default function Header() {
 
         <LogoutIcon
           className={styles.headerIcon}
-          onClick={() => navigate("/")}
+          onClick={handleLogout}
         />
+
+        <span className={styles.userName}>{displayName}</span>
       </div>
     </div>
   );
