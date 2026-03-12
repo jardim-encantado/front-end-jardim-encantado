@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 
-const options = [
+const defaultOptions = [
   { value: "2025", label: "2025" },
   { value: "2024", label: "2024" },
   { value: "2023", label: "2023" },
 ];
 
-export default function DropdownBoletim() {
-  const [selectedYear, setSelectedYear] = useState(null);
-
-  const handleChange = (option) => {
-    setSelectedYear(option);
-    console.log("Ano selecionado:", option.value);
-  };
+export default function DropdownBoletim({
+  options = defaultOptions,
+  selectedOption = null,
+  onChange,
+  placeholder = "Selecione",
+}) {
 
   const customStyles = {
     control: (provided) => ({
@@ -48,9 +47,9 @@ export default function DropdownBoletim() {
   <div style={{ width: "200px",  margin: 8, fontFamily: "Arial, sans-serif" }}>
       <Select
         options={options}
-        value={selectedYear}
-        onChange={handleChange}
-        placeholder="Selecione o ano"
+        value={selectedOption}
+        onChange={onChange}
+        placeholder={placeholder}
         styles={customStyles}
       />
     </div>

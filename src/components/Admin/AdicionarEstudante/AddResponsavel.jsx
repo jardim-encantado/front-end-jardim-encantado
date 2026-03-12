@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./AddEstudante.module.css";
 
 export default function AddResponsavel({ dados, setDados, titulo }) {
@@ -72,11 +71,71 @@ export default function AddResponsavel({ dados, setDados, titulo }) {
             />
           </div>
           <div>
-            <label>Parentesco:</label>
+            <label>Senha:</label>
+            <input
+              type="password"
+              name="senha"
+              value={dados.senha || ""}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Rua:</label>
             <input
               type="text"
-              name="parentesco"
-              value={dados.parentesco || ""}
+              name="rua"
+              value={dados.rua || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Numero:</label>
+            <input
+              type="text"
+              name="numero"
+              value={dados.numero || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>CEP:</label>
+            <input
+              type="text"
+              name="cep"
+              value={dados.cep || ""}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Cidade:</label>
+            <input
+              type="text"
+              name="cidade"
+              value={dados.cidade || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Estado:</label>
+            <input
+              type="text"
+              name="estado"
+              value={dados.estado || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Complemento:</label>
+            <input
+              type="text"
+              name="complemento"
+              value={dados.complemento || ""}
               onChange={handleChange}
             />
           </div>

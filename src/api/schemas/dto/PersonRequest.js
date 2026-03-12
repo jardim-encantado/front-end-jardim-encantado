@@ -1,5 +1,5 @@
-import { toAddressRequestModel as toAddressRequest } from "./AddressRequest";
-import { sanitizeCpf, removeUndefinedFields } from "../util/objectUtil";
+import { toAddressRequest } from "./AddressRequest";
+import { sanitizeCpf, removeUndefinedFields } from "../../util/objectUtil";
 
 export const toPersonRequest = (person = {}) => {
   const addressInput =
@@ -22,9 +22,8 @@ export const toPersonRequest = (person = {}) => {
     email: person.email,
     password: person.password ?? person.senha,
     photoUrl: person.photoUrl ?? person.foto,
+    phoneNumber: person.phoneNumber ?? person.telefone,
     roleId: person.roleId ?? person.perfilId ?? person.cargoId,
     address,
   });
 };
-
-export const toPersonRequestModel = toPersonRequest;

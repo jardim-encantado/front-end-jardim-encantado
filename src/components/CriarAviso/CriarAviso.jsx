@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import styles from "./CriarAviso.module.css";
+import { createSchoolEventService } from "../../api/service/SchoolEventService";
 
 export default function CriarAviso({ estudante, onCancel, onSave }) {
+  const schoolEventService = createSchoolEventService();
   const [titulo, setTitulo] = useState("");
   const [data, setData] = useState("");
   const [descricao, setDescricao] = useState("");
   const [origem, setOrigem] = useState("");
 
-  const handleSave = () => {
-    if (!titulo || !data || !descricao || !origem) return; // validação simples
-    onSave({ titulo, data, descricao, origem, estudanteId: estudante.estudanteId });
-  };
+  const handleSave = async () => {
+  if (!titulo || !data || !descricao || !origem) return;
+
+  try {
+    await schoolEventService.createEvent({
+      titulo,
+      descricao,
+      data: `${data}T00:00:00`,
+      cpf: estudante.cpf,
+      eventTypeId: origem
+    });
+
+    onSave();
+  } catch (error) {
+    console.error("Erro ao criar aviso:", error);
+  }
+};
 
   return (
     <div className={styles.modalOverlay} onClick={onCancel}>

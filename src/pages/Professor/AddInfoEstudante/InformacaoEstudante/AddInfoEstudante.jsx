@@ -1,8 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import BoletimComponent from "../../components/BoletimComponent/BoletimComponent";
-import DropdownBoletim from "../../components/DropdownBoletim/DropdownBoletim";
+import Sidebar from "../../../../components/Sidebar/Sidebar";
+import BoletimComponent from "../../../../components/BoletimComponent/BoletimComponent";
+import DropdownBoletim from "../../../../components/DropdownBoletim/DropdownBoletim";
 import styles from "./Boletim/Boletim.module.css";
 
 function Boletim() {

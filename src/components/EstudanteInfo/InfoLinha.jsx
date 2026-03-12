@@ -1,4 +1,4 @@
-export default function InfoRow({ label, disabled }) {
+export default function InfoRow({ label, value = "", disabled }) {
   return (
     <div
       style={{
@@ -12,6 +12,8 @@ export default function InfoRow({ label, disabled }) {
 
       <input
         type="text"
+        value={value}
+        readOnly
         disabled={disabled}
         style={{
           width: "250px",
