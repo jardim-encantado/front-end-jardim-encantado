@@ -22,7 +22,6 @@ function HomeStudent() {
         const schoolEventService = createSchoolEventService();
         const eventos = await schoolEventService.getAllEvents();
 
-        // Ajuste conforme o nome do campo que vincula evento ao aluno
         const eventosAluno = eventos.filter((e) => e.studentId === person.id);
         setAvisos(eventosAluno);
       } catch (error) {
