@@ -7,196 +7,238 @@ import PopUpEstudante from "../../../components/PopUpEstudante/PopUpEstudante";
 import CriarAviso from "../../../components/CriarAviso/CriarAviso";
 import Carregamento from "../../../components/Carregamento/Carregamento";
 import styles from "./Estudante.module.css";
+
 import { createStudentService } from "../../../api/service/StudentService";
 import { createGradingService } from "../../../api/service/GradingService";
+import { createClassroomGroupStudentService } from "../../../api/service/ClassroomGroupStudentService";
+import { createClassroomGroupService } from "../../../api/service/ClassroomGroupService";
+
 import { usePerson } from "../../../hooks/personHook";
 
-const ENROLLMENT_STATUS_LABEL = {
-  PRE_ENROLLMENT: "Pre-matricula",
-  ENROLLED: "Matriculado",
-  REJECTED: "Rejeitado",
-};
-
-const buildBoletimRows = (grades) => {
-  const rowsBySubject = new Map();
-
-  grades.forEach((grade) => {
-    const subjectName = grade.subjectName || "Sem disciplina";
-
-    if (!rowsBySubject.has(subjectName)) {
-      rowsBySubject.set(subjectName, {
-        disciplina: subjectName,
-        bimestre1: "-",
-        bimestre2: "-",
-        bimestre3: "-",
-        bimestre4: "-",
-      });
-    }
-
-    const row = rowsBySubject.get(subjectName);
-    const bimonthly = Number(grade.bimonthly);
-
-    if (bimonthly >= 1 && bimonthly <= 4) {
-      row[`bimestre${bimonthly}`] = grade.grade ?? "-";
-    }
-  });
-
-  return [...rowsBySubject.values()];
-};
-
 export default function Estudante() {
+
   const studentService = useMemo(() => createStudentService(), []);
   const gradingService = useMemo(() => createGradingService(), []);
+  const relationService = useMemo(() => createClassroomGroupStudentService(), []);
+  const groupService = useMemo(() => createClassroomGroupService(), []);
+
   const { person } = usePerson();
 
   const [students, setStudents] = useState([]);
   const [grades, setGrades] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState("");
+  const [relations, setRelations] = useState([]);
+  const [groups, setGroups] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
   const [filtro, setFiltro] = useState("");
+  const [serieSelecionada, setSerieSelecionada] = useState(null);
+
   const [alunoPopUp, setAlunoPopUp] = useState(null);
   const [alunoCriarAviso, setAlunoCriarAviso] = useState(null);
   const [showCriarAviso, setShowCriarAviso] = useState(false);
 
   useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      setLoadError("");
-
+    async function carregarDados() {
       try {
-        const [studentList, gradingList] = await Promise.all([
-          studentService.getAllStudents(),
-          gradingService.getAllGrades(),
-        ]);
 
-        setStudents(studentList);
-        setGrades(gradingList);
+        const [studentsRes, gradesRes, relationsRes, groupsRes] =
+          await Promise.all([
+            studentService.getAllStudents(),
+            gradingService.getAllGradings(),
+            relationService.getAll(),
+            groupService.getAll(),
+          ]);
+
+        setStudents(studentsRes);
+        setGrades(gradesRes);
+        setRelations(relationsRes);
+        setGroups(groupsRes);
+
       } catch (error) {
-        console.error("Erro ao carregar estudantes do professor:", error);
-        setLoadError("Nao foi possivel carregar os estudantes.");
+        console.error("Erro ao carregar estudantes:", error);
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
-    loadData();
-  }, [gradingService, studentService]);
+    carregarDados();
+  }, [studentService, gradingService, relationService, groupService]);
 
   const teacherName =
-    [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim() || "Professor(a)";
+    [person?.firstName, person?.lastName].filter(Boolean).join(" ") ||
+    "Professor(a)";
 
-  const boletimByStudentId = useMemo(() => {
-    const groupedGrades = new Map();
+  /*
+  groupId -> series
+  */
+  const seriesByGroupId = useMemo(() => {
 
-    grades.forEach((grade) => {
-      const studentId = Number(grade.studentId);
+    const map = new Map();
 
-      if (!groupedGrades.has(studentId)) {
-        groupedGrades.set(studentId, []);
+    groups.forEach((g) => {
+      map.set(g.groupId, g.series);
+    });
+
+    return map;
+
+  }, [groups]);
+
+  /*
+  studentId -> series
+  */
+  const seriesByStudentId = useMemo(() => {
+
+    const map = new Map();
+
+    relations.forEach((rel) => {
+      const serie = seriesByGroupId.get(rel.groupId);
+      if (serie) {
+        map.set(rel.studentId, serie);
+      }
+    });
+
+    return map;
+
+  }, [relations, seriesByGroupId]);
+
+  /*
+  studentId -> grades
+  */
+  const gradesByStudent = useMemo(() => {
+
+    const map = new Map();
+
+    grades.forEach((g) => {
+
+      if (!map.has(g.studentId)) {
+        map.set(g.studentId, []);
       }
 
-      groupedGrades.get(studentId).push(grade);
+      map.get(g.studentId).push(g);
     });
 
-    const result = new Map();
+    return map;
 
-    groupedGrades.forEach((studentGrades, studentId) => {
-      result.set(studentId, buildBoletimRows(studentGrades));
-    });
-
-    return result;
   }, [grades]);
 
   const estudantes = useMemo(() => {
+
     return students.map((student) => ({
+
       id: student.studentId,
-      estudanteId: student.studentId,
-      nomeEstudante: student.fullName || `Estudante ${student.studentId}`,
+
+      nomeEstudante:
+        student.fullName || `Estudante ${student.studentId}`,
+
       serieEstudante:
-        ENROLLMENT_STATUS_LABEL[student.enrollment?.status] || student.enrollment?.status || "Sem matricula",
+        seriesByStudentId.get(student.studentId) || "Sem série",
+
       professoraResponsavel: teacherName,
-      telefone: "Nao informado",
-      email: student.email || "Nao informado",
-      boletim: boletimByStudentId.get(Number(student.studentId)) || [],
+
+      boletim:
+        gradesByStudent.get(student.studentId) || []
+
     }));
-  }, [boletimByStudentId, students, teacherName]);
 
-  const estudantesFiltrados = estudantes.filter((estudante) =>
-    estudante.nomeEstudante.toLowerCase().includes(filtro.toLowerCase())
-  );
+  }, [students, seriesByStudentId, gradesByStudent, teacherName]);
 
-  const handleAbrirPopUp = (aluno) => {
+  const seriesDisponiveis = useMemo(() => {
+
+    const set = new Set();
+
+    estudantes.forEach((e) => set.add(e.serieEstudante));
+
+    return [...set].map((s) => ({
+      value: s,
+      label: s
+    }));
+
+  }, [estudantes]);
+
+  const estudantesFiltrados = estudantes.filter((e) => {
+
+    const matchNome = e.nomeEstudante
+      .toLowerCase()
+      .includes(filtro.toLowerCase());
+
+    const matchSerie =
+      !serieSelecionada || e.serieEstudante === serieSelecionada;
+
+    return matchNome && matchSerie;
+
+  });
+
+  const abrirPopUp = (aluno) => {
     setAlunoPopUp(aluno);
     setShowCriarAviso(false);
   };
 
-  const handleCriarAviso = (aluno) => {
+  const criarAviso = (aluno) => {
     setAlunoPopUp(null);
     setAlunoCriarAviso(aluno);
     setShowCriarAviso(true);
   };
 
-  const handleFecharCriarAviso = () => {
-    setShowCriarAviso(false);
-    setAlunoCriarAviso(null);
-  };
-
-  const handleSalvarAviso = (novoAviso) => {
-    console.log("Aviso salvo:", novoAviso);
-    handleFecharCriarAviso();
-  };
-
   return (
     <div className={styles.pageLayout}>
+
       <SidebarProfessor />
 
       <div className={styles.pageContent}>
+
         <h1>Estudantes</h1>
 
         <div className={styles.filtros}>
-          <div className={styles.serie}>
-            <h2>Série:</h2>
-            <DropdownEstudantes />
-          </div>
 
-          <div className={styles.search}>
-            <SearchBar onSearch={setFiltro}  />
-          </div>
+          <DropdownEstudantes
+            options={seriesDisponiveis}
+            onChangeSerie={setSerieSelecionada}
+          />
+
+          <SearchBar onSearch={setFiltro} />
+
         </div>
 
         {isLoading && <Carregamento />}
-        {!isLoading && loadError && <p>{loadError}</p>}
 
-        {!isLoading && !loadError && (
+        {!isLoading && (
           <div className={styles.cardsContainer}>
-            {estudantesFiltrados.map((estudante) => (
+
+            {estudantesFiltrados.map((e) => (
+
               <EstudanteComponent
-                key={estudante.id}
-                nomeEstudante={estudante.nomeEstudante}
-                serieEstudante={estudante.serieEstudante}
-                professoraResponsavel={estudante.professoraResponsavel}
-                onClick={() => handleAbrirPopUp(estudante)}
+                key={e.id}
+                nomeEstudante={e.nomeEstudante}
+                serieEstudante={e.serieEstudante}
+                professoraResponsavel={e.professoraResponsavel}
+                onClick={() => abrirPopUp(e)}
               />
+
             ))}
+
           </div>
         )}
 
         {alunoPopUp && !showCriarAviso && (
+
           <PopUpEstudante
             estudante={alunoPopUp}
             onClose={() => setAlunoPopUp(null)}
-            onCriarAviso={handleCriarAviso}
+            onCriarAviso={criarAviso}
           />
+
         )}
 
-        {alunoCriarAviso && showCriarAviso && (
+        {showCriarAviso && alunoCriarAviso && (
+
           <CriarAviso
             estudante={alunoCriarAviso}
-            onCancel={handleFecharCriarAviso}
-            onSave={handleSalvarAviso}
+            onCancel={() => setShowCriarAviso(false)}
+            onSave={() => setShowCriarAviso(false)}
           />
+
         )}
+
       </div>
     </div>
   );

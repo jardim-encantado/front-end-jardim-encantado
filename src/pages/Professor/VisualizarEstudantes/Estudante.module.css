@@ -6,16 +6,19 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
+  
 }
 
 .pageContent {
   flex-grow: 1;
   padding: 24px;
+  color: black;
+  font-weight: normal;
 }
 
 .pageContent h1,
 .pageContent h2 {
-  margin: 0;
+  margin: 20;
 }
 
 .pageContent h1 {
