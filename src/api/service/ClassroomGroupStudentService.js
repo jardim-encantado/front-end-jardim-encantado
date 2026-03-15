@@ -1,23 +1,22 @@
 import { createApiRepository } from "../base/Repository";
+import { toClassroomGroupStudentSchema } from "../schemas/ClassroomGroupStudent";
 
-const CLASSROOM_GROUP_STUDENT_ENDPOINT = "/api/v1/classroom-group-students";
+const ENDPOINT = "/api/v1/classroom-group-students";
 
-const classroomGroupStudentApi = createApiRepository(
-  CLASSROOM_GROUP_STUDENT_ENDPOINT
+const api = createApiRepository(
+  ENDPOINT,
+  null,
+  toClassroomGroupStudentSchema
 );
 
 export function createClassroomGroupStudentService() {
   return {
-    async createRelation(data) {
-      return classroomGroupStudentApi.create(data);
-    },
-
     async getAll() {
-      return classroomGroupStudentApi.getAll();
+      return api.getAll();
     },
 
     async getById(id) {
-      return classroomGroupStudentApi.getById(id);
+      return api.getById(id);
     },
   };
 }

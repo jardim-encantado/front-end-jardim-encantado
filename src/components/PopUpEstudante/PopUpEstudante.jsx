@@ -18,25 +18,26 @@ export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
     if (!estudante?.estudanteId) return;
 
     const fetchBoletim = async () => {
-      try {
-        const todosGrading = await gradingService.getAllGradings();
-        const boletimAluno = todosGrading
-          .filter(g => g.student.id === estudante.estudanteId)
-          .map(g => ({
-            gradingId: g.id,
-            subjectId: g.subject.id,
-            disciplina: g.subject.name,
-            bimestre1: g.grade1 ?? 0,
-            bimestre2: g.grade2 ?? 0,
-            bimestre3: g.grade3 ?? 0,
-            bimestre4: g.grade4 ?? 0,
-            observations: g.observations
-          }));
-        setBoletim(boletimAluno);
-      } catch (error) {
-        console.error("Erro ao carregar boletim do aluno:", error);
-      }
-    };
+  try {
+    const todosGrading = await gradingService.getAllGradings();
+    const boletimAluno = todosGrading
+      .filter(g => g.student.id === estudante.estudanteId)
+      .map(g => ({
+        gradingId: g.id,
+        subjectId: g.subject.id,
+        disciplina: g.subject.name,
+        bimestre1: g.grade1 ?? 0,
+        bimestre2: g.grade2 ?? 0,
+        bimestre3: g.grade3 ?? 0,
+        bimestre4: g.grade4 ?? 0,
+        observations: g.observations
+      }));
+    setBoletim(boletimAluno);
+  } catch (error) {
+    console.error("Erro ao carregar boletim do aluno:", error);
+  }
+};
+      
 
     fetchBoletim();
   }, [estudante, gradingService]);
