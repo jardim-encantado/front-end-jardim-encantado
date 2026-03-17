@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AddEstudante.module.css";
 import SidebarAdmin from "../SideBarAdmin/";
-import { createStudentService } from "../../api/service/StudentService";
+import { createStudentService } from "../../../api/service/StudentService";
 
 const maskCpf = (value) => {
   value = value.replace(/\D/g, "");
