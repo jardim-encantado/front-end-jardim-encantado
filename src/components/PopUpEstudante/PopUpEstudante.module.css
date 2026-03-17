@@ -36,16 +36,9 @@
 
 .info {
   display: flex;
-  flex-direction: column;
-  font-size: 13px;
-  gap: 8px; 
-}
-
-.leftSide {
-  display: flex;
-  gap: 20px;    
   align-items: flex-start;
-  margin-bottom: 0; 
+  gap: 20px;
+  margin-bottom: 16px;
 }
 
 .foto {
@@ -53,18 +46,20 @@
   height: 120px;
   border-radius: 12px;
   object-fit: cover;
+  border: 2px solid #ccc;
 }
 
 .columnPrimary,
 .columnSecondary {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 1px;
+  font-size: 13px;
 }
 
-.columnPrimary p,
-.columnSecondary p {
-  margin: 0;
+.columnsWrapper {
+  display: flex;
+  gap: 40px;
 }
 
 .actions {
@@ -110,13 +105,22 @@
     align-items: center;
     background-color: #10898B;
 }
-.iconOcorrencia{
-  width: 60px;
-  height: 60px;
-  cursor: pointer; 
-  margin-top: 30px;
-  margin-left: 20px;
 
+.avisoContainer {
+  display: flex;
+  align-items: center; 
+  gap: 8px; 
+  margin-top: 8px;
+}
+
+.iconOcorrencia {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.saveBtn{
+  background-color: #10898B;
 }
 
 @media (max-width: 768px) {

@@ -1,34 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./AddEstudante.module.css";
 import SidebarAdmin from "../SideBarAdmin/";
+import { createStudentService } from "../../../api/service/StudentService";
 
 const maskCpf = (value) => {
-  value = value.replace(/\D/g, ""); 
-  value = value.slice(0, 11); 
+  value = value.replace(/\D/g, "");
+  value = value.slice(0, 11);
   value = value.replace(/(\d{3})(\d)/, "$1.$2");
   value = value.replace(/(\d{3})(\d)/, "$1.$2");
   value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-
   return value;
 };
 
 const maskPhone = (value) => {
   value = value.replace(/\D/g, "");
-  value = value.slice(0, 11); 
+  value = value.slice(0, 11);
   value = value.replace(/(\d{2})(\d)/, "($1) $2");
   value = value.replace(/(\d{5})(\d)/, "$1-$2");
-
   return value;
 };
 
 const maskCep = (value) => {
-  value = value.replace(/\D/g, ""); 
-  value = value.slice(0, 8); 
+  value = value.replace(/\D/g, "");
+  value = value.slice(0, 8);
   value = value.replace(/(\d{5})(\d)/, "$1-$2");
   return value;
 };
 
-export default function AddEstudante({ dados, setDados, titulo }) {
+export default function AddEstudante({ dados, setDados, titulo, onSaved }) {
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const studentService = createStudentService();
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -40,30 +43,50 @@ export default function AddEstudante({ dados, setDados, titulo }) {
 
     let newValue = value;
 
-    if (name === "cpf") {
-      newValue = maskCpf(value);
-    }
-
-    if (name === "telefone") {
-      newValue = maskPhone(value);
-    }
-
-    if (name === "cep") {
-      newValue = maskCep(value);
-    }
+    if (name === "cpf") newValue = maskCpf(value);
+    if (name === "telefone") newValue = maskPhone(value);
+    if (name === "cep") newValue = maskCep(value);
 
     setDados({ ...dados, [name]: newValue });
   };
 
+  const handleSave = async () => {
+    setErrorMsg("");
+    setLoading(true);
+
+    try {
+      // Criando FormData para enviar foto
+      const formData = new FormData();
+      Object.entries(dados).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formData.append(key, value);
+        }
+      });
+
+      // Chamada ao backend
+      await studentService.create(formData);
+
+      if (onSaved) onSaved(); // Callback para atualizar lista ou fechar modal
+      alert("Estudante salvo com sucesso!");
+    } catch (err) {
+      console.error("Erro ao salvar estudante:", err);
+      setErrorMsg(
+        err?.response?.data?.message ||
+        "Não foi possível salvar o estudante. Tente novamente."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        {titulo}
-      </div>
+      <div className={styles.header}>{titulo}</div>
 
       <SidebarAdmin />
 
       <div className={styles.form}>
+        {/* Aqui vão todos os inputs do formulário */}
         <div className={styles.row}>
           <div>
             <label>Nome:</label>
@@ -132,77 +155,21 @@ export default function AddEstudante({ dados, setDados, titulo }) {
 
         <div className={styles.row}>
           <div>
-            <label>Rua:</label>
-            <input
-              type="text"
-              name="rua"
-              value={dados.rua || ""}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Número:</label>
-            <input
-              type="text"
-              name="numero"
-              value={dados.numero || ""}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>CEP:</label>
-            <input
-              type="text"
-              name="cep"
-              value={dados.cep || ""}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-
-        <div className={styles.row}>
-          <div>
-            <label>Cidade:</label>
-            <input
-              type="text"
-              name="cidade"
-              value={dados.cidade || ""}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Estado:</label>
-            <input
-              type="text"
-              name="estado"
-              value={dados.estado || ""}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Complemento:</label>
-            <input
-              type="text"
-              name="complemento"
-              value={dados.complemento || ""}
-              onChange={handleChange}
-            />
-          </div>
-        </div>
-
-        <div className={styles.row}>
-          <div>
             <label>Foto:</label>
-            <input
-              type="file"
-              name="foto"
-              onChange={handleChange}
-            />
+            <input type="file" name="foto" onChange={handleChange} />
           </div>
+        </div>
+
+        {errorMsg && <p className={styles.errorMessage}>{errorMsg}</p>}
+
+        <div className={styles.row}>
+          <button
+            className={styles.saveButton}
+            onClick={handleSave}
+            disabled={loading}
+          >
+            {loading ? "Salvando..." : "Salvar"}
+          </button>
         </div>
       </div>
     </div>

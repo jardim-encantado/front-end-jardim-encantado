@@ -1,10 +1,8 @@
-// src/App.jsx
-import React, { Suspense, lazy } from "react"; // React + Suspense + lazy
-import { BrowserRouter, Routes, Route } from "react-router-dom"; // Router
-import Carregamento from "./components/Carregamento/Carregamento"; // Componente de loading
-import { usePerson } from "./hooks/personHook"; // Hook do usuário logado
+import React, { Suspense, lazy } from "react"; 
+import { BrowserRouter, Routes, Route } from "react-router-dom"; 
+import Carregamento from "./components/Carregamento/Carregamento";
+import { usePerson } from "./hooks/personHook"; 
 
-// Lazy imports para componentes/páginas
 const HeaderRight = lazy(() => import("./components/HeaderRight"));
 
 // Login
@@ -33,6 +31,9 @@ const ProfessorVisualizaEstudante = lazy(
 );
 const PaginaAvisos = lazy(
   () => import("./pages/Professor/AdicionarAviso/AddAviso"),
+);
+const PaginaPerfil = lazy(
+  () => import("./pages/Professor/Perfil/PerfilProfessor"),
 );
 
 // Admin
@@ -87,6 +88,7 @@ function App() {
             element={<ProfessorVisualizaEstudante />}
           />
           <Route path="/professor/adicionarAviso" element={<PaginaAvisos />} />
+          <Route path="/pages/Professor/visualizarPerfil" element={<PaginaAvisos />} />
 
           {/* Admin */}
           <Route path="/admin/criarEstudante" element={<CriarEstudante />} />

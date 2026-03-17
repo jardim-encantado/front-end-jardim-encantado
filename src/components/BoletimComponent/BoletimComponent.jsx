@@ -1,20 +1,41 @@
 import React from "react";
 import styles from "./BoletimComponent.module.css";
 
-const BoletimAluno = ({ dados, editable = false, onChange }) => {
+const BoletimAluno = ({
+  dados,
+  editable = false,
+  onChange,
+  bimestreAtual,
+}) => {
   const handleChange = (index, campo, valor) => {
-  let numero = valor === "" ? "" : Number(valor);
+    const numero = valor === "" ? "" : Number(valor);
 
-  if (numero !== "") {
-    if (numero > 10) numero = 10;
-    if (numero < 0) numero = 0;
-  }
+    // pega o número do bimestre (1, 2, 3 ou 4)
+    const bimestre = Number(campo.replace("bimestre", ""));
 
-  const novoBoletim = [...dados];
-  novoBoletim[index][campo] = numero;
+    // 🚨 BLOQUEIA APENAS FUTUROS
+    if (bimestre > bimestreAtual) {
+      alert("Você não pode editar bimestres futuros");
 
-  if (onChange) onChange(novoBoletim);
-};
+      const novoBoletim = [...dados];
+      novoBoletim[index][campo] = ""; // limpa o campo
+
+      if (onChange) onChange(novoBoletim);
+      return;
+    }
+
+    let notaTratada = numero;
+
+    if (notaTratada !== "") {
+      if (notaTratada > 10) notaTratada = 10;
+      if (notaTratada < 0) notaTratada = 0;
+    }
+
+    const novoBoletim = [...dados];
+    novoBoletim[index][campo] = notaTratada;
+
+    if (onChange) onChange(novoBoletim);
+  };
 
   return (
     <div className={styles.containerTabela}>
@@ -28,11 +49,14 @@ const BoletimAluno = ({ dados, editable = false, onChange }) => {
             <th>4º Bim</th>
           </tr>
         </thead>
+
         <tbody>
           {dados.length > 0 ? (
             dados.map((item, index) => (
               <tr key={index}>
                 <td>{item.disciplina}</td>
+
+                {/* 1º BIM */}
                 <td>
                   {editable ? (
                     <input
@@ -52,6 +76,8 @@ const BoletimAluno = ({ dados, editable = false, onChange }) => {
                     item.bimestre1
                   )}
                 </td>
+
+                {/* 2º BIM */}
                 <td>
                   {editable ? (
                     <input
@@ -71,6 +97,8 @@ const BoletimAluno = ({ dados, editable = false, onChange }) => {
                     item.bimestre2
                   )}
                 </td>
+
+                {/* 3º BIM */}
                 <td>
                   {editable ? (
                     <input
@@ -90,6 +118,8 @@ const BoletimAluno = ({ dados, editable = false, onChange }) => {
                     item.bimestre3
                   )}
                 </td>
+
+                {/* 4º BIM */}
                 <td>
                   {editable ? (
                     <input

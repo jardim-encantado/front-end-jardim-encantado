@@ -29,6 +29,8 @@ export function createGuardianService() {
         return resolvedRoleId;
     };
 
+    
+
     return {
         async createGuardian(guardianData) {
             try {
@@ -46,6 +48,16 @@ export function createGuardianService() {
         async getAllGuardians() { return guardianApi.getAll(); },
 
         async getGuardianById(id) { return guardianApi.getById(id); },
+
+        async getGuardianByCpf(cpf) {
+            try {
+                const response = await api.get(`${GUARDIANS_ENDPOINT}/cpf/${cpf}`);
+                return response.data ? toGuardianSchema(response.data[0]) : null;
+            } catch (error) {
+                console.error(`Error fetching guardian by CPF ${cpf}:`, error);
+                throw error;
+            }
+        },
 
         async addStudentToGuardian(guardianId, studentId) {
             try {
