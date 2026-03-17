@@ -152,7 +152,7 @@ npm run preview
 
 Protótipos de interface em Figma
 
-[Adicionar link do protótipo aqui]()
+[Adicionar link do protótipo aqui](https://www.figma.com/design/hCJ1xyfX9gip546YjYM97B/Escola-infantil?node-id=0-1&t=YGWjWKsvTalitzLx-1)
 
 ## 📄 Licença
 
