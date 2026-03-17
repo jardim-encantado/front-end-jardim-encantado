@@ -1,6 +1,7 @@
 import { createApiRepository } from "../base/Repository";
 import { toGradingRequest } from "../schemas/dto/GradingRequest";
 import { toGradingSchema } from "../schemas/Grading";
+import api from "../base/config";
 
 const GRADING_ENDPOINT = "/api/v1/grading";
 
@@ -22,6 +23,11 @@ export function createGradingService() {
 
     async getGradingById(id) {
       return gradingApi.getById(id);
+    },
+
+    async getByStudentId(studentId) {
+      const response = await api.get(`${GRADING_ENDPOINT}/by-student/${studentId}`);
+      return response.data.map(toGradingSchema);
     },
 
     async updateGrading(id, grading) {

@@ -126,6 +126,7 @@ export default function Estudante() {
     return students.map((student) => ({
 
       id: student.studentId,
+      studentId: student.studentId,
 
       nomeEstudante:
         student.fullName || `Estudante ${student.studentId}`,

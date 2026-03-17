@@ -2,12 +2,19 @@ import React from "react";
 import styles from "./BoletimComponent.module.css";
 
 const BoletimAluno = ({ dados, editable = false, onChange }) => {
-
   const handleChange = (index, campo, valor) => {
-    const novoBoletim = [...dados];
-    novoBoletim[index][campo] = valor === "" ? "" : Number(valor);
-    if (onChange) onChange(novoBoletim);
-  };
+  let numero = valor === "" ? "" : Number(valor);
+
+  if (numero !== "") {
+    if (numero > 10) numero = 10;
+    if (numero < 0) numero = 0;
+  }
+
+  const novoBoletim = [...dados];
+  novoBoletim[index][campo] = numero;
+
+  if (onChange) onChange(novoBoletim);
+};
 
   return (
     <div className={styles.containerTabela}>
@@ -30,37 +37,77 @@ const BoletimAluno = ({ dados, editable = false, onChange }) => {
                   {editable ? (
                     <input
                       type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
                       value={item.bimestre1}
-                      onChange={(e) => handleChange(index, "bimestre1", e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre1", e.target.value)
+                      }
                     />
-                  ) : item.bimestre1}
+                  ) : (
+                    item.bimestre1
+                  )}
                 </td>
                 <td>
                   {editable ? (
                     <input
                       type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
                       value={item.bimestre2}
-                      onChange={(e) => handleChange(index, "bimestre2", e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre2", e.target.value)
+                      }
                     />
-                  ) : item.bimestre2}
+                  ) : (
+                    item.bimestre2
+                  )}
                 </td>
                 <td>
                   {editable ? (
                     <input
                       type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
                       value={item.bimestre3}
-                      onChange={(e) => handleChange(index, "bimestre3", e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre3", e.target.value)
+                      }
                     />
-                  ) : item.bimestre3}
+                  ) : (
+                    item.bimestre3
+                  )}
                 </td>
                 <td>
                   {editable ? (
                     <input
                       type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
                       value={item.bimestre4}
-                      onChange={(e) => handleChange(index, "bimestre4", e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre4", e.target.value)
+                      }
                     />
-                  ) : item.bimestre4}
+                  ) : (
+                    item.bimestre4
+                  )}
                 </td>
               </tr>
             ))
