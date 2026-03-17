@@ -49,6 +49,16 @@ export function createGuardianService() {
 
         async getGuardianById(id) { return guardianApi.getById(id); },
 
+        async getGuardianByCpf(cpf) {
+            try {
+                const response = await api.get(`${GUARDIANS_ENDPOINT}/cpf/${cpf}`);
+                return response.data ? toGuardianSchema(response.data[0]) : null;
+            } catch (error) {
+                console.error(`Error fetching guardian by CPF ${cpf}:`, error);
+                throw error;
+            }
+        },
+
         async addStudentToGuardian(guardianId, studentId) {
             try {
                 const response = await api.post(`${GUARDIANS_ENDPOINT}/${guardianId}/students/${studentId}`);
