@@ -1,16 +1,20 @@
 import React from "react";
 import styles from "./BoletimComponent.module.css";
 
-const defaultDados = [
-    { disciplina: "Matemática", bimestre1: 10, bimestre2: 9, bimestre3: 8, bimestre4: 9 },
-    { disciplina: "Português", bimestre1: 9, bimestre2: 8, bimestre3: 7, bimestre4: 8 },
-    { disciplina: "História", bimestre1: 8, bimestre2: 7, bimestre3: 9, bimestre4: 8 },
-    { disciplina: "Geografia", bimestre1: 7, bimestre2: 8, bimestre3: 9, bimestre4: 7 },
-    { disciplina: "Ciência", bimestre1: 9, bimestre2: 9, bimestre3: 8, bimestre4: 9 }
-  ];
+const BoletimAluno = ({ dados, editable = false, onChange }) => {
+  const handleChange = (index, campo, valor) => {
+  let numero = valor === "" ? "" : Number(valor);
 
-const BoletimAluno = ({ dados = defaultDados }) => {
-  const linhas = Array.isArray(dados) ? dados : defaultDados;
+  if (numero !== "") {
+    if (numero > 10) numero = 10;
+    if (numero < 0) numero = 0;
+  }
+
+  const novoBoletim = [...dados];
+  novoBoletim[index][campo] = numero;
+
+  if (onChange) onChange(novoBoletim);
+};
 
   return (
     <div className={styles.containerTabela}>
@@ -25,14 +29,86 @@ const BoletimAluno = ({ dados = defaultDados }) => {
           </tr>
         </thead>
         <tbody>
-          {linhas.length > 0 ? (
-            linhas.map((item, index) => (
+          {dados.length > 0 ? (
+            dados.map((item, index) => (
               <tr key={index}>
                 <td>{item.disciplina}</td>
-                <td>{item.bimestre1}</td>
-                <td>{item.bimestre2}</td>
-                <td>{item.bimestre3}</td>
-                <td>{item.bimestre4}</td>
+                <td>
+                  {editable ? (
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      value={item.bimestre1}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre1", e.target.value)
+                      }
+                    />
+                  ) : (
+                    item.bimestre1
+                  )}
+                </td>
+                <td>
+                  {editable ? (
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      value={item.bimestre2}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre2", e.target.value)
+                      }
+                    />
+                  ) : (
+                    item.bimestre2
+                  )}
+                </td>
+                <td>
+                  {editable ? (
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      value={item.bimestre3}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre3", e.target.value)
+                      }
+                    />
+                  ) : (
+                    item.bimestre3
+                  )}
+                </td>
+                <td>
+                  {editable ? (
+                    <input
+                      type="number"
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      value={item.bimestre4}
+                      onKeyDown={(e) => {
+                        if (e.key === "-") e.preventDefault();
+                      }}
+                      onChange={(e) =>
+                        handleChange(index, "bimestre4", e.target.value)
+                      }
+                    />
+                  ) : (
+                    item.bimestre4
+                  )}
+                </td>
               </tr>
             ))
           ) : (

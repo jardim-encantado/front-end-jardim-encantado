@@ -12,12 +12,19 @@
   font-size: 16px; 
 }
 
+input{
+  background-color: #ffffff;
+  border:none;
+  outline: #10898B;
+  color: black;
+}
 .boletimAluno th,
 .boletimAluno td {
   padding: 12px 8px; 
   white-space: nowrap;
   font-weight: 500;
   border: 1px solid white;
+  width: 20px;
 }
 
 .boletimAluno th {

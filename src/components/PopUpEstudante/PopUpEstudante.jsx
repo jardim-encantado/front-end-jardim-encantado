@@ -1,64 +1,223 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PopUpEstudante.module.css";
-import Boletim from "../BoletimComponent/BoletimComponent";
+import BoletimAluno from "../BoletimComponent/BoletimComponent";
 import AvisoCard from "../AvisoCard/AvisoCard";
 import iconOcorrencia from "../../assets/images/addOcorrencia.png";
 
+import { createGradingService } from "../../api/service/GradingService";
+import { createSchoolEventService } from "../../api/service/SchoolEventService";
+
 export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
-  if (!estudante) return null;
 
-  const boletim = Array.isArray(estudante.boletim) ? estudante.boletim : [];
+  const [boletim, setBoletim] = useState([]);
+  const [avisosDoAluno, setAvisosDoAluno] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const avisos = [
-    { id: 1, titulo: "Dia do Livro", data: "02/02", descricao: "Troca de livros.", origem: "Diretoria", cor: "rosa", estudanteId: 2, tpAviso: 1 },
-    { id: 2, titulo: "Reunião de Pais", data: "05/02", descricao: "Presença obrigatória.", origem: "Coordenação", cor: "verde", estudanteId: 2, tpAviso: 1 }
-  ];
+  const gradingService = createGradingService();
+  const schoolEventService = createSchoolEventService();
 
-  const avisosDoAluno = avisos.filter(aviso => aviso.estudanteId === estudante.estudanteId && aviso.tpAviso === 1);
+  useEffect(() => {
+
+    if (!estudante?.id) return;
+
+    async function carregarDados() {
+
+      try {
+
+        setLoading(true);
+
+        const boletimResponse =
+          await gradingService.getByStudentId(estudante.id);
+
+        const boletimFormatado = [];
+
+        boletimResponse.forEach((g) => {
+
+          const subjectId = g.subject.subjectId;
+
+          let materia = boletimFormatado.find(
+            (b) => b.subjectId === subjectId
+          );
+
+          if (!materia) {
+
+            materia = {
+              disciplina: g.subject.name,
+              subjectId: subjectId,
+
+              bimestre1: "",
+              bimestre2: "",
+              bimestre3: "",
+              bimestre4: "",
+
+              gradingIds: {}
+            };
+
+            boletimFormatado.push(materia);
+          }
+
+          const bimestre = g.bimonthly;
+
+          materia[`bimestre${bimestre}`] = g.grade;
+          materia.gradingIds[bimestre] = g.gradingId;
+
+        });
+
+        setBoletim(boletimFormatado);
+
+        const eventos = await schoolEventService.getAllEvents();
+
+        const eventosAluno = eventos.filter(
+          (e) => e.studentId === estudante.id
+        );
+
+        setAvisosDoAluno(eventosAluno);
+
+      } catch (error) {
+
+        console.error("Erro ao carregar dados do aluno:", error);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    }
+
+    carregarDados();
+
+  }, [estudante]);
+
+  const handleBoletimChange = async (novoBoletim) => {
+
+    setBoletim(novoBoletim);
+
+    for (const materia of novoBoletim) {
+
+      for (let b = 1; b <= 4; b++) {
+
+        const nota = materia[`bimestre${b}`];
+        const gradingId = materia.gradingIds[b];
+
+        if (!gradingId) continue;
+
+        try {
+
+          await gradingService.updateGrading(gradingId, {
+            studentId: estudante.id,
+            subjectId: materia.subjectId,
+            grade: nota,
+            bimonthly: b,
+            observations: ""
+          });
+
+        } catch (error) {
+
+          console.error("Erro ao atualizar nota:", error);
+
+        }
+
+      }
+
+    }
+
+  };
+
+  if (!estudante || loading) {
+    return <p>Carregando...</p>;
+  }
 
   return (
+
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
-        <button className={styles.closeBtn} onClick={onClose}>✕</button>
+
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+      >
+
+        <button
+          className={styles.closeBtn}
+          onClick={onClose}
+        >
+          ✕
+        </button>
 
         <div className={styles.info}>
-          <div>
-            <p><strong>Nome:</strong> {estudante.nomeEstudante}</p>
-            <p><strong>Série:</strong> {estudante.serieEstudante}</p>
-            <p><strong>Professora:</strong> {estudante.professoraResponsavel}</p>
-            <p><strong>Telefone:</strong> {estudante.telefone}</p>
-            <p><strong>Email:</strong> {estudante.email}</p>
-          </div>
+
+          <p>
+            <strong>Nome:</strong> {estudante.nomeEstudante}
+          </p>
+
+          <p>
+            <strong>Série:</strong> {estudante.serieEstudante}
+          </p>
+
+          <p>
+            <strong>Professora:</strong> {estudante.professoraResponsavel}
+          </p>
+
+          <p>
+            <strong>Telefone:</strong> {estudante.telefone}
+          </p>
+
+          <p>
+            <strong>Email:</strong> {estudante.email}
+          </p>
+
         </div>
 
-        <Boletim dados={boletim} />
+        <BoletimAluno
+          dados={boletim}
+          editable={true}
+          onChange={handleBoletimChange}
+        />
+
         <hr className={styles.divider} />
 
         <div className={styles.avisosDoAluno}>
+
           {avisosDoAluno.length > 0 ? (
-            avisosDoAluno.map(aviso => (
+
+            avisosDoAluno.map((aviso) => (
+
               <AvisoCard
                 key={aviso.id}
-                titulo={aviso.titulo}
-                data={aviso.data}
-                descricao={aviso.descricao}
-                origem={aviso.origem}
-                cor={aviso.cor}
+                avisoSchema={{
+                  color: aviso.color || "azul",
+                  name: aviso.name || aviso.title,
+                  eventDate: aviso.eventDate || aviso.date,
+                  description: aviso.description || aviso.descricao,
+                  origin: aviso.origin || aviso.origem,
+                }}
               />
+
             ))
-          ) : <p>Sem avisos para este aluno.</p>}
+
+          ) : (
+
+            <p>Sem avisos para este aluno.</p>
+
+          )}
 
           <img
             src={iconOcorrencia}
             alt="Ícone de ocorrência"
             className={styles.iconOcorrencia}
-            onClick={e => {
+            onClick={(e) => {
+
               e.stopPropagation();
-              onCriarAviso(estudante); 
+              onCriarAviso(estudante);
+
             }}
           />
+
         </div>
+
       </div>
+
     </div>
+
   );
 }

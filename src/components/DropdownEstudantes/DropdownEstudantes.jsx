@@ -1,58 +1,50 @@
 import React, { useState } from "react";
 import Select from "react-select";
 
-const options = [
-  { value: "1 ano A", label: "1 ano A" },
-  { value: "1 ano B", label: "1 ano B" },
-  { value: "1 ano C", label: "1 ano C" },
-  { value: "2 ano A", label: "2 ano A" },
-  { value: "2 ano B", label: "2 ano B" },
-  { value: "2 ano C", label: "2 ano C" },
-  { value: "3 ano A", label: "3 ano A" },
-  { value: "3 ano B", label: "3 ano B" },
-  { value: "3 ano C", label: "3 ano C" },
-];
-
-export default function DropdownEstudantes() {
+export default function DropdownEstudantes({ options, onChangeSerie }) {
   const [selectedYear, setSelectedYear] = useState(null);
 
   const handleChange = (option) => {
     setSelectedYear(option);
-    console.log("Ano selecionado:", option.value);
+
+    if (onChangeSerie) {
+      onChangeSerie(option?.value || null);
+    }
   };
 
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      backgroundColor: "#DAE7C1",
+      backgroundColor: "#10898B",
       border: "none",
       borderRadius: 4,
       boxShadow: "none",
       cursor: "pointer",
     }),
-
-
-    menu: (provided) => ({
+    singleValue: (provided) => ({
       ...provided,
-      borderRadius: 4,
-      overflow: "hidden",
+      color: "white",
     }),
-
-    menuList: (provided) => ({
+    placeholder: (provided) => ({
       ...provided,
-      maxHeight: 120,
-      overflowY: "auto",
+      color: "white",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#10898B" : "white",
+      color: state.isFocused ? "white" : "black",
     }),
   };
 
   return (
-    <div style={{ width: "130px", fontFamily: "Arial, sans-serif", fontSize: "18px" }}>
+    <div style={{ width: "130px", fontFamily: "Arial", fontSize: "18px" }}>
       <Select
         options={options}
         value={selectedYear}
         onChange={handleChange}
         placeholder="Série"
         styles={customStyles}
+        isClearable
       />
     </div>
   );
