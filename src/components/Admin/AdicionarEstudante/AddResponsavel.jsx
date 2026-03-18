@@ -1,8 +1,19 @@
-import styles from "./AddEstudante.module.css";
-import { useState } from "react";
-import { createGuardianService } from "../../../api/service/GuardianService";
+import React, { useMemo, useState } from "react";
+import styles from "./AddProfessor.module.css";
+import SidebarAdmin from "../SideBarAdmin/";
+import DropdownMaterias from "./Dropdown/DropdownMaterias";
+import iconMais from "../../../assets/images/addOcorrencia.png";
+import iconMenos from "../../../assets/images/iconRemover.png";
+import { createTeacherService } from "../../../api/service/TeacherService";
 
-export default function AddResponsavel({ dados, setDados, titulo }) {
+export default function AddProfessor({
+  dados,
+  setDados,
+  titulo,
+  subjectsOptions = [],
+  onSubjectsChange,
+}) {
+  const [materias, setMaterias] = useState([{ subjectId: null }]);
   const [loading, setLoading] = useState(false);
 
   const formatCPF = (value) => {
@@ -21,13 +32,33 @@ export default function AddResponsavel({ dados, setDados, titulo }) {
   };
 
   const formatCEP = (value) => {
-    return value.replace(/\D/g, "").replace(/(\d{5})(\d{3})$/, "$1-$2");
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{5})(\d{3})$/, "$1-$2");
+  };
+
+  const normalizedOptions = useMemo(() => {
+    if (Array.isArray(subjectsOptions) && subjectsOptions.length) {
+      return subjectsOptions;
+    }
+    return [];
+  }, [subjectsOptions]);
+
+  const emitSubjectsChange = (nextMaterias) => {
+    if (!onSubjectsChange) return;
+
+    const selectedSubjectIds = [...new Set(nextMaterias.map((item) => item.subjectId))]
+      .map((subjectId) => Number(subjectId))
+      .filter((subjectId) => Number.isFinite(subjectId));
+
+    onSubjectsChange(selectedSubjectIds);
   };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
     let newValue = value;
+
     if (name === "cpf") newValue = formatCPF(value);
     if (name === "telefone") newValue = formatTelefone(value);
     if (name === "cep") newValue = formatCEP(value);
@@ -39,100 +70,199 @@ export default function AddResponsavel({ dados, setDados, titulo }) {
     }
   };
 
+  const handleMateriaChange = (index, option) => {
+    const nextMaterias = [...materias];
+    nextMaterias[index] = {
+      subjectId: option?.value ?? null,
+    };
+
+    setMaterias(nextMaterias);
+    emitSubjectsChange(nextMaterias);
+  };
+
+  const adicionarMateria = () => {
+    setMaterias([...materias, { subjectId: null }]);
+  };
+
+  const removerMateria = (index) => {
+    if (index === 0 && materias.length === 1) return;
+
+    const novasMaterias = materias.filter((_, i) => i !== index);
+    setMaterias(novasMaterias);
+    emitSubjectsChange(novasMaterias);
+  };
+
   const handleSalvar = async () => {
     try {
       setLoading(true);
 
       const payload = {
         ...dados,
-        cpf: dados.cpf?.replace(/\D/g, ""),       
-        telefone: dados.telefone?.replace(/\D/g, ""), 
-        cep: dados.cep?.replace(/\D/g, ""),       
+        cpf: dados.cpf?.replace(/\D/g, ""),
+        telefone: dados.telefone?.replace(/\D/g, ""),
+        cep: dados.cep?.replace(/\D/g, ""),
       };
 
-      await createGuardianService().createGuardian(payload);
+      await createTeacherService().createTeacher(payload);
 
-      alert("Responsável cadastrado com sucesso!");
+      alert("Professor cadastrado com sucesso!");
     } catch (error) {
-      console.error("Erro ao cadastrar responsável:", error.response?.data || error.message);
-      alert("Erro ao cadastrar responsável. Confira os dados e tente novamente.");
+      console.error("Erro ao cadastrar professor:", error.response?.data || error.message);
+      alert("Erro ao cadastrar professor.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>{titulo}</div>
+    <div>
+      <div className={styles.container}>
+        <div className={styles.header}>{titulo}</div>
 
-      <div className={styles.form}>
-        <div className={styles.row}>
-          <div>
-            <label>Nome:</label>
-            <input type="text" name="nome" value={dados.nome || ""} onChange={handleChange} />
+        <SidebarAdmin />
+
+        <div className={styles.form}>
+          <div className={styles.row}>
+            <div>
+              <label>Nome:</label>
+              <input type="text" name="nome" value={dados.nome || ""} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label>Sobrenome:</label>
+              <input type="text" name="sobrenome" value={dados.sobrenome || ""} onChange={handleChange} />
+            </div>
           </div>
-          <div>
-            <label>Sobrenome:</label>
-            <input type="text" name="sobrenome" value={dados.sobrenome || ""} onChange={handleChange} />
+
+          <div className={styles.row}>
+            <div>
+              <label>Email:</label>
+              <input type="email" name="email" value={dados.email || ""} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label>Telefone:</label>
+              <input
+                type="text"
+                name="telefone"
+                value={dados.telefone || ""}
+                onChange={handleChange}
+                maxLength={15}
+              />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div>
+              <label>CPF:</label>
+              <input
+                type="text"
+                name="cpf"
+                value={dados.cpf || ""}
+                onChange={handleChange}
+                maxLength={14}
+              />
+            </div>
+
+            <div>
+              <label>Senha:</label>
+              <input
+                type="password"
+                name="senha"
+                value={dados.senha || ""}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div>
+              <label>Rua:</label>
+              <input type="text" name="rua" value={dados.rua || ""} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label>Número:</label>
+              <input type="text" name="numero" value={dados.numero || ""} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label>CEP:</label>
+              <input
+                type="text"
+                name="cep"
+                value={dados.cep || ""}
+                onChange={handleChange}
+                maxLength={9}
+              />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div>
+              <label>Cidade:</label>
+              <input type="text" name="cidade" value={dados.cidade || ""} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label>Estado:</label>
+              <input type="text" name="estado" value={dados.estado || ""} onChange={handleChange} />
+            </div>
+
+            <div>
+              <label>Complemento:</label>
+              <input type="text" name="complemento" value={dados.complemento || ""} onChange={handleChange} />
+            </div>
+          </div>
+
+          <div className={styles.row}>
+            <div>
+              <label>Foto:</label>
+              <input type="file" name="foto" onChange={handleChange} />
+            </div>
+          </div>
+
+          <div style={{ marginTop: "20px" }}>
+            <button onClick={handleSalvar} disabled={loading}>
+              {loading ? "Salvando..." : "Salvar"}
+            </button>
           </div>
         </div>
+      </div>
 
-        <div className={styles.row}>
-          <div>
-            <label>Email:</label>
-            <input type="email" name="email" value={dados.email || ""} onChange={handleChange} />
-          </div>
-          <div>
-            <label>Telefone:</label>
-            <input type="text" name="telefone" value={dados.telefone || ""} onChange={handleChange} maxLength={15} />
-          </div>
-        </div>
+      <div className={styles.container}>
+        <div className={styles.header}>Matérias</div>
 
-        <div className={styles.row}>
-          <div>
-            <label>CPF:</label>
-            <input type="text" name="cpf" value={dados.cpf || ""} onChange={handleChange} maxLength={14} />
-          </div>
-          <div>
-            <label>Senha:</label>
-            <input type="password" name="senha" value={dados.senha || ""} onChange={handleChange} />
-          </div>
-        </div>
+        <div className={styles.subject}>
+          <label>Matérias:</label>
 
-        <div className={styles.row}>
-          <div>
-            <label>Rua:</label>
-            <input type="text" name="rua" value={dados.rua || ""} onChange={handleChange} />
-          </div>
-          <div>
-            <label>Numero:</label>
-            <input type="text" name="numero" value={dados.numero || ""} onChange={handleChange} />
-          </div>
-          <div>
-            <label>CEP:</label>
-            <input type="text" name="cep" value={dados.cep || ""} onChange={handleChange} maxLength={9} />
-          </div>
-        </div>
+          {materias.map((item, index) => (
+            <div key={index} className={styles.dropdownRow}>
+              <DropdownMaterias
+                options={normalizedOptions}
+                value={
+                  normalizedOptions.find((option) => option.value === item.subjectId) || null
+                }
+                onChange={(option) => handleMateriaChange(index, option)}
+              />
 
-        <div className={styles.row}>
-          <div>
-            <label>Cidade:</label>
-            <input type="text" name="cidade" value={dados.cidade || ""} onChange={handleChange} />
-          </div>
-          <div>
-            <label>Estado:</label>
-            <input type="text" name="estado" value={dados.estado || ""} onChange={handleChange} />
-          </div>
-          <div>
-            <label>Complemento:</label>
-            <input type="text" name="complemento" value={dados.complemento || ""} onChange={handleChange} />
-          </div>
-        </div>
+              {index === materias.length - 1 && (
+                <img
+                  src={iconMais}
+                  alt="Adicionar"
+                  className={styles.iconMais}
+                  onClick={adicionarMateria}
+                />
+              )}
 
-        <div style={{ marginTop: "20px" }}>
-          <button onClick={handleSalvar} disabled={loading}>
-            {loading ? "Salvando..." : "Salvar"}
-          </button>
+              <img
+                src={iconMenos}
+                alt="Remover"
+                className={styles.iconMais}
+                onClick={() => removerMateria(index)}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>

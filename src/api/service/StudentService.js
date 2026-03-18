@@ -5,8 +5,10 @@ import { toStudentRequest } from "../schemas/dto/StudentRequest";
 import { createGuardianService } from "./GuardianService";
 import { toStudentSchema } from "../schemas/Student";
 import { createRoleService } from "./RoleService";
+import { sanitizeCpf } from "../util/objectUtil";
 
 const STUDENTS_ENDPOINT = "/api/v1/students";
+
 const studentApi = createApiRepository(
   STUDENTS_ENDPOINT,
   toStudentRequest,
@@ -39,6 +41,7 @@ export function createStudentService() {
       try {
         let createdGuardian = null;
 
+        // ✅ 1. Criar ou buscar responsável
         if (guardianData?.cpf) {
           try {
             createdGuardian =
@@ -55,10 +58,27 @@ export function createStudentService() {
         }
 
         const roleId = await ensureStudentRole(studentData);
-        const normalizedStudentData = { ...studentData, roleId };
+
+        const { foto, photoUrl, ...studentWithoutFile } = studentData;
+
+        const normalizedStudentData = {
+          ...studentWithoutFile,
+          roleId,
+        };
 
         try {
-          await personService.createPerson(normalizedStudentData);
+          const personPayload = {
+            firstName: normalizedStudentData.firstName,
+            lastName: normalizedStudentData.lastName,
+            email: normalizedStudentData.email,
+            cpf: sanitizeCpf(normalizedStudentData.cpf),
+            password: normalizedStudentData.password,
+            phoneNumber: normalizedStudentData.phoneNumber,
+            roleId: normalizedStudentData.roleId,
+            address: normalizedStudentData.address,
+          };
+
+          await personService.createPerson(personPayload);
         } catch (error) {
           if (error.response?.status !== 409) {
             throw error;
@@ -110,7 +130,7 @@ export function createStudentService() {
       return toStudentSchema(response.data);
     },
 
-    // Backward-compatible alias for existing callers.
+    // Alias
     async approveEnrollment(studentId) {
       return this.rejectEnrollment(studentId);
     },

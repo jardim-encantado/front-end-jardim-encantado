@@ -19,12 +19,25 @@ export default function HeaderRight() {
 
   const displayName = [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim();
 
+  const getProfileRoute = () => {
+    switch (person?.roleName) {
+      case "teacher":
+        return "/professor/perfil";
+      case "responsavel":
+        return "/responsavel/perfil";
+      case "admin":
+        return "/admin/perfil";
+      default:
+        return "/"; 
+    }
+  };
+
   return (
     <div className={styles.headerContainer}>
       <div className={styles.headerContent}>
         <PersonIcon
           className={styles.headerIcon}
-          onClick={() => navigate("/responsavel/perfil")}
+          onClick={() => navigate(getProfileRoute())}
         />
 
         <LogoutIcon
