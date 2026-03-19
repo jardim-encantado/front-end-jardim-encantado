@@ -14,20 +14,20 @@ function HomeProfessor() {
   const personName = person.fullName || [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim();
   const displayName = personName || "Professor";
 
-  const schoolEventService = createSchoolEventService();
-
   const [avisos, setAvisos] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const carregarAvisos = async () => {
-    const events = await schoolEventService.getAllEvents();
-    setAvisos(events);
-    setLoading(false);
-  }
 
   useEffect(() => {
+    const carregarAvisos = async () => {
+      const schoolEventService = createSchoolEventService();
+      const events = await schoolEventService.getAllEvents();
+      setAvisos(events);
+      setLoading(false);
+    };
+
     carregarAvisos();
-  },[])
+  }, []);
 
   return (
     isLoading ? <Carregamento /> :

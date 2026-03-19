@@ -2,7 +2,7 @@ import styles from "./CardInfoProfessor.module.css";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
-export default function CardInfoProfessor({ key, teacherSchema }) {
+export default function CardInfoProfessor({ teacherSchema }) {
 
   const materias = teacherSchema.getSubjectNamesList() ?? "Não definidas";
   return (

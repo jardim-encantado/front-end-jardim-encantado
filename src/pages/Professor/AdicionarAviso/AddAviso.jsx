@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
 import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
 import CriarAviso from "../../../components/CriarAviso/CriarAviso";
@@ -23,7 +23,7 @@ const PaginaAvisos = () => {
 
     const { person } = usePerson();
 
-    const getAllSchoolEvents = async () => {
+    const getAllSchoolEvents = useCallback(async () => {
         try {
             const events = await schoolEventService.getAllEvents();
             setSchoolEvents(events);
@@ -31,9 +31,9 @@ const PaginaAvisos = () => {
             console.error("Erro ao buscar eventos:", error);
             setSchoolEvents([]);
         }
-    };
+    }, [schoolEventService]);
 
-    const getSchoolEventTypes = async () => {
+    const getSchoolEventTypes = useCallback(async () => {
         try {
             const types = await schoolEventTypeService.getAllTypes();
             setSchoolEventTypes(types);
@@ -46,7 +46,7 @@ const PaginaAvisos = () => {
                 },
             ]);
         }
-    };
+    }, [schoolEventTypeService]);
 
     useEffect(() => {
         const loadData = async () => {
@@ -56,7 +56,7 @@ const PaginaAvisos = () => {
         };
 
         loadData();
-    }, []);
+    }, [getSchoolEventTypes, getAllSchoolEvents]);
 
 
     const handleAddAviso = async (newSchoolEventSchema) => {

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
-import styles from "./AddProfessor.module.css";
+import styles from "./AddEstudante.module.css";
 import SidebarAdmin from "../SideBarAdmin/";
-import DropdownMaterias from "./Dropdown/DropdownMaterias";
+import DropdownMaterias from "../AdicionarProfessor/Dropdown/DropdownMaterias";
 import iconMais from "../../../assets/images/addOcorrencia.png";
 import iconMenos from "../../../assets/images/iconRemover.png";
 import { createTeacherService } from "../../../api/service/TeacherService";

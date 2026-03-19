@@ -41,7 +41,6 @@ export function createStudentService() {
       try {
         let createdGuardian = null;
 
-        // ✅ 1. Criar ou buscar responsável
         if (guardianData?.cpf) {
           try {
             createdGuardian =
