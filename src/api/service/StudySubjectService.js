@@ -1,30 +1,24 @@
 import { createApiRepository } from "../base/Repository";
-import { toStudySubjectRequest } from "../schemas/dto/StudySubjectRequest";
-import { toStudySubjectSchema } from "../schemas/StudySubject";
 
-const SUBJECTS_ENDPOINT = "/subjects";
+const SUBJECT_ENDPOINT = "/subjects";
+
 const subjectApi = createApiRepository(
-  SUBJECTS_ENDPOINT,
-  toStudySubjectRequest,
-  toStudySubjectSchema
+  SUBJECT_ENDPOINT,
+  null,
+  (subject) => ({
+    subjectId: subject.subjectId ?? subject.id,
+    name: subject.name ?? "",
+  })
 );
 
-export function createStudySubjectService() {
+export function createSubjectService() {
   return {
-    async getAllSubjects() {
+    async getAll() {
       return subjectApi.getAll();
     },
 
-    async getSubjectById(id) {
+    async getById(id) {
       return subjectApi.getById(id);
-    },
-
-    async createSubject(subjectData) {
-      return subjectApi.create(subjectData);
-    },
-
-    async updateSubject(id, subjectData) {
-      return subjectApi.update(id, subjectData);
     },
   };
 }

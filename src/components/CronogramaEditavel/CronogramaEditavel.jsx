@@ -1,25 +1,136 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CronogramaEditavel.module.css";
 
+import { createScheduleService } from "../../api/service/ScheduleService";
+import { createTeacherService } from "../../api/service/TeacherService";
+import { createClassroomGroupService } from "../../api/service/ClassroomGroupService";
+import { createTeacherSubjectService } from "../../api/service/TeacherSubjectService";
+import { createSubjectService } from "../../api/service/StudySubjectService";
+
+const diasMap = {
+  segunda: 1,
+  terca: 2,
+  quarta: 3,
+  quinta: 4,
+  sexta: 5,
+};
+
 const CronogramaEditavel = () => {
-  const [professor, setProfessor] = useState("");
-  const [turma, setTurma] = useState("");
+  const scheduleService = createScheduleService();
+  const teacherService = createTeacherService();
+  const groupService = createClassroomGroupService();
+  const teacherSubjectService = createTeacherSubjectService();
+  const subjectService = createSubjectService();
+
+  const [subjects, setSubjects] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [groups, setGroups] = useState([]);
+
+  const [teacherId, setTeacherId] = useState("");
+  const [groupId, setGroupId] = useState("");
 
   const [dados, setDados] = useState([
-    { segunda: "Matemática", terca: "Português", quarta: "História", quinta: "Geografia", sexta: "Ciência" }
+    { segunda: "", terca: "", quarta: "", quinta: "", sexta: "" },
   ]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const teachersRes = await teacherService.getAllTeachers();
+        const groupsRes = await groupService.getAll();
+
+        let subjectsRes = [];
+        try {
+          subjectsRes = await subjectService.getAll();
+        } catch (e) {
+          console.warn("Erro ao carregar matérias", e);
+        }
+
+        setTeachers(teachersRes);
+        setGroups(groupsRes);
+        setSubjects(subjectsRes);
+      } catch (e) {
+        console.error("Erro geral", e);
+      }
+    };
+
+    load();
+  }, []);
 
   const handleChange = (rowIndex, dia, value) => {
     const novosDados = [...dados];
-    novosDados[rowIndex][dia] = value;
+    novosDados[rowIndex][dia] = value ? Number(value) : "";
     setDados(novosDados);
   };
 
   const adicionarLinha = () => {
     setDados([
       ...dados,
-      { segunda: "", terca: "", quarta: "", quinta: "", sexta: "" }
+      { segunda: "", terca: "", quarta: "", quinta: "", sexta: "" },
     ]);
+  };
+  const salvarMateriasProfessor = async () => {
+    const materias = new Set();
+
+    dados.forEach((linha) => {
+      Object.values(linha).forEach((materia) => {
+        if (materia) materias.add(Number(materia));
+      });
+    });
+
+    await Promise.all(
+      [...materias].map((subjectId) =>
+        teacherSubjectService.createTeacherSubject({
+          teacherId: Number(teacherId),
+          subjectId: subjectId,
+        }),
+      ),
+    );
+  };
+
+  const buildPayload = () => {
+    const items = [];
+
+    dados.forEach((linha, index) => {
+      Object.keys(linha).forEach((dia) => {
+        if (!linha[dia]) return;
+
+        items.push({
+          dayOfWeek: diasMap[dia],
+          startTime: `${7 + index}:00`,
+          endTime: `${8 + index}:00`,
+          subjectId: Number(linha[dia]),
+          teacherId: Number(teacherId),
+        });
+      });
+    });
+
+    return {
+      groupId: Number(groupId),
+      startTime: "07:00",
+      endTime: "12:00",
+      items,
+    };
+  };
+
+  const handleSalvar = async () => {
+    try {
+      if (!teacherId || !groupId) {
+        alert("Selecione professor e turma");
+        return;
+      }
+
+      const payload = buildPayload();
+
+      await scheduleService.createSchedule(payload);
+
+      await salvarMateriasProfessor();
+
+      alert("Cronograma salvo com sucesso!");
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao salvar cronograma");
+    }
   };
 
   return (
@@ -27,45 +138,63 @@ const CronogramaEditavel = () => {
       <div className={styles.topoCronograma}>
         <label>
           Professor:
-          <input 
-            type="text"
-            value={professor}
-            onChange={(e) => setProfessor(e.target.value)}
-            placeholder="Nome do professor"
-          />
+          <select
+            value={teacherId}
+            onChange={(e) => setTeacherId(e.target.value)}
+          >
+            <option value="">Selecione</option>
+            {teachers.map((t) => (
+              <option key={t.teacherId} value={t.teacherId}>
+                {t.fullName}
+              </option>
+            ))}
+          </select>
         </label>
+
         <label>
           Turma:
-          <input 
-            type="text"
-            value={turma}
-            onChange={(e) => setTurma(e.target.value)}
-            placeholder="Turma"
-          />
+          <select value={groupId} onChange={(e) => setGroupId(e.target.value)}>
+            <option value="">Selecione</option>
+            {groups.map((g) => (
+              <option key={g.groupId} value={g.groupId}>
+                {g.series || `Turma ${g.groupId}`}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <table className={styles.tabelaRosa}>
         <thead>
           <tr>
-            <th>Segunda-feira</th>
-            <th>Terça-feira</th>
-            <th>Quarta-feira</th>
-            <th>Quinta-feira</th>
-            <th>Sexta-feira</th>
+            <th>Segunda</th>
+            <th>Terça</th>
+            <th>Quarta</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
           </tr>
         </thead>
+
         <tbody>
           {dados.map((item, rowIndex) => (
             <tr key={rowIndex}>
               {["segunda", "terca", "quarta", "quinta", "sexta"].map((dia) => (
                 <td key={dia}>
-                  <input
-                    type="text"
-                    value={item[dia]}
-                    onChange={(e) => handleChange(rowIndex, dia, e.target.value)}
+                  <select
+                    value={item[dia] || ""}
+                    onChange={(e) =>
+                      handleChange(rowIndex, dia, e.target.value)
+                    }
                     className={styles.inputMateria}
-                  />
+                  >
+                    <option value="">Selecione</option>
+
+                    {subjects.map((s) => (
+                      <option key={s.subjectId} value={s.subjectId}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </select>
                 </td>
               ))}
             </tr>
@@ -75,6 +204,10 @@ const CronogramaEditavel = () => {
 
       <button className={styles.btnAdicionar} onClick={adicionarLinha}>
         Adicionar Linha
+      </button>
+
+      <button className={styles.btnAdicionar} onClick={handleSalvar}>
+        Salvar Cronograma
       </button>
     </div>
   );

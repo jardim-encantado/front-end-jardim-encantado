@@ -6,7 +6,12 @@ import { createRoleService } from "./RoleService";
 import { createTeacherSubjectService } from "./TeacherSubjectService";
 
 const TEACHERS_ENDPOINT = "/api/v1/teachers";
-const teacherApi = createApiRepository(TEACHERS_ENDPOINT, toTeacherRequest, toTeacherSchema);
+
+const teacherApi = createApiRepository(
+  TEACHERS_ENDPOINT,
+  toTeacherRequest,
+  toTeacherSchema
+);
 
 export function createTeacherService() {
   const personService = createPersonService();
@@ -30,9 +35,7 @@ export function createTeacherService() {
   };
 
   const normalizeSubjectIds = (subjectIds) => {
-    if (!Array.isArray(subjectIds)) {
-      return [];
-    }
+    if (!Array.isArray(subjectIds)) return [];
 
     return [...new Set(subjectIds)]
       .map((subjectId) => Number(subjectId))
@@ -70,8 +73,12 @@ export function createTeacherService() {
       return teacher;
     },
 
+    async getAll() {
+      return teacherApi.getAll(); 
+    },
+
     async getAllTeachers() {
-      return teacherApi.getAll();
+      return teacherApi.getAll(); 
     },
 
     async getTeacherById(id) {

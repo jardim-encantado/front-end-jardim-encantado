@@ -10,7 +10,13 @@ function getTodayDateInputValue() {
   return `${year}-${month}-${day}`;
 }
 
-export default function CriarAviso({ personSchema, onCancel, onSave, schoolEventTypes }) {
+export default function CriarAviso({
+  personSchema,
+  onCancel,
+  onSave,
+  schoolEventTypes,
+  studentId = null,
+}) {
   const schoolEventService = createSchoolEventService();
 
   const [titulo, setTitulo] = useState("");
@@ -45,13 +51,15 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
         eventDate: data,
         cpf: personSchema.cpf,
         eventTypeId: Number(eventType),
+        studentId: studentId, 
       });
       await onSave(avisoSchema);
     } catch (error) {
       console.error("Erro ao criar aviso:", error);
-      const errorMessage = error?.response?.data?.message || 
-                           error?.response?.data?.error ||
-                           "Não foi possível criar o aviso. Tente novamente.";
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        "Não foi possível criar o aviso. Tente novamente.";
       setFormError(errorMessage);
     } finally {
       setIsSaving(false);
@@ -64,16 +72,36 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
         <h2>Criar Aviso</h2>
 
         <label>Título</label>
-        <input type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} required />
+        <input
+          type="text"
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          required
+        />
 
         <label>Data</label>
-        <input type="date" value={data} onChange={(e) => setData(e.target.value)} required />
+        <input
+          type="date"
+          value={data}
+          onChange={(e) => setData(e.target.value)}
+          required
+        />
 
         <label>Descrição</label>
-        <input type="text" value={descricao} onChange={(e) => setDescricao(e.target.value)} required />
+        <input
+          type="text"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
+          required
+        />
 
         <label>Tipo do Aviso</label>
-        <select value={eventType} onChange={(e) => setEventType(e.target.value)} disabled={schoolEventTypes.length === 0} required>
+        <select
+          value={eventType}
+          onChange={(e) => setEventType(e.target.value)}
+          disabled={schoolEventTypes.length === 0}
+          required
+        >
           {schoolEventTypes.length === 0 ? (
             <option value="">Sem tipos disponíveis</option>
           ) : (
@@ -88,8 +116,20 @@ export default function CriarAviso({ personSchema, onCancel, onSave, schoolEvent
         {formError && <p className={styles.errorMessage}>{formError}</p>}
 
         <div className={styles.buttons}>
-          <button className={styles.cancel} onClick={onCancel} disabled={isSaving} type="button">Cancelar</button>
-          <button className={styles.save} onClick={handleSave} disabled={isSaving} type="button">
+          <button
+            className={styles.cancel}
+            onClick={onCancel}
+            disabled={isSaving}
+            type="button"
+          >
+            Cancelar
+          </button>
+          <button
+            className={styles.save}
+            onClick={handleSave}
+            disabled={isSaving}
+            type="button"
+          >
             {isSaving ? "Salvando..." : "Salvar"}
           </button>
         </div>

@@ -110,17 +110,17 @@ export default function Estudante() {
     return map;
   }, [grades]);
 
-const estudantes = useMemo(() => {
-  return students.map(s => ({
-    id: s.studentId,
-    studentId: s.studentId,
-    nomeEstudante: s.fullName || `Estudante ${s.studentId}`,
-    serieEstudante: seriesByStudentId.get(s.studentId) || "Sem série",
-    professoraResponsavel: teacherName,
-    boletim: gradesByStudent.get(s.studentId) || [],
-    cpf: s.cpf, 
-  }));
-}, [students, seriesByStudentId, gradesByStudent, teacherName]);
+  const estudantes = useMemo(() => {
+    return students.map((s) => ({
+      id: s.studentId,
+      studentId: s.studentId,
+      nomeEstudante: s.fullName || `Estudante ${s.studentId}`,
+      serieEstudante: seriesByStudentId.get(s.studentId) || "Sem série",
+      professoraResponsavel: teacherName,
+      boletim: gradesByStudent.get(s.studentId) || [],
+      cpf: s.cpf,
+    }));
+  }, [students, seriesByStudentId, gradesByStudent, teacherName]);
 
   const seriesDisponiveis = useMemo(() => {
     const set = new Set();
@@ -197,10 +197,11 @@ const estudantes = useMemo(() => {
 
         {showCriarAviso && alunoCriarAviso && (
           <CriarAviso
-            personSchema={{ cpf: alunoCriarAviso.cpf }} 
+            personSchema={{ cpf: alunoCriarAviso.cpf }}
             schoolEventTypes={schoolEventTypes}
             onCancel={() => setShowCriarAviso(false)}
             onSave={handleAddAviso}
+            studentId={alunoCriarAviso.studentId}
           />
         )}
       </Box>
