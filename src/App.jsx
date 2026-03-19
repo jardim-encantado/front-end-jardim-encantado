@@ -1,102 +1,106 @@
-import React, { Suspense, lazy } from "react"; 
-import { BrowserRouter, Routes, Route } from "react-router-dom"; 
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Carregamento from "./components/Carregamento/Carregamento";
-import { usePerson } from "./hooks/personHook"; 
+import { usePerson } from "./hooks/personHook";
 
+// Header
 const HeaderRight = lazy(() => import("./components/HeaderRight"));
 
 // Login
 const Login = lazy(() => import("./pages/Login/Login"));
 
-// Responsável
+// ================= RESPONSÁVEL =================
 const HomeResponsavel = lazy(
-  () => import("./pages/Responsavel/HomeResponsavel/HomeResponsavel"),
+  () => import("./pages/Responsavel/HomeResponsavel/HomeResponsavel")
 );
 const PerfilResponsavel = lazy(
-  () => import("./pages/Responsavel/PerfilResponsavel/PerfilResponsavelPag"),
+  () => import("./pages/Responsavel/PerfilResponsavel/PerfilResponsavelPag")
 );
 const BoletimResponsavel = lazy(
-  () => import("./pages/Responsavel/Boletim/Boletim"),
+  () => import("./pages/Responsavel/Boletim/Boletim")
 );
 const VisualizarProfResponsavel = lazy(
-  () => import("./pages/Responsavel/VisualizarProfessor/Professor"),
+  () => import("./pages/Responsavel/VisualizarProfessor/Professor")
 );
 
-// Professor
+// ================= PROFESSOR =================
 const HomeProfessor = lazy(
-  () => import("./pages/Professor/HomeProfessor/HomeProfessor"),
+  () => import("./pages/Professor/HomeProfessor/HomeProfessor")
 );
 const ProfessorVisualizaEstudante = lazy(
-  () => import("./pages/Professor/VisualizarEstudantes/Estudante"),
+  () => import("./pages/Professor/VisualizarEstudantes/Estudante")
 );
 const PaginaAvisos = lazy(
-  () => import("./pages/Professor/AdicionarAviso/AddAviso"),
+  () => import("./pages/Professor/AdicionarAviso/AddAviso")
 );
-const PaginaPerfil = lazy(
-  () => import("./pages/Professor/Perfil/PerfilProfessor"),
+const PerfilProfessor = lazy(
+  () => import("./pages/Professor/Perfil/PerfilProfessor")
 );
 
-// Admin
+// ================= ADMIN =================
 const CriarEstudante = lazy(
-  () => import("./pages/Admin/AdicionarAluno/AdicionarAluno"),
+  () => import("./pages/Admin/AdicionarAluno/AdicionarAluno")
 );
 const AdicionarProfessor = lazy(
-  () => import("./pages/Admin/AdicionarProfessor/AdicionarProfessor"),
+  () => import("./pages/Admin/AdicionarProfessor/AdicionarProfessor")
 );
 const VisualizarEstudante = lazy(
-  () => import("./pages/Admin/VisualizarEstudante/BuscaEstudante"),
+  () => import("./pages/Admin/VisualizarEstudante/BuscaEstudante")
 );
 const CronogramaEscolar = lazy(
-  () => import("./pages/Admin/CronogramaEscolar/CronogramaEscolar"),
+  () => import("./pages/Admin/CronogramaEscolar/CronogramaEscolar")
 );
 const VisualizarProfessor = lazy(
-  () => import("./pages/Admin/VisualizarProfessor/BuscaProfessor"),
+  () => import("./pages/Admin/VisualizarProfessor/BuscaProfessor")
 );
 
-// Etc
+// ⚠️ CRIAR essa página se ainda não existir
+const PerfilAdmin = lazy(
+  () => import("./pages/Admin/PerfilAdmin/PerfilAdmin")
+);
+
+// ================= ERRO =================
 const ErrorPage = lazy(() => import("./pages/Error/ErrorPage"));
 
 function App() {
-  const { person } = usePerson(); // hook global de usuário
+  const { person } = usePerson();
 
   return (
     <BrowserRouter>
-      {/* Header global — aparece apenas se o usuário estiver logado */}
+      {/* Header só aparece logado */}
       {person && (
         <Suspense fallback={<Carregamento />}>
           <HeaderRight />
         </Suspense>
       )}
 
-      {/* Rotas */}
       <Suspense fallback={<Carregamento />}>
         <Routes>
-          {/* Login */}
+
+          {/* LOGIN */}
           <Route path="/" element={<Login />} />
 
-          {/* Responsável */}
+          {/* ================= RESPONSÁVEL ================= */}
           <Route path="/responsavel/home" element={<HomeResponsavel />} />
           <Route path="/responsavel/perfil" element={<PerfilResponsavel />} />
           <Route path="/responsavel/boletim" element={<BoletimResponsavel />} />
-          <Route path="/responsavel/visualizarProfessor" element={<VisualizarProfResponsavel />}
+          <Route
+            path="/responsavel/visualizarProfessor"
+            element={<VisualizarProfResponsavel />}
           />
-          <Route path="/responsavel/Professor/visualizarPerfil" element={<PaginaAvisos />} />
 
-          {/* Professor */}
+          {/* ================= PROFESSOR ================= */}
           <Route path="/professor/home" element={<HomeProfessor />} />
+          <Route path="/professor/perfil" element={<PerfilProfessor />} />
           <Route
             path="/professor/visualizarEstudante"
             element={<ProfessorVisualizaEstudante />}
           />
           <Route path="/professor/adicionarAviso" element={<PaginaAvisos />} />
-          <Route path="/pages/Professor/visualizarPerfil" element={<PaginaAvisos />} />
 
-          {/* Admin */}
+          {/* ================= ADMIN ================= */}
           <Route path="/admin/criarEstudante" element={<CriarEstudante />} />
-          <Route
-            path="/admin/criarProfessor"
-            element={<AdicionarProfessor />}
-          />
+          <Route path="/admin/criarProfessor" element={<AdicionarProfessor />} />
           <Route
             path="/admin/visualizarEstudante"
             element={<VisualizarEstudante />}
@@ -110,9 +114,11 @@ function App() {
             element={<VisualizarProfessor />}
           />
           <Route path="/admin/adicionarAviso" element={<PaginaAvisos />} />
+          <Route path="/admin/perfil" element={<PerfilAdmin />} />
 
-          {/* Rota para página de erro */}
+          {/* ================= ERRO ================= */}
           <Route path="*" element={<ErrorPage />} />
+
         </Routes>
       </Suspense>
     </BrowserRouter>

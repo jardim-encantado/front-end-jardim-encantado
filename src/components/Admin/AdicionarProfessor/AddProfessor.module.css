@@ -66,3 +66,7 @@ input {
   height: 24px;
   cursor: pointer;
 }
+
+.icon{
+  width: 20px;
+}

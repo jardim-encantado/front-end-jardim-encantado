@@ -17,7 +17,7 @@ export const toTeacherSchema = (teacher = {}) => {
   return {
     id: teacherId,
     teacherId,
-    personId: teacher.personId ?? null,
+    personId: teacher.personId ?? teacher.person?.personId ?? teacher.person?.id ?? null,
     firstName,
     lastName,
     fullName,
