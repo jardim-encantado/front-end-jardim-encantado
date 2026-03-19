@@ -45,9 +45,12 @@ const Cronograma = () => {
 
   const [dados, setDados] = useState([]);
 
+  const [msgCron, setMsgCron] = useState("");
+
   useEffect(() => {
     const load = async () => {
       try {
+        setMsgCron("Carregando cronograma...");
         if (!person) {
           setDados([]);
           return;
@@ -87,10 +90,16 @@ const Cronograma = () => {
           normalizedRoleName.includes("estudante") ||
           normalizedRoleName.includes("aluno");
 
+        const fallbackTeacherId = Number(person.teacherId);
+        const fallbackStudentId = Number(person.studentId);
+        const hasFallbackTeacherId =
+          Number.isFinite(fallbackTeacherId) && fallbackTeacherId > 0;
+        const hasFallbackStudentId =
+          Number.isFinite(fallbackStudentId) && fallbackStudentId > 0;
+
         let items = [];
 
-        if (isTeacher) {
-          const fallbackTeacherId = Number(person.teacherId);
+        if (isTeacher || hasFallbackTeacherId) {
           const resolvedTeacher =
             Number.isFinite(personId) && personId > 0
               ? await teacherService.getByPersonId(personId)
@@ -106,8 +115,7 @@ const Cronograma = () => {
             const schedule = await scheduleService.getByTeacher(teacherId);
             items = toScheduleItems(schedule);
           }
-        } else if (isStudent) {
-          const fallbackStudentId = Number(person.studentId);
+        } else if (isStudent || hasFallbackStudentId) {
           const resolvedStudent =
             Number.isFinite(personId) && personId > 0
               ? await studentService.getStudentByPersonId(personId)
@@ -122,6 +130,27 @@ const Cronograma = () => {
           if (studentId) {
             const schedule = await scheduleService.getByStudent(studentId);
             items = toScheduleItems(schedule);
+          }
+        } else if (Number.isFinite(personId) && personId > 0) {
+          const resolvedStudent =
+            await studentService.getStudentByPersonId(personId);
+
+          if (resolvedStudent?.studentId) {
+            const schedule = await scheduleService.getByStudent(
+              resolvedStudent.studentId
+            );
+            items = toScheduleItems(schedule);
+          }
+
+          if (!items.length) {
+            const resolvedTeacher = await teacherService.getByPersonId(personId);
+
+            if (resolvedTeacher?.teacherId) {
+              const schedule = await scheduleService.getByTeacher(
+                resolvedTeacher.teacherId
+              );
+              items = toScheduleItems(schedule);
+            }
           }
         }
 
@@ -148,6 +177,17 @@ const Cronograma = () => {
             item.subjectName || item.subject?.name || "—";
         });
 
+        // if all items are —, set message to "Nenhuma aula encontrada"
+        const allEmpty = tabela.every((linha) =>
+          Object.values(linha).every(
+            (valor) => valor === "—" || !valor
+          )
+        );
+
+        if (allEmpty) {
+          setMsgCron("Nenhuma aula encontrada");
+        }
+
         setDados(tabela);
       } catch (error) {
         console.error("Erro ao carregar cronograma:", error);
@@ -173,7 +213,7 @@ const Cronograma = () => {
       <tbody>
         {dados.length === 0 ? (
           <tr>
-            <td colSpan="5">Nenhum cronograma encontrado</td>
+            <td colSpan="5">{msgCron}</td>
           </tr>
         ) : (
           dados.map((linha, index) => (
