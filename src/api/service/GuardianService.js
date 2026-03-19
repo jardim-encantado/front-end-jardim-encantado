@@ -51,7 +51,8 @@ export function createGuardianService() {
 
         async getGuardianByCpf(cpf) {
             try {
-                const response = await api.get(`${GUARDIANS_ENDPOINT}/cpf/${cpf}`);
+                const sanitizedCpf = cpf.replace(/\D/g, "");
+                const response = await api.get(`${GUARDIANS_ENDPOINT}/cpf/${sanitizedCpf}`);
                 return response.data ? toGuardianSchema(response.data[0]) : null;
             } catch (error) {
                 console.error(`Error fetching guardian by CPF ${cpf}:`, error);
