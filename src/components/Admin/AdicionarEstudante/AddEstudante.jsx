@@ -64,8 +64,6 @@ export default function AddEstudante({ dados, setDados, titulo, onSaved }) {
         complement: dados.complemento,
       };
 
-      const { rua, numero, cep, cidade, estado, complemento, foto, ...rest } =
-        dados;
 
       const payload = {
         firstName: dados.nome,

@@ -1,12 +1,14 @@
 .pagina {
   padding: 24px;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin-left: 200px;
 }
 
 .titulo {
   color: #c06070;
   margin-bottom: 16px;
+  font-size: 24px;
+  color: black;
 }
 
 .btnAdicionarGeral {

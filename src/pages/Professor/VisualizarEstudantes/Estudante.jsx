@@ -148,7 +148,7 @@ export default function Estudante() {
     setShowCriarAviso(true);
   };
 
-  const handleAddAviso = (novoAviso) => {
+  const handleAddAviso = () => {
     setShowCriarAviso(false);
   };
 

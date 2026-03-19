@@ -3,6 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import styles from "./Header.module.css";
 import { usePerson } from "../hooks/personHook";
+import { normalizeRoleName } from "../api/schemas/Role";
 
 export default function HeaderRight() {
   const location = useLocation();
@@ -20,10 +21,10 @@ export default function HeaderRight() {
   const displayName = [person?.firstName, person?.lastName].filter(Boolean).join(" ").trim();
 
   const getProfileRoute = () => {
-    switch (person?.roleName) {
+    switch (normalizeRoleName(person?.roleName)) {
       case "teacher":
         return "/professor/perfil";
-      case "responsavel":
+      case "guardian":
         return "/responsavel/perfil";
       case "admin":
         return "/admin/perfil";

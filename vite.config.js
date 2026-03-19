@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
         req.destroy(err);
       });
 
-      proxy.on("proxyRes", (proxyRes, req) => {
+  proxy.on("proxyRes", (proxyRes) => {
         console.log(
           "Received response from:",
           proxyRes.req.getHeader("host") + proxyRes.req.path,
