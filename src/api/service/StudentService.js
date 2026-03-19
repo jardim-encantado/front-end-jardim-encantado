@@ -58,7 +58,9 @@ export function createStudentService() {
 
         const roleId = await ensureStudentRole(studentData);
 
-        const { foto, photoUrl, ...studentWithoutFile } = studentData;
+        const studentWithoutFile = { ...studentData };
+        delete studentWithoutFile.foto;
+        delete studentWithoutFile.photoUrl;
 
         const normalizedStudentData = {
           ...studentWithoutFile,
