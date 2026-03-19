@@ -3,7 +3,8 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, ".", "");
-  const proxyTarget = env.VITE_API_URL || "https://api-jardim-encantado.onrender.com";
+  const proxyTarget =
+    env.VITE_API_URL || "https://api-jardim-encantado.onrender.com";
 
   const buildProxyTarget = (target) => ({
     target,
@@ -12,7 +13,7 @@ export default defineConfig(({ mode }) => {
       proxy.on("proxyReq", (proxyReq) => {
         console.log(
           "Proxying request to:",
-          proxyReq.getHeader("host") + proxyReq.path
+          proxyReq.getHeader("host") + proxyReq.path,
         );
       });
 
@@ -26,7 +27,7 @@ export default defineConfig(({ mode }) => {
           "Received response from:",
           proxyRes.req.getHeader("host") + proxyRes.req.path,
           "Status:",
-          proxyRes.statusCode
+          proxyRes.statusCode,
         );
       });
     },
@@ -42,6 +43,7 @@ export default defineConfig(({ mode }) => {
         "/teacher-subjects": buildProxyTarget(proxyTarget),
         "/subjects": buildProxyTarget(proxyTarget),
         "/guardians": buildProxyTarget(proxyTarget),
+        "/schedules": buildProxyTarget(proxyTarget), 
       },
     },
   };

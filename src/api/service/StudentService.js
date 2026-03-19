@@ -20,6 +20,8 @@ export function createStudentService() {
   const guardianService = createGuardianService();
   const roleService = createRoleService();
 
+  let cachedStudents = null;
+
   const ensureStudentRole = async (studentData) => {
     if (studentData?.roleId) {
       return studentData.roleId;
@@ -41,7 +43,6 @@ export function createStudentService() {
       try {
         let createdGuardian = null;
 
-        // ✅ 1. Criar ou buscar responsável
         if (guardianData?.cpf) {
           try {
             createdGuardian =
@@ -101,6 +102,8 @@ export function createStudentService() {
           }
         }
 
+        cachedStudents = null;
+
         return createdStudent;
       } catch (error) {
         console.error("Error creating student:", error);
@@ -109,7 +112,10 @@ export function createStudentService() {
     },
 
     async getAllStudents() {
-      return studentApi.getAll();
+      if (!cachedStudents) {
+        cachedStudents = await studentApi.getAll();
+      }
+      return cachedStudents;
     },
 
     async getStudentById(id) {
@@ -130,7 +136,21 @@ export function createStudentService() {
       return toStudentSchema(response.data);
     },
 
-    // Alias
+    async getStudentByPersonId(personId) {
+      if (!personId) return null;
+
+      const students = await this.getAllStudents();
+
+      const found = students.find(
+        (s) =>
+          Number(s.personId) === Number(personId) ||
+          Number(s.id) === Number(personId) ||
+          Number(s.person?.id) === Number(personId),
+      );
+
+      return found || null;
+    },
+
     async approveEnrollment(studentId) {
       return this.rejectEnrollment(studentId);
     },

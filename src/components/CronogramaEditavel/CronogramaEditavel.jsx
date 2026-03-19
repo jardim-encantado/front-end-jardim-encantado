@@ -91,14 +91,19 @@ const CronogramaEditavel = () => {
   const buildPayload = () => {
     const items = [];
 
+    const formatHour = (hour) => String(hour).padStart(2, "0");
+
     dados.forEach((linha, index) => {
       Object.keys(linha).forEach((dia) => {
         if (!linha[dia]) return;
 
+        const startHour = 7 + index;
+        const endHour = 8 + index;
+
         items.push({
           dayOfWeek: diasMap[dia],
-          startTime: `${7 + index}:00`,
-          endTime: `${8 + index}:00`,
+          startTime: `${formatHour(startHour)}:00`,
+          endTime: `${formatHour(endHour)}:00`,
           subjectId: Number(linha[dia]),
           teacherId: Number(teacherId),
         });

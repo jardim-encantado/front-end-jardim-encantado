@@ -3,7 +3,7 @@ import { createApiRepository } from "../base/Repository";
 import { toScheduleRequest } from "../schemas/dto/ScheduleRequest";
 import { toScheduleSchema } from "../schemas/Schedule";
 
-const SCHEDULE_ENDPOINT = "/api/v1/schedule";
+const SCHEDULE_ENDPOINT = "/schedules";
 
 const scheduleApi = createApiRepository(
   SCHEDULE_ENDPOINT,

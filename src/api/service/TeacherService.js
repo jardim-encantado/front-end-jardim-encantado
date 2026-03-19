@@ -6,7 +6,6 @@ import { createRoleService } from "./RoleService";
 import { createTeacherSubjectService } from "./TeacherSubjectService";
 
 const TEACHERS_ENDPOINT = "/api/v1/teachers";
-
 const teacherApi = createApiRepository(
   TEACHERS_ENDPOINT,
   toTeacherRequest,
@@ -19,16 +18,12 @@ export function createTeacherService() {
   const teacherSubjectService = createTeacherSubjectService();
 
   const ensureTeacherRole = async (teacherData) => {
-    if (teacherData?.roleId) {
-      return teacherData.roleId;
-    }
+    if (teacherData?.roleId) return teacherData.roleId;
 
     const resolvedRoleId = await roleService.resolveRoleId("teacher");
 
     if (!resolvedRoleId) {
-      throw new Error(
-        "Could not resolve teacher roleId. Configure VITE_ROLE_ID_TEACHER or provide roleId in payload."
-      );
+      throw new Error("Could not resolve teacher roleId.");
     }
 
     return resolvedRoleId;
@@ -38,8 +33,8 @@ export function createTeacherService() {
     if (!Array.isArray(subjectIds)) return [];
 
     return [...new Set(subjectIds)]
-      .map((subjectId) => Number(subjectId))
-      .filter((subjectId) => Number.isFinite(subjectId));
+      .map(Number)
+      .filter(Number.isFinite);
   };
 
   return {
@@ -73,16 +68,17 @@ export function createTeacherService() {
       return teacher;
     },
 
-    async getAll() {
-      return teacherApi.getAll(); 
-    },
-
     async getAllTeachers() {
-      return teacherApi.getAll(); 
+      return teacherApi.getAll();
     },
 
     async getTeacherById(id) {
       return teacherApi.getById(id);
+    },
+
+    async getByPersonId(personId) {
+      const teachers = await teacherApi.getAll();
+      return teachers.find((t) => t.personId === personId);
     },
   };
 }
