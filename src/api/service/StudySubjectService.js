@@ -11,7 +11,7 @@ const subjectApi = createApiRepository(
   })
 );
 
-export function createSubjectService() {
+export function createStudySubjectService() {
   return {
     async getAll() {
       return subjectApi.getAll();

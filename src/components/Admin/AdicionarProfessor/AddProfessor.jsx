@@ -4,7 +4,6 @@ import SidebarAdmin from "../SideBarAdmin/";
 import DropdownMaterias from "./Dropdown/DropdownMaterias";
 import iconMais from "../../../assets/images/addOcorrencia.png";
 import iconMenos from "../../../assets/images/iconRemover.png";
-import { createTeacherService } from "../../../api/service/TeacherService";
 
 export default function AddProfessor({
   dados,
@@ -14,49 +13,37 @@ export default function AddProfessor({
   onSubjectsChange,
 }) {
   const [materias, setMaterias] = useState([{ subjectId: null }]);
-  const [loading, setLoading] = useState(false);
 
-  const formatCPF = (value) => {
-    return value
+  // Funções de formatação mantidas
+  const formatCPF = (v) =>
+    v
       .replace(/\D/g, "")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d)/, "$1.$2")
       .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-  };
-
-  const formatTelefone = (value) => {
-    return value
+  const formatTelefone = (v) =>
+    v
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{4,5})(\d{4})$/, "$1-$2");
-  };
+  const formatCEP = (v) =>
+    v.replace(/\D/g, "").replace(/(\d{5})(\d{3})$/, "$1-$2");
 
-  const formatCEP = (value) => {
-    return value
-      .replace(/\D/g, "")
-      .replace(/(\d{5})(\d{3})$/, "$1-$2");
-  };
-
-  const normalizedOptions = useMemo(() => {
-    if (Array.isArray(subjectsOptions) && subjectsOptions.length) {
-      return subjectsOptions;
-    }
-    return [];
-  }, [subjectsOptions]);
+  const normalizedOptions = useMemo(
+    () => (Array.isArray(subjectsOptions) ? subjectsOptions : []),
+    [subjectsOptions],
+  );
 
   const emitSubjectsChange = (nextMaterias) => {
     if (!onSubjectsChange) return;
-
-    const selectedSubjectIds = [...new Set(nextMaterias.map((item) => item.subjectId))]
-      .map((subjectId) => Number(subjectId))
-      .filter((subjectId) => Number.isFinite(subjectId));
-
-    onSubjectsChange(selectedSubjectIds);
+    const ids = nextMaterias
+      .map((m) => Number(m.subjectId))
+      .filter((id) => !isNaN(id) && id !== 0);
+    onSubjectsChange([...new Set(ids)]);
   };
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-
     let newValue = value;
 
     if (name === "cpf") newValue = formatCPF(value);
@@ -73,73 +60,64 @@ export default function AddProfessor({
   const handleMateriaChange = (index, option) => {
     const nextMaterias = [...materias];
     nextMaterias[index] = {
-      subjectId: option?.value ?? null,
+      subjectId: option ? Number(option.value) : null,
     };
-
     setMaterias(nextMaterias);
     emitSubjectsChange(nextMaterias);
   };
 
-  const adicionarMateria = () => {
+  const adicionarMateria = () =>
     setMaterias([...materias, { subjectId: null }]);
-  };
 
   const removerMateria = (index) => {
-    if (index === 0 && materias.length === 1) return;
-
-    const novasMaterias = materias.filter((_, i) => i !== index);
-    setMaterias(novasMaterias);
-    emitSubjectsChange(novasMaterias);
-  };
-
-  const handleSalvar = async () => {
-    try {
-      setLoading(true);
-
-      const payload = {
-        ...dados,
-        cpf: dados.cpf?.replace(/\D/g, ""),
-        telefone: dados.telefone?.replace(/\D/g, ""),
-        cep: dados.cep?.replace(/\D/g, ""),
-      };
-
-      await createTeacherService().createTeacher(payload);
-
-      alert("Professor cadastrado com sucesso!");
-    } catch (error) {
-      console.error("Erro ao cadastrar professor:", error.response?.data || error.message);
-      alert("Erro ao cadastrar professor.");
-    } finally {
-      setLoading(false);
+    if (materias.length === 1) {
+      setMaterias([{ subjectId: null }]);
+      return;
     }
+    const novas = materias.filter((_, i) => i !== index);
+    setMaterias(novas);
+    emitSubjectsChange(novas);
   };
 
   return (
-    <div>
+    <div className={styles.formWrapper}>
+      <SidebarAdmin />
+
       <div className={styles.container}>
         <div className={styles.header}>{titulo}</div>
-
-        <SidebarAdmin />
 
         <div className={styles.form}>
           <div className={styles.row}>
             <div>
               <label>Nome:</label>
-              <input type="text" name="nome" value={dados.nome || ""} onChange={handleChange} />
+              <input
+                type="text"
+                name="nome"
+                value={dados.nome || ""}
+                onChange={handleChange}
+              />
             </div>
-
             <div>
               <label>Sobrenome:</label>
-              <input type="text" name="sobrenome" value={dados.sobrenome || ""} onChange={handleChange} />
+              <input
+                type="text"
+                name="sobrenome"
+                value={dados.sobrenome || ""}
+                onChange={handleChange}
+              />
             </div>
           </div>
 
           <div className={styles.row}>
             <div>
               <label>Email:</label>
-              <input type="email" name="email" value={dados.email || ""} onChange={handleChange} />
+              <input
+                type="email"
+                name="email"
+                value={dados.email || ""}
+                onChange={handleChange}
+              />
             </div>
-
             <div>
               <label>Telefone:</label>
               <input
@@ -163,7 +141,6 @@ export default function AddProfessor({
                 maxLength={14}
               />
             </div>
-
             <div>
               <label>Senha:</label>
               <input
@@ -178,14 +155,22 @@ export default function AddProfessor({
           <div className={styles.row}>
             <div>
               <label>Rua:</label>
-              <input type="text" name="rua" value={dados.rua || ""} onChange={handleChange} />
+              <input
+                type="text"
+                name="rua"
+                value={dados.rua || ""}
+                onChange={handleChange}
+              />
             </div>
-
             <div>
               <label>Número:</label>
-              <input type="text" name="numero" value={dados.numero || ""} onChange={handleChange} />
+              <input
+                type="text"
+                name="numero"
+                value={dados.numero || ""}
+                onChange={handleChange}
+              />
             </div>
-
             <div>
               <label>CEP:</label>
               <input
@@ -201,64 +186,62 @@ export default function AddProfessor({
           <div className={styles.row}>
             <div>
               <label>Cidade:</label>
-              <input type="text" name="cidade" value={dados.cidade || ""} onChange={handleChange} />
+              <input
+                type="text"
+                name="cidade"
+                value={dados.cidade || ""}
+                onChange={handleChange}
+              />
             </div>
-
             <div>
               <label>Estado:</label>
-              <input type="text" name="estado" value={dados.estado || ""} onChange={handleChange} />
-            </div>
-
-            <div>
-              <label>Complemento:</label>
-              <input type="text" name="complemento" value={dados.complemento || ""} onChange={handleChange} />
+              <input
+                type="text"
+                name="estado"
+                value={dados.estado || ""}
+                onChange={handleChange}
+              />
             </div>
           </div>
 
           <div className={styles.row}>
             <div>
-              <label>Foto:</label>
-              <input type="file" name="foto" onChange={handleChange} />
+              <label>Foto de Perfil:</label>
+              <input
+                type="file"
+                name="foto"
+                accept="image/*"
+                onChange={handleChange}
+              />
             </div>
-          </div>
-
-          <div style={{ marginTop: "20px" }}>
-            <button onClick={handleSalvar} disabled={loading}>
-              {loading ? "Salvando..." : "Salvar"}
-            </button>
           </div>
         </div>
       </div>
 
       <div className={styles.container}>
-        <div className={styles.header}>Matérias</div>
-
+        <div className={styles.header}>Matérias Lecionadas</div>
         <div className={styles.subject}>
-          <label>Matérias:</label>
-
           {materias.map((item, index) => (
             <div key={index} className={styles.dropdownRow}>
               <DropdownMaterias
                 options={normalizedOptions}
                 value={
-                  normalizedOptions.find((option) => option.value === item.subjectId) || null
+                  normalizedOptions.find(
+                    (opt) => Number(opt.value) === Number(item.subjectId),
+                  ) || null
                 }
-                onChange={(option) => handleMateriaChange(index, option)}
+                onChange={(opt) => handleMateriaChange(index, opt)}
               />
-
-              {index === materias.length - 1 && (
-                <img
-                  src={iconMais}
-                  alt="Adicionar"
-                  className={styles.iconMais}
-                  onClick={adicionarMateria}
-                />
-              )}
-
+              <img
+                src={iconMais}
+                alt="Add"
+                className={styles.icon}
+                onClick={adicionarMateria}
+              />
               <img
                 src={iconMenos}
-                alt="Remover"
-                className={styles.iconMais}
+                alt="Del"
+                className={styles.icon}
                 onClick={() => removerMateria(index)}
               />
             </div>
