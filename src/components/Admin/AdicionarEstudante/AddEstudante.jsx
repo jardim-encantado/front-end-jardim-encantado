@@ -71,7 +71,7 @@ export default function AddEstudante({ dados, setDados, titulo, onSaved }) {
         email: dados.email,
         password: dados.senha,
         cpf: dados.cpf?.replace(/\D/g, ""),
-        phoneNumber: dados.telefone?.replace(/\D/g, ""),
+        phoneNumber: dados.telefone,
         roleId: dados.roleId || 1,
         address,
       };

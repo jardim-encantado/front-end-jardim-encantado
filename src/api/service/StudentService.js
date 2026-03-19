@@ -43,6 +43,7 @@ export function createStudentService() {
       try {
         let createdGuardian = null;
 
+        // 1. Lógica do Responsável (Guardian)
         if (guardianData?.cpf) {
           try {
             createdGuardian =
@@ -58,38 +59,47 @@ export function createStudentService() {
           }
         }
 
+        // 2. Resolver o Role ID (Garante que seja um Integer)
         const roleId = await ensureStudentRole(studentData);
 
-        const studentWithoutFile = { ...studentData };
-        delete studentWithoutFile.foto;
-        delete studentWithoutFile.photoUrl;
-
-        const normalizedStudentData = {
-          ...studentWithoutFile,
-          roleId,
-        };
-
+        // 3. Criar a Pessoa (Person)
+        // Aqui enviamos o objeto completo que o PersonRequest do Java espera
         try {
           const personPayload = {
-            firstName: normalizedStudentData.firstName,
-            lastName: normalizedStudentData.lastName,
-            email: normalizedStudentData.email,
-            cpf: sanitizeCpf(normalizedStudentData.cpf),
-            password: normalizedStudentData.password,
-            phoneNumber: normalizedStudentData.phoneNumber,
-            roleId: normalizedStudentData.roleId,
-            address: normalizedStudentData.address,
+            firstName: studentData.firstName,
+            lastName: studentData.lastName,
+            email: studentData.email,
+            cpf: sanitizeCpf(studentData.cpf),
+            password: studentData.password,
+            phoneNumber: studentData.phoneNumber,
+            roleId: Number(roleId), // Força conversão para número
+            address: {
+              street: studentData.address.street,
+              streetNumber: studentData.address.streetNumber,
+              cep: studentData.address.cep,
+              city: studentData.address.city,
+              state: studentData.address.state,
+              complement: studentData.address.complement || "",
+            },
           };
 
           await personService.createPerson(personPayload);
         } catch (error) {
+          // Se a pessoa já existir (409), ignoramos e seguimos para criar o vínculo de estudante
           if (error.response?.status !== 409) {
             throw error;
           }
         }
 
-        const createdStudent = await studentApi.create(normalizedStudentData);
+        // 4. Criar o Estudante (Student) - O PONTO CRÍTICO
+        // O seu StudentRequest no Java espera APENAS o CPF
+        const studentPayload = {
+          cpf: sanitizeCpf(studentData.cpf),
+        };
 
+        const createdStudent = await studentApi.create(studentPayload);
+
+        // 5. Vincular Estudante ao Responsável
         if (createdGuardian?.guardianId && createdStudent?.studentId) {
           try {
             await guardianService.addStudentToGuardian(
@@ -98,17 +108,17 @@ export function createStudentService() {
             );
           } catch (error) {
             console.warn(
-              "Student was created but linking guardian failed:",
+              "Estudante criado, mas falhou ao vincular ao responsável:",
               error,
             );
           }
         }
 
+        // Limpar cache e retornar
         cachedStudents = null;
-
         return createdStudent;
       } catch (error) {
-        console.error("Error creating student:", error);
+        console.error("Erro no fluxo de criação de estudante:", error);
         throw error;
       }
     },
