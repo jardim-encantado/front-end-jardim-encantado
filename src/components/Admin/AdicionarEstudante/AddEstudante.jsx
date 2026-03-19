@@ -55,24 +55,38 @@ export default function AddEstudante({ dados, setDados, titulo, onSaved }) {
     setLoading(true);
 
     try {
-      // Criando FormData para enviar foto
-      const formData = new FormData();
-      Object.entries(dados).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          formData.append(key, value);
-        }
-      });
+      const address = {
+        street: dados.rua,
+        streetNumber: dados.numero,
+        cep: dados.cep?.replace(/\D/g, ""),
+        city: dados.cidade,
+        state: dados.estado,
+        complement: dados.complemento,
+      };
 
-      // Chamada ao backend
-      await studentService.create(formData);
 
-      if (onSaved) onSaved(); // Callback para atualizar lista ou fechar modal
+      const payload = {
+        firstName: dados.nome,
+        lastName: dados.sobrenome,
+        email: dados.email,
+        password: dados.senha,
+        cpf: dados.cpf?.replace(/\D/g, ""),
+        phoneNumber: dados.telefone?.replace(/\D/g, ""),
+        roleId: dados.roleId || 1,
+        address,
+      };
+
+      console.log("PAYLOAD FINAL:", payload);
+
+      await studentService.createStudent(payload, null);
+
+      if (onSaved) onSaved();
       alert("Estudante salvo com sucesso!");
     } catch (err) {
       console.error("Erro ao salvar estudante:", err);
       setErrorMsg(
         err?.response?.data?.message ||
-        "Não foi possível salvar o estudante. Tente novamente."
+          "Não foi possível salvar o estudante. Tente novamente.",
       );
     } finally {
       setLoading(false);
@@ -86,7 +100,6 @@ export default function AddEstudante({ dados, setDados, titulo, onSaved }) {
       <SidebarAdmin />
 
       <div className={styles.form}>
-        {/* Aqui vão todos os inputs do formulário */}
         <div className={styles.row}>
           <div>
             <label>Nome:</label>
@@ -160,6 +173,70 @@ export default function AddEstudante({ dados, setDados, titulo, onSaved }) {
           </div>
         </div>
 
+        <div className={styles.row}>
+          <div>
+            <label>Rua:</label>
+            <input
+              type="text"
+              name="rua"
+              value={dados.rua || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Número:</label>
+            <input
+              type="text"
+              name="numero"
+              value={dados.numero || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>CEP:</label>
+            <input
+              type="text"
+              name="cep"
+              value={dados.cep || ""}
+              onChange={handleChange}
+              maxLength={9}
+            />
+          </div>
+        </div>
+
+        <div className={styles.row}>
+          <div>
+            <label>Cidade:</label>
+            <input
+              type="text"
+              name="cidade"
+              value={dados.cidade || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Estado:</label>
+            <input
+              type="text"
+              name="estado"
+              value={dados.estado || ""}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label>Complemento:</label>
+            <input
+              type="text"
+              name="complemento"
+              value={dados.complemento || ""}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
         {errorMsg && <p className={styles.errorMessage}>{errorMsg}</p>}
 
         <div className={styles.row}>

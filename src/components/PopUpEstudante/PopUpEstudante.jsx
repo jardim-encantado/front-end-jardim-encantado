@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styles from "./PopUpEstudante.module.css";
 import BoletimAluno from "../BoletimComponent/BoletimComponent";
 import AvisoCard from "../AvisoCard/AvisoCard";
@@ -13,8 +13,8 @@ export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  const gradingService = createGradingService();
-  const schoolEventService = createSchoolEventService();
+  const gradingService = useMemo(() => createGradingService(), []);
+  const schoolEventService = useMemo(() => createSchoolEventService(), []);
 
   useEffect(() => {
     if (!estudante?.id) return;
@@ -65,7 +65,7 @@ export default function PopUpEstudante({ estudante, onClose, onCriarAviso }) {
     }
 
     carregarDados();
-  }, [estudante]);
+  }, [estudante, gradingService, schoolEventService]);
 
   const handleBoletimChange = (novoBoletim) => {
     setBoletim(novoBoletim);

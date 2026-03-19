@@ -56,7 +56,9 @@ export function createRoleService() {
           if (roleNameMatches(role?.name, aliases)) {
             return role?.id ?? roleId;
           }
-        } catch {}
+        } catch {
+          // Role not found at this ID, try next ID
+        }
       }
 
       return getRoleEnvFallback(roleKey);

@@ -4,7 +4,6 @@ import imgJardimLogin from "../../assets/images/imgJardimLogin.png";
 import { useNavigate } from "react-router-dom";
 import Carregamento from "../../components/Carregamento/Carregamento";
 import { createPersonService } from "../../api/service/PersonService";
-import { saveLoggedPerson } from "../../hooks/personHook";
 import { usePerson } from "../../hooks/personHook";
 
 function Login() {

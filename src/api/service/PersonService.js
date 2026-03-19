@@ -4,7 +4,7 @@ import { toPersonRequest } from "../schemas/dto/PersonRequest";
 import { toPersonSchema } from "../schemas/Person";
 import { sanitizeCpf } from "../util/objectUtil";
 
-const PERSONS_ENDPOINT = "/api/v1/person";
+const PERSONS_ENDPOINT = "/api/v1";
 
 const personApi = createApiRepository(
 	PERSONS_ENDPOINT,

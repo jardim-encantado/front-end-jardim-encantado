@@ -80,6 +80,7 @@ function App() {
           <Route path="/responsavel/boletim" element={<BoletimResponsavel />} />
           <Route path="/responsavel/visualizarProfessor" element={<VisualizarProfResponsavel />}
           />
+          <Route path="/responsavel/Professor/visualizarPerfil" element={<PaginaAvisos />} />
 
           {/* Professor */}
           <Route path="/professor/home" element={<HomeProfessor />} />

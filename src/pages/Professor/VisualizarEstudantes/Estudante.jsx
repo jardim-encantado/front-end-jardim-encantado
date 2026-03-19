@@ -148,7 +148,7 @@ const estudantes = useMemo(() => {
     setShowCriarAviso(true);
   };
 
-  const handleAddAviso = (novoAviso) => {
+  const handleAddAviso = () => {
     setShowCriarAviso(false);
   };
 
