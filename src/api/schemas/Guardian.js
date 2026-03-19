@@ -1,37 +1,19 @@
-import { toStudentSchema } from "./Student";
-
-
+import { toStudentSchema } from "./Student"; 
 export const toGuardianSchema = (guardian = {}) => {
-    if (!guardian || typeof guardian !== "object") {
-        return null;
-    }
+  if (!guardian) return null;
 
-    const firstName = guardian.firstName ?? guardian.nome ?? "";
-    const lastName = guardian.lastName ?? guardian.sobrenome ?? "";
-    const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();
-    const personId = guardian.personId ?? null;
+  return {
+    guardianId: guardian.guardianId ?? guardian.id,
+    personId: guardian.personId,
+    firstName: guardian.firstName ?? guardian.person?.firstName ?? "",
+    lastName: guardian.lastName ?? guardian.person?.lastName ?? "",
+    email: guardian.email ?? guardian.person?.email ?? "",
+    cpf: guardian.cpf ?? guardian.person?.cpf ?? "",
+    phoneNumber: guardian.phoneNumber ?? guardian.person?.phoneNumber ?? "",
+    photoUrl: guardian.photoUrl ?? guardian.person?.photoUrl ?? "",
 
-    return {
-        id: guardian.guardianId ?? guardian.guardian_id ?? guardian.id ?? null,
-        guardianId: guardian.guardianId ?? guardian.guardian_id ?? guardian.id ?? null,
-        personId,
-        firstName,
-        lastName,
-        fullName,
-        email: guardian.email ?? "",
-        phoneNumber: guardian.phoneNumber ?? guardian.telefone ?? "",
-        cpf: guardian.cpf ?? "",
-        photoUrl: guardian.photoUrl ?? "",
-        students: Array.isArray(guardian.students)
-            ? guardian.students.map(toStudentSchema).filter(Boolean)
-            : [],
-        person: {
-            id: personId,
-            personId,
-            firstName,
-            lastName,
-            fullName,
-            email: guardian.email ?? "",
-        },
-    };
+    students: Array.isArray(guardian.students) 
+      ? guardian.students.map(std => toStudentSchema(std)) 
+      : []
+  };
 };
