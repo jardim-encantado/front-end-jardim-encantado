@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
 import SidebarProfessor from "../../../components/SideBarProfessor/SidebarProfessor";
 import CriarAviso from "../../../components/CriarAviso/CriarAviso";
@@ -13,8 +13,8 @@ import { roleNameMatches, ROLE_NAME_ALIASES } from "../../../api/schemas/Role";
 import SidebarAdmin from "../../../components/Admin/SideBarAdmin";
 
 const PaginaAvisos = () => {
-    const schoolEventService = createSchoolEventService();
-    const schoolEventTypeService = createSchoolEventTypeService();
+    const schoolEventService = useMemo(() => createSchoolEventService(), []);
+    const schoolEventTypeService = useMemo(() => createSchoolEventTypeService(), []);
 
     const [schoolEventTypes, setSchoolEventTypes] = useState([]);
     const [schoolEvents, setSchoolEvents] = useState([]);
