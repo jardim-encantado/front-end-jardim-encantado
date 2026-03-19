@@ -77,8 +77,14 @@ export function createTeacherService() {
     },
 
     async getByPersonId(personId) {
+      if (!personId) {
+        return null;
+      }
+
       const teachers = await teacherApi.getAll();
-      return teachers.find((t) => t.personId === personId);
+      return (
+        teachers.find((t) => Number(t.personId) === Number(personId)) || null
+      );
     },
   };
 }

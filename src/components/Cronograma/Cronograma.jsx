@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Cronograma.css";
 import { usePerson } from "../../hooks/personHook";
 import { createScheduleService } from "../../api/service/ScheduleService";
+import { createRoleService } from "../../api/service/RoleService";
+import { createStudentService } from "../../api/service/StudentService";
+import { createTeacherService } from "../../api/service/TeacherService";
 
 const diasMap = {
   1: "segunda",
@@ -11,33 +14,131 @@ const diasMap = {
   5: "sexta",
 };
 
+const toScheduleItems = (value) => {
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (Array.isArray(value?.items)) {
+    return value.items;
+  }
+
+  if (Array.isArray(value?.scheduleItems)) {
+    return value.scheduleItems;
+  }
+
+  return [];
+};
+
+const normalizeRoleName = (value) =>
+  String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
 const Cronograma = () => {
   const { person } = usePerson();
-  const scheduleService = createScheduleService();
+  const scheduleService = useMemo(() => createScheduleService(), []);
+  const roleService = useMemo(() => createRoleService(), []);
+  const studentService = useMemo(() => createStudentService(), []);
+  const teacherService = useMemo(() => createTeacherService(), []);
 
   const [dados, setDados] = useState([]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        if (!person) return;
+        if (!person) {
+          setDados([]);
+          return;
+        }
+
+        const personId = Number(person.personId ?? person.id);
+        const roleId = Number(person.roleId);
+        const normalizedRoleName = normalizeRoleName(person.roleName);
+
+        const [teacherRoleId, studentRoleId] = await Promise.all([
+          roleService.resolveRoleId("teacher"),
+          roleService.resolveRoleId("student"),
+        ]);
+
+        const normalizedTeacherRoleId = Number(teacherRoleId);
+        const normalizedStudentRoleId = Number(studentRoleId);
+
+        const isTeacherByRoleId =
+          Number.isFinite(roleId) &&
+          Number.isFinite(normalizedTeacherRoleId) &&
+          roleId === normalizedTeacherRoleId;
+
+        const isStudentByRoleId =
+          Number.isFinite(roleId) &&
+          Number.isFinite(normalizedStudentRoleId) &&
+          roleId === normalizedStudentRoleId;
+
+        const isTeacher =
+          isTeacherByRoleId ||
+          normalizedRoleName.includes("teacher") ||
+          normalizedRoleName.includes("professor") ||
+          normalizedRoleName.includes("docente");
+
+        const isStudent =
+          isStudentByRoleId ||
+          normalizedRoleName.includes("student") ||
+          normalizedRoleName.includes("estudante") ||
+          normalizedRoleName.includes("aluno");
 
         let items = [];
 
-        if (person.teacherId) {
-          items = await scheduleService.getByTeacher(person.teacherId);
+        if (isTeacher) {
+          const fallbackTeacherId = Number(person.teacherId);
+          const resolvedTeacher =
+            Number.isFinite(personId) && personId > 0
+              ? await teacherService.getByPersonId(personId)
+              : null;
+
+          const teacherId =
+            resolvedTeacher?.teacherId ??
+            (Number.isFinite(fallbackTeacherId) && fallbackTeacherId > 0
+              ? fallbackTeacherId
+              : null);
+
+          if (teacherId) {
+            const schedule = await scheduleService.getByTeacher(teacherId);
+            items = toScheduleItems(schedule);
+          }
+        } else if (isStudent) {
+          const fallbackStudentId = Number(person.studentId);
+          const resolvedStudent =
+            Number.isFinite(personId) && personId > 0
+              ? await studentService.getStudentByPersonId(personId)
+              : null;
+
+          const studentId =
+            resolvedStudent?.studentId ??
+            (Number.isFinite(fallbackStudentId) && fallbackStudentId > 0
+              ? fallbackStudentId
+              : null);
+
+          if (studentId) {
+            const schedule = await scheduleService.getByStudent(studentId);
+            items = toScheduleItems(schedule);
+          }
         }
 
-        else if (person.studentId) {
-          const schedule = await scheduleService.getByStudent(person.studentId);
-          items = schedule?.items || [];
+        if (!Array.isArray(items)) {
+          items = [];
         }
 
         const tabela = [];
 
         items.forEach((item) => {
-          const hora = parseInt(item.startTime.split(":")[0]);
+          const startTime = String(item?.startTime ?? "");
+          const hora = Number.parseInt(startTime.split(":")[0], 10);
           const index = hora - 7; 
+
+          if (!Number.isFinite(index) || !diasMap[item?.dayOfWeek]) {
+            return;
+          }
 
           if (!tabela[index]) {
             tabela[index] = {};
@@ -50,11 +151,12 @@ const Cronograma = () => {
         setDados(tabela);
       } catch (error) {
         console.error("Erro ao carregar cronograma:", error);
+        setDados([]);
       }
     };
 
     load();
-  }, [person]);
+  }, [person, roleService, scheduleService, studentService, teacherService]);
 
   return (
     <table className="tabela-rosa">

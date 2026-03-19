@@ -6,7 +6,8 @@ export const toStudentSchema = (student = {}) => {
     }
 
     const studentId = student.studentId ?? student.id ?? null;
-    const personId = student.personId ?? student.id ?? null;
+    const personId =
+        student.personId ?? student.person?.personId ?? student.person?.id ?? student.id ?? null;
     const firstName = student.firstName ?? student.nome ?? "";
     const lastName = student.lastName ?? student.sobrenome ?? "";
     const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();

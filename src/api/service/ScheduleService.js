@@ -37,7 +37,7 @@ export function createScheduleService() {
 
     async getByTeacher(teacherId) {
       const response = await api.get(`${SCHEDULE_ENDPOINT}/teacher/${teacherId}`);
-      return response.data; 
+      return toScheduleSchema(response.data); 
     },
   };
 }
