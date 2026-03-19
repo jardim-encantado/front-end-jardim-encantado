@@ -5,7 +5,7 @@ import { createScheduleService } from "../../api/service/ScheduleService";
 import { createTeacherService } from "../../api/service/TeacherService";
 import { createClassroomGroupService } from "../../api/service/ClassroomGroupService";
 import { createTeacherSubjectService } from "../../api/service/TeacherSubjectService";
-import { createSubjectService } from "../../api/service/StudySubjectService";
+import { createStudySubjectService } from "../../api/service/StudySubjectService";
 
 const diasMap = {
   segunda: 1,
@@ -20,7 +20,7 @@ const CronogramaEditavel = () => {
   const teacherService = createTeacherService();
   const groupService = createClassroomGroupService();
   const teacherSubjectService = createTeacherSubjectService();
-  const subjectService = createSubjectService();
+  const subjectService = createStudySubjectService();
 
   const [subjects, setSubjects] = useState([]);
   const [teachers, setTeachers] = useState([]);
