@@ -21,11 +21,11 @@ export default function HeaderRight() {
 
   const getProfileRoute = () => {
     switch (person?.roleName) {
-      case "teacher":
+      case "TEACHER":
         return "/professor/perfil";
-      case "responsavel":
+      case "GUARDIAN":
         return "/responsavel/perfil";
-      case "admin":
+      case "ADMIN":
         return "/admin/perfil";
       default:
         return "/"; 
